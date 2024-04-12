@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Game.Scripts.Menu.UI
+namespace Game.Code.Menu.UI
 {
     public class MenuView : MonoBehaviour
     {

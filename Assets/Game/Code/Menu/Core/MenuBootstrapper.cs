@@ -1,8 +1,8 @@
-using Game.Scripts.Menu.StateMachine.States;
-using Game.Scripts.Menu.StateMachine;
+using Game.Code.Menu.StateMachine;
+using Game.Code.Menu.StateMachine.States;
 using VContainer.Unity;
 
-namespace Game.Scripts.Menu.Core
+namespace Game.Code.Menu.Core
 {
     public class MenuBootstrapper : IInitializable
     {

@@ -1,6 +1,6 @@
 using Cysharp.Threading.Tasks;
 
-namespace Code.Infrastructure.StateMachineBase
+namespace Game.Code.Common.StateMachineBase.Interfaces
 {
     public interface IExitableState
     {

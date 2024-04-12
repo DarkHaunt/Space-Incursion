@@ -1,8 +1,8 @@
-using Code.Infrastructure.StateMachineBase;
 using Cysharp.Threading.Tasks;
-using Code.Infrastructure;
+using Game.Code.Common.StateMachineBase.Interfaces;
+using Game.Code.Infrastructure.SceneManaging;
 
-namespace Game.Scripts.Menu.StateMachine.States
+namespace Game.Code.Menu.StateMachine.States
 {
     public class LoadGame : IState
     {

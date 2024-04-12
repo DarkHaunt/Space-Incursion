@@ -1,9 +1,10 @@
-using Game.Scripts.Menu.StateMachine.States;
-using Code.Infrastructure.StateMachineBase;
+using Game.Code.Common.StateMachineBase;
+using Game.Code.Common.StateMachineBase.Interfaces;
+using Game.Code.Menu.StateMachine.States;
 
-namespace Game.Scripts.Menu.StateMachine
+namespace Game.Code.Menu.StateMachine
 {
-    public class MenuStateMachine : Code.Infrastructure.StateMachineBase.StateMachine
+    public class MenuStateMachine : BaseStateMachine
     {
         private IState _state;
 

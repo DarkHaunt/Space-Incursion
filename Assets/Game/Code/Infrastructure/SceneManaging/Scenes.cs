@@ -1,4 +1,4 @@
-namespace Code.Infrastructure
+namespace Game.Code.Infrastructure.SceneManaging
 {
     public enum Scenes
     {

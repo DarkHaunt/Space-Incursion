@@ -1,7 +1,7 @@
-using Code.Infrastructure.StateMachineBase;
 using Cysharp.Threading.Tasks;
+using Game.Code.Common.StateMachineBase.Interfaces;
 
-namespace Game.Scripts.Menu.StateMachine.States
+namespace Game.Code.Menu.StateMachine.States
 {
     public class ExitGame : IState
     {

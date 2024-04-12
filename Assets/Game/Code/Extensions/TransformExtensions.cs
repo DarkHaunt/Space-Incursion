@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Game.Scripts.Extensions
+namespace Game.Code.Extensions
 {
     public static class TransformExtensions
     {

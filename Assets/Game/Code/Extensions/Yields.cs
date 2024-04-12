@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Game.Scripts.Extensions
+namespace Game.Code.Extensions
 {
     public static class Yields
     {

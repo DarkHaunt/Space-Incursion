@@ -1,9 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System;
 using Random = UnityEngine.Random;
 
-namespace Game.Scripts.Extensions
+namespace Game.Code.Extensions
 {
     public static class EnumerableExtension
     {

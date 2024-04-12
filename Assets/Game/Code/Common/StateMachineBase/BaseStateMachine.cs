@@ -1,10 +1,11 @@
 ﻿using System;
-using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
+using Game.Code.Common.StateMachineBase.Interfaces;
 
-namespace Code.Infrastructure.StateMachineBase
+namespace Game.Code.Common.StateMachineBase
 {
-    public abstract class StateMachine
+    public abstract class BaseStateMachine
     {
         private readonly Dictionary<Type, IExitableState> _states = new();
         private IExitableState _activeState;
