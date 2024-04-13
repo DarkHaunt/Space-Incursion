@@ -7,8 +7,8 @@ namespace Game.Code.Extensions
         public static Vector2 Create(float value)
             => new Vector2(value, value);
 
-        public static Vector2 Direction(Vector2 start, Vector2 end)
-            => (end - start).normalized;
+        public static Vector2 Direction(Vector2 from, Vector2 to)
+            => (to - from).normalized;
         
         public static Vector2 WithX(this Vector2 self, float xValue)
         {
