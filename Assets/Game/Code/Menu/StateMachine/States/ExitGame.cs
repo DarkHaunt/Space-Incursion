@@ -18,11 +18,5 @@ namespace Game.Code.Menu.StateMachine.States
 
         public UniTask Exit() =>
             UniTask.CompletedTask;
-
-        public class Factory
-        {
-            public ExitGame CreateState() =>
-                new();
-        }
     }
 }

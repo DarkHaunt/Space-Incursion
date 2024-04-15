@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7296820144593184568}
   - component: {fileID: 7619694761055956475}
+  - component: {fileID: 3579906741343681083}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -49,7 +50,20 @@ MonoBehaviour:
   ObjectInterest: 1
   Flags: 262145
   NestedObjects: []
-  NetworkedBehaviours: []
+  NetworkedBehaviours:
+  - {fileID: 3579906741343681083}
+--- !u!114 &3579906741343681083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3622630250047854823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbbaeb5b47d44353b93e25ed99d93069, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7492070839277955651
 GameObject:
   m_ObjectHideFlags: 0

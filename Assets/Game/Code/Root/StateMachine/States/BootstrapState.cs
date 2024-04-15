@@ -1,9 +1,9 @@
-using Game.Code.Common.StateMachineBase.Interfaces;
 using Code.Infrastructure.AssetManaging;
-using Game.Code.Game.StaticData.Indents;
 using Cysharp.Threading.Tasks;
+using Game.Code.Common.StateMachineBase.Interfaces;
+using Game.Code.Game.StaticData.Indents;
 
-namespace Game.Code.Boot.StateMachine.States
+namespace Game.Code.Root.StateMachine.States
 {
     public class BootstrapState : IState
     {

@@ -18,16 +18,5 @@ namespace Game.Code.Menu.StateMachine.States
 
         public UniTask Exit() =>
             UniTask.CompletedTask;
-        
-        public class Factory
-        {
-            private readonly SceneLoader _sceneLoader;
-
-            public Factory(SceneLoader sceneLoader) =>
-                _sceneLoader = sceneLoader;
-
-            public LoadGame CreateState() =>
-                new (_sceneLoader);
-        }
     }
 }

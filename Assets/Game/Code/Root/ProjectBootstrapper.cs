@@ -1,12 +1,12 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using Game.Code.Boot.StateMachine;
-using Game.Code.Boot.StateMachine.States;
 using Game.Code.Common.StateMachineBase;
+using Game.Code.Root.StateMachine;
+using Game.Code.Root.StateMachine.States;
 using VContainer;
 using VContainer.Unity;
 
-namespace Game.Code.Boot
+namespace Game.Code.Root
 {
     public class ProjectBootstrapper : IAsyncStartable
     {

@@ -1,23 +1,31 @@
 using System.Collections.Generic;
 using Fusion.Sockets;
-using VContainer;
 using System;
 using Fusion;
+using UnityEngine;
 
 namespace Game.Code.Game
 {
     public class NetworkService : INetworkRunnerCallbacks
     {
-        private InputService _inputService;
+        private readonly InputService _inputService;
 
-        [Inject]
-        public void Construct(InputService inputService)
+        public NetworkService(InputService inputService)
         {
             _inputService = inputService;
         }
 
         public void OnInput(NetworkRunner runner, NetworkInput input) =>
             input.Set(_inputService.GetPlayerInput());
+
+        public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
+        {
+            Debug.Log($"<color=white>SUCK</color>");
+        }
+
+        public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
+        {
+        }
 
         public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player)
         {
@@ -26,14 +34,6 @@ namespace Game.Code.Game
 
         public void OnObjectEnterAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player)
         { 
-        }
-
-        public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
-        {
-        }
-
-        public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
-        {
         }
 
         public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input)

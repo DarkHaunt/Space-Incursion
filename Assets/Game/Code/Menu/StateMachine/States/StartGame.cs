@@ -38,16 +38,5 @@ namespace Game.Code.Menu.StateMachine.States
 
         private void SetMainMenuState()
             => _stateMachine.Enter<MainMenu>().Forget();
-
-        public class Factory
-        {
-            private readonly StartGameView _view;
-
-            public Factory(StartGameView view) =>
-                _view = view;
-
-            public StartGame CreateState(MenuStateMachine stateMachine) =>
-                new (stateMachine, _view);
-        }
     }
 }

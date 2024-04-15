@@ -40,16 +40,5 @@ namespace Game.Code.Menu.StateMachine.States
 
         private void SetExitGameState()
             => _stateMachine.Enter<ExitGame>();
-        
-        public class Factory
-        {
-            private readonly MenuView _view;
-
-            public Factory(MenuView view) =>
-                _view = view;
-
-            public MainMenu CreateState(MenuStateMachine stateMachine) =>
-                new (stateMachine, _view);
-        }
     }
 }

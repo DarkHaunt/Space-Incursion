@@ -1,18 +1,20 @@
-using Code.Infrastructure.AssetManaging;
 using Game.Code.Infrastructure.SceneManaging;
+using Code.Infrastructure.AssetManaging;
 using Game.Code.Common.StateMachineBase;
 using Game.Code.Common.CoroutineRunner;
-using Game.Code.Boot.StateMachine;
+using Game.Code.Root.StateMachine;
 using VContainer.Unity;
 using UnityEngine;
 using VContainer;
+using Fusion;
 
-namespace Game.Code.Boot
+namespace Game.Code.Root
 {
     public class ProjectInstaller : LifetimeScope
     {
         [SerializeField] private SceneTransitionHandler _transitionHandler;
         [SerializeField] private CoroutineRunner _coroutineRunner;
+        [SerializeField] private NetworkRunner _networkRunner;
         
         
         protected override void Configure(IContainerBuilder builder)
@@ -23,6 +25,7 @@ namespace Game.Code.Boot
             RegisterRootStateMachine(builder);
             
             RegisterAssetProvider(builder);
+            RegisterNetworkRunner(builder);
             RegisterCoroutineRunner(builder);
             RegisterSceneLoaderSystem(builder);
         }
@@ -38,6 +41,13 @@ namespace Game.Code.Boot
 
         private void RegisterRootStateMachine(IContainerBuilder builder) =>
             builder.Register<RootStateMachine>(Lifetime.Singleton);
+
+        private void RegisterNetworkRunner(IContainerBuilder builder)
+        {
+            builder
+                .RegisterComponentInNewPrefab(_networkRunner, Lifetime.Singleton)
+                .DontDestroyOnLoad();
+        }
 
         private void RegisterCoroutineRunner(IContainerBuilder builder)
         {
