@@ -16,12 +16,12 @@ namespace Game.Code.Game
             _inputService = inputService;
         }
 
-
         public void OnInput(NetworkRunner runner, NetworkInput input) =>
             input.Set(_inputService.GetPlayerInput());
 
         public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player)
         {
+            
         }
 
         public void OnObjectEnterAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player)
