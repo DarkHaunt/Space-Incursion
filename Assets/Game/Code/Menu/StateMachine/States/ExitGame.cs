@@ -1,5 +1,6 @@
-using Cysharp.Threading.Tasks;
 using Game.Code.Common.StateMachineBase.Interfaces;
+using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 namespace Game.Code.Menu.StateMachine.States
 {

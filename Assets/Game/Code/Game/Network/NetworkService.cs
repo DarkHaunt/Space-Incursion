@@ -2,25 +2,36 @@ using System.Collections.Generic;
 using Fusion.Sockets;
 using System;
 using Fusion;
+using Game.Code.Game.Services;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Game.Code.Game
 {
     public class NetworkService : INetworkRunnerCallbacks
     {
         private readonly InputService _inputService;
+        private readonly GameFactory _gameFactory;
 
-        public NetworkService(InputService inputService)
+        public NetworkService(InputService inputService, GameFactory gameFactory)
         {
             _inputService = inputService;
+            _gameFactory = gameFactory;
         }
 
-        public void OnInput(NetworkRunner runner, NetworkInput input) =>
-            input.Set(_inputService.GetPlayerInput());
-
-        public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
+        public void OnInput(NetworkRunner runner, NetworkInput input)
         {
-            Debug.Log($"<color=white>SUCK</color>");
+            input.Set(_inputService.GetPlayerInput());
+        }
+
+        public async void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
+        {
+            if (runner.CanSpawn)
+            {
+                await _gameFactory.CreatePlayer(Vector2.one * Random.Range(3f, 3f));
+
+                Debug.Log($"<color=white>Player Created</color>");
+            }
         }
 
         public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
@@ -29,11 +40,10 @@ namespace Game.Code.Game
 
         public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player)
         {
-            
         }
 
         public void OnObjectEnterAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player)
-        { 
+        {
         }
 
         public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input)

@@ -12,20 +12,24 @@ namespace Game.Code.Root
 {
     public class ProjectInstaller : LifetimeScope
     {
+        [Header("--- Services ---")]
         [SerializeField] private SceneTransitionHandler _transitionHandler;
         [SerializeField] private CoroutineRunner _coroutineRunner;
+
+        [Header("--- Network ---")]
         [SerializeField] private NetworkRunner _networkRunner;
-        
-        
+
+
         protected override void Configure(IContainerBuilder builder)
         {
             RegisterBootstrapper(builder);
-            
+
             RegisterStateFactory(builder);
             RegisterRootStateMachine(builder);
-            
-            RegisterAssetProvider(builder);
+
             RegisterNetworkRunner(builder);
+
+            RegisterAssetProvider(builder);
             RegisterCoroutineRunner(builder);
             RegisterSceneLoaderSystem(builder);
         }
@@ -56,7 +60,7 @@ namespace Game.Code.Root
                 .DontDestroyOnLoad()
                 .As<ICoroutineRunner>();
         }
-        
+
         private void RegisterSceneLoaderSystem(IContainerBuilder builder)
         {
             builder.Register<SceneLoader>(Lifetime.Singleton);
