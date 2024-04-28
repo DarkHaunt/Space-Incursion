@@ -1,3 +1,4 @@
+using ExitGames.Client.Photon.StructWrapping;
 using Game.Code.Extensions;
 using UnityEngine;
 
@@ -21,6 +22,8 @@ namespace Game.Code.Game
             data.Buttons.Set(PlayerButtons.Shoot, IsShootButtonPressed());
             data.ShootDirection = GetShootDirection();
             data.MoveDirection = GetMoveDirection();
+            
+            //Debug.Log($"<color=white>Log input - {data.ShootDirection} | {data.MoveDirection} - {data.Buttons}</color>");
             
             return data;
         }

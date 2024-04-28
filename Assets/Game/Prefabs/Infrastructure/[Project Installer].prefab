@@ -52,7 +52,7 @@ MonoBehaviour:
   autoInjectGameObjects: []
   _transitionHandler: {fileID: 893898460892406324, guid: f31e048d18a388a4ca6c8c49206981b5, type: 3}
   _coroutineRunner: {fileID: 2513480304056967442, guid: 18cf2ba51804f184aafbd0b2e1c6ab18, type: 3}
-  _networkRunner: {fileID: 6215403572756820688, guid: cae1ecde594e0ac4fa89b0300fed128e, type: 3}
+  _networkServices: {fileID: -7443412904794746387, guid: cae1ecde594e0ac4fa89b0300fed128e, type: 3}
 --- !u!1001 &1648258942841612893
 PrefabInstance:
   m_ObjectHideFlags: 0

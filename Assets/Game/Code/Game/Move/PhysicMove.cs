@@ -14,6 +14,12 @@ namespace Game.Code.Game
             _rigidbody = GetComponent<Rigidbody2D>();
         }
 
+        public void RotateToFace(Vector2 direction)
+        {
+            var rotation = Quaternion.LookRotation(direction, _rigidbody.transform.up);
+            _rigidbody.SetRotation(rotation);
+        }
+
         public void Move(Vector2 direction) =>
             _rigidbody.velocity = direction * _speed;
 

@@ -3,10 +3,10 @@ using Code.Infrastructure.AssetManaging;
 using Game.Code.Common.StateMachineBase;
 using Game.Code.Common.CoroutineRunner;
 using Game.Code.Root.StateMachine;
+using Game.Code.Game.Services;
 using VContainer.Unity;
 using UnityEngine;
 using VContainer;
-using Fusion;
 
 namespace Game.Code.Root
 {
@@ -17,7 +17,7 @@ namespace Game.Code.Root
         [SerializeField] private CoroutineRunner _coroutineRunner;
 
         [Header("--- Network ---")]
-        [SerializeField] private NetworkRunner _networkRunner;
+        [SerializeField] private NetworkServiceLocator _networkServices;
 
 
         protected override void Configure(IContainerBuilder builder)
@@ -27,7 +27,7 @@ namespace Game.Code.Root
             RegisterStateFactory(builder);
             RegisterRootStateMachine(builder);
 
-            RegisterNetworkRunner(builder);
+            RegisterNetworkServices(builder);
 
             RegisterAssetProvider(builder);
             RegisterCoroutineRunner(builder);
@@ -46,10 +46,10 @@ namespace Game.Code.Root
         private void RegisterRootStateMachine(IContainerBuilder builder) =>
             builder.Register<RootStateMachine>(Lifetime.Singleton);
 
-        private void RegisterNetworkRunner(IContainerBuilder builder)
+        private void RegisterNetworkServices(IContainerBuilder builder)
         {
             builder
-                .RegisterComponentInNewPrefab(_networkRunner, Lifetime.Singleton)
+                .RegisterComponentInNewPrefab(_networkServices, Lifetime.Singleton)
                 .DontDestroyOnLoad();
         }
 

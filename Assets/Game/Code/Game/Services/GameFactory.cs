@@ -1,4 +1,5 @@
 using Code.Infrastructure.AssetManaging;
+using Game.Code.Game.StaticData;
 using Game.Code.Game.Entities;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -10,14 +11,19 @@ namespace Game.Code.Game.Services
 {
     public class GameFactory
     {
+        private readonly GameStaticDataProvider _dataProvider;
         private readonly NetworkTickService _tickService;
         private readonly AssetProvider _assetProvider;
 
-        public GameFactory(AssetProvider assetProvider, NetworkTickService tickService)
+        
+        public GameFactory(AssetProvider assetProvider, GameStaticDataProvider dataProvider, NetworkServiceLocator networkServiceLocator)
         {
             _assetProvider = assetProvider;
-            _tickService = tickService;
+            _dataProvider = dataProvider;
+            
+            _tickService = networkServiceLocator.TickService;
         }
+        
         
         public async UniTask<PlayerModel> CreatePlayer(NetworkRunner runner, Vector2 pos, PlayerRef player)
         {
@@ -25,9 +31,9 @@ namespace Game.Code.Game.Services
             var obj = await runner.SpawnAsync(prefab, pos, Quaternion.identity, player);
 
             var model = obj.GetComponent<PlayerModel>();
+            model.Construct(_dataProvider.PlayerConfig);
             
             _tickService.AddListener(model);
-            model.OnDeactivate += () => _tickService.RemoveListener(prefab);
             
             return model;
         }        
@@ -40,7 +46,6 @@ namespace Game.Code.Game.Services
             var model = obj.GetComponent<EnemyModel>();
             
             _tickService.AddListener(model);
-            model.OnDeactivate += () => _tickService.RemoveListener(prefab);
             
             return model;
         }

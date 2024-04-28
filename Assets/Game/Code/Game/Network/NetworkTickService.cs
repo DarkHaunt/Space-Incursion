@@ -5,12 +5,13 @@ using UnityEngine;
 
 namespace Game.Code.Game
 {
-    public class NetworkTickService : NetworkBehaviour
+    public class NetworkTickService : SimulationBehaviour
     {
         private readonly List<ITickListener> _tickListeners = new();
 
         public override void FixedUpdateNetwork()
         {
+                Debug.Log($"<color=white>Run tick</color>");
             foreach (var listener in _tickListeners)
                 listener.Tick(Runner.DeltaTime);
         }
@@ -18,16 +19,22 @@ namespace Game.Code.Game
         public void AddListener(ITickListener listener)
         {
             if (!_tickListeners.Contains(listener))
+            {
+                listener.OnDisposed += RemoveListener;
                 _tickListeners.Add(listener);
+            }
+        }
+
+        public void RemoveListener(ITickListener listener)
+        {
+            listener.OnDisposed -= RemoveListener;
+            _tickListeners.Remove(listener);
         }
 
         public void AddListener(params ITickListener[] listenersToAdd)
         {
             foreach (var listener in listenersToAdd)
-            {
-                if (!_tickListeners.Contains(listener))
-                    _tickListeners.Add(listener);
-            }
+                AddListener(listener);
         }
 
         public void RemoveListener(params ITickListener[] listenersToRemove)

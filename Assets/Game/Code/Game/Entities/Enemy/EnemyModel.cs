@@ -6,8 +6,8 @@ namespace Game.Code.Game.Services
 {
     public class EnemyModel : NetworkBehaviour, ITickListener
     {
-        public event Action OnDeactivate;
-        
+        public event Action<ITickListener> OnDisposed;
+
         public void Tick(float deltaTime)
         {
             
@@ -17,6 +17,6 @@ namespace Game.Code.Game.Services
             Disable();
 
         private void Disable() =>
-            OnDeactivate?.Invoke();
+            OnDisposed?.Invoke(this);
     }
 }
