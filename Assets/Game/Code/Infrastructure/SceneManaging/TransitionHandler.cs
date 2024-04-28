@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Game.Code.Infrastructure.SceneManaging
 {
-    public class SceneTransitionHandler : MonoBehaviour
+    public class TransitionHandler : MonoBehaviour
     {
         private const float FadeInTime = 0.7f;
         private const float FadeOutTime = 0.35f;
@@ -15,8 +15,11 @@ namespace Game.Code.Infrastructure.SceneManaging
         private CancellationTokenSource _cancellationToken;
 
 
-        private void Awake()
-            => UpdateCancellationSource();
+        private void Awake() =>
+            UpdateCancellationSource();
+
+        public void FadeImmediate() =>
+            _canvas.DOFade(1f, 0f);
 
         public async UniTask PlayFadeInAnimation()
         {

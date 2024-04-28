@@ -9,12 +9,14 @@ namespace Game.Code.Root.StateMachine.States
 {
     public class BootstrapState : IState
     {
+        private readonly TransitionHandler _transitionHandler;
         private readonly RootStateMachine _stateMachine;
         private readonly AssetProvider _assetProvider;
         private readonly SceneLoader _sceneLoader;
 
-        public BootstrapState(RootStateMachine stateMachine, AssetProvider assetProvider, SceneLoader sceneLoader)
+        public BootstrapState(RootStateMachine stateMachine, AssetProvider assetProvider, TransitionHandler transitionHandler, SceneLoader sceneLoader)
         {
+            _transitionHandler = transitionHandler;
             _assetProvider = assetProvider;
             _stateMachine = stateMachine;
             _sceneLoader = sceneLoader;
@@ -22,6 +24,8 @@ namespace Game.Code.Root.StateMachine.States
 
         public async UniTask Enter()
         {
+            _transitionHandler.FadeImmediate();
+            
             await PrewarmAssets();
             await GoToGameScene();
 

@@ -12,19 +12,17 @@ namespace Game.Code.Game.Services
     {
         private readonly NetworkTickService _tickService;
         private readonly AssetProvider _assetProvider;
-        private readonly NetworkRunner _networkRunner;
 
-        public GameFactory(AssetProvider assetProvider, NetworkRunner networkRunner, NetworkTickService tickService)
+        public GameFactory(AssetProvider assetProvider, NetworkTickService tickService)
         {
             _assetProvider = assetProvider;
-            _networkRunner = networkRunner;
             _tickService = tickService;
         }
         
-        public async UniTask<PlayerModel> CreatePlayer(Vector2 pos)
+        public async UniTask<PlayerModel> CreatePlayer(NetworkRunner runner, Vector2 pos, PlayerRef player)
         {
             var prefab = await _assetProvider.LoadAndGetComponent<PlayerModel>(PlayerLabel);
-            var obj = await _networkRunner.SpawnAsync(prefab, position: pos);
+            var obj = await runner.SpawnAsync(prefab, pos, Quaternion.identity, player);
 
             var model = obj.GetComponent<PlayerModel>();
             
@@ -34,10 +32,10 @@ namespace Game.Code.Game.Services
             return model;
         }        
         
-        public async UniTask<EnemyModel> CreateEnemy(Vector2 pos)
+        public async UniTask<EnemyModel> CreateEnemy(NetworkRunner runner, Vector2 pos)
         {
             var prefab = await _assetProvider.LoadAndGetComponent<EnemyModel>(EnemyLabel);
-            var obj = await _networkRunner.SpawnAsync(prefab, position: pos);
+            var obj = await runner.SpawnAsync(prefab, position: pos);
             
             var model = obj.GetComponent<EnemyModel>();
             

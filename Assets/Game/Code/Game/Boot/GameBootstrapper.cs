@@ -4,6 +4,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Triggers;
 using Fusion;
+using Game.Code.Infrastructure.SceneManaging;
 using UnityEngine;
 
 namespace Game.Code.Game.Boot
@@ -12,11 +13,13 @@ namespace Game.Code.Game.Boot
     {
         private readonly NetworkService _networkService;
         private readonly NetworkRunner _networkRunner;
+        private readonly TransitionHandler _transitionHandler;
 
 
-        public GameBootstrapper(NetworkRunner networkRunner, NetworkService networkService)
+        public GameBootstrapper(NetworkRunner networkRunner, TransitionHandler transitionHandler, NetworkService networkService)
         {
             _networkRunner = networkRunner;
+            _transitionHandler = transitionHandler;
             _networkService = networkService;
         }
 
@@ -31,11 +34,12 @@ namespace Game.Code.Game.Boot
 
             var args = new StartGameArgs
             {
-                GameMode = Application.isEditor ? GameMode.Client : GameMode.Host,
+                GameMode = Application.isEditor ? GameMode.Host : GameMode.Client,
                 SessionName = "test"
             };
 
             await _networkRunner.StartGame(args);
+            await _transitionHandler.PlayFadeOutAnimation();
         }
 
         public void Dispose()

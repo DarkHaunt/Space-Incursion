@@ -1,9 +1,9 @@
 using System.Collections.Generic;
+using Game.Code.Game.Services;
 using Fusion.Sockets;
+using UnityEngine;
 using System;
 using Fusion;
-using Game.Code.Game.Services;
-using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Game.Code.Game
@@ -13,11 +13,13 @@ namespace Game.Code.Game
         private readonly InputService _inputService;
         private readonly GameFactory _gameFactory;
 
+
         public NetworkService(InputService inputService, GameFactory gameFactory)
         {
             _inputService = inputService;
             _gameFactory = gameFactory;
         }
+
 
         public void OnInput(NetworkRunner runner, NetworkInput input)
         {
@@ -28,13 +30,26 @@ namespace Game.Code.Game
         {
             if (runner.CanSpawn)
             {
-                await _gameFactory.CreatePlayer(Vector2.one * Random.Range(3f, 3f));
+                var pos = Vector2.one * Random.value * 3f;
+                var model = await _gameFactory.CreatePlayer(runner, pos, player);
 
                 Debug.Log($"<color=white>Player Created</color>");
             }
         }
 
         public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
+        {
+            if (runner.TryGetPlayerObject(player, out var behavior))
+                runner.Despawn(behavior);
+        }
+
+        #region [Unimplemented Callbacks]
+
+        public void OnConnectedToServer(NetworkRunner runner)
+        {
+        }
+
+        public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token)
         {
         }
 
@@ -54,15 +69,7 @@ namespace Game.Code.Game
         {
         }
 
-        public void OnConnectedToServer(NetworkRunner runner)
-        {
-        }
-
         public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason)
-        {
-        }
-
-        public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token)
         {
         }
 
@@ -101,5 +108,7 @@ namespace Game.Code.Game
         public void OnSceneLoadStart(NetworkRunner runner)
         {
         }
+
+        #endregion
     }
 }

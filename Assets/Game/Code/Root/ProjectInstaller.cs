@@ -13,7 +13,7 @@ namespace Game.Code.Root
     public class ProjectInstaller : LifetimeScope
     {
         [Header("--- Services ---")]
-        [SerializeField] private SceneTransitionHandler _transitionHandler;
+        [SerializeField] private TransitionHandler _transitionHandler;
         [SerializeField] private CoroutineRunner _coroutineRunner;
 
         [Header("--- Network ---")]
