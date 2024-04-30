@@ -38,7 +38,7 @@ namespace Game.Code.Game
 
         private Vector2 GetShootDirection()
         {
-            var screenPos = _camera.ViewportToWorldPoint(position: CameraCenterViewport);
+            var screenPos = _camera.ViewportToScreenPoint(position: CameraCenterViewport);
             var mousePos = Input.mousePosition;
 
             return Vector2Extensions.Direction(from: screenPos, to: mousePos);

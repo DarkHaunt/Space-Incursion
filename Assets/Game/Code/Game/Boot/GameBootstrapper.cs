@@ -33,13 +33,13 @@ namespace Game.Code.Game.Boot
         {
             _networkRunner.ProvideInput = true;
             _networkRunner.AddCallbacks
-            (
+            (  
                 _networkService
             );
 
             var args = new StartGameArgs
             {
-                GameMode = Application.isEditor ? GameMode.Host : GameMode.Client,
+                GameMode = GameMode.Shared,
                 SessionName = "test"
             };
 

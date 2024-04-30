@@ -1,7 +1,6 @@
 using Game.Scripts.Infrastructure.TickManaging;
 using System.Collections.Generic;
 using Fusion;
-using UnityEngine;
 
 namespace Game.Code.Game
 {
@@ -11,7 +10,6 @@ namespace Game.Code.Game
 
         public override void FixedUpdateNetwork()
         {
-                Debug.Log($"<color=white>Run tick</color>");
             foreach (var listener in _tickListeners)
                 listener.Tick(Runner.DeltaTime);
         }

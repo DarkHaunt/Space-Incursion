@@ -28,7 +28,7 @@ namespace Game.Code.Game
 
         public async void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {
-            if (runner.CanSpawn)
+            if (player == runner.LocalPlayer)
             {
                 var pos = Vector2.one * Random.value * 3f;
                 var model = await _gameFactory.CreatePlayer(runner, pos, player);

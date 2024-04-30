@@ -9,7 +9,7 @@ namespace Game.Code.Game.Projectiles
     {
         public event Action<ITickListener> OnDisposed;
         
-        [SerializeField] private PhysicMove _move;
+        [SerializeField] private PhysicNetworkMove _move;
 
         public void Construct(Vector2 pos, Vector2 direction)
         {

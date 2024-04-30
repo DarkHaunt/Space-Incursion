@@ -10,7 +10,7 @@ namespace Game.Code.Game.Entities
     {
         public event Action<ITickListener> OnDisposed;
 
-        [SerializeField] private PhysicMove _move;
+        [SerializeField] private PhysicNetworkMove _move;
 
 
         public void Construct(PlayerConfig config)
@@ -20,14 +20,10 @@ namespace Game.Code.Game.Entities
 
         public void Tick(float deltaTime)
         {
-            Debug.Log($"<color=white>Tick</color>");
-            
             if (GetInput(out PlayerInputData input))
             {
-                Debug.Log($"<color=white>Input provide</color>");
-
                 _move.RotateToFace(input.ShootDirection);
-                _move.Move(input.MoveDirection);
+                _move.Move(input.MoveDirection, deltaTime);
             }
         }
 
