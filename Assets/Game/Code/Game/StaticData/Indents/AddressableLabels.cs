@@ -6,6 +6,7 @@ namespace Game.Code.Game.StaticData.Indents
         public const string PlayerLabel = "Player";
         public const string EnemyLabel = "Enemy";
         
+        public const string ProjectileConfigLabel = "ProjectileConfig";
         public const string PlayerConfigLabel = "PlayerConfig";
     }
 }

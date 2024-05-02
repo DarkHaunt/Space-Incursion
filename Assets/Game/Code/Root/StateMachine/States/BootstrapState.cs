@@ -1,9 +1,8 @@
-using System.Threading.Tasks;
+using Game.Code.Common.StateMachineBase.Interfaces;
+using Game.Code.Infrastructure.SceneManaging;
+using Game.Code.Game.StaticData.Indents;
 using Code.Infrastructure.AssetManaging;
 using Cysharp.Threading.Tasks;
-using Game.Code.Common.StateMachineBase.Interfaces;
-using Game.Code.Game.StaticData.Indents;
-using Game.Code.Infrastructure.SceneManaging;
 
 namespace Game.Code.Root.StateMachine.States
 {
@@ -42,6 +41,7 @@ namespace Game.Code.Root.StateMachine.States
         {
             await _assetProvider.InitializeAsync();
             
+            await _assetProvider.WarmupAssetsByLabel(AddressableLabels.ProjectileLabel);
             await _assetProvider.WarmupAssetsByLabel(AddressableLabels.PlayerLabel);
             await _assetProvider.WarmupAssetsByLabel(AddressableLabels.EnemyLabel);
         }
