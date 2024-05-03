@@ -18,7 +18,6 @@ namespace Game.Code.Menu.StateMachine.States
         public UniTask Enter()
         {
             _view.Enable(true);
-            _view.StartButton.onClick.AddListener(SetLoadGame);
             _view.CancelButton.onClick.AddListener(SetMainMenuState);
 
             return UniTask.CompletedTask;
@@ -27,14 +26,11 @@ namespace Game.Code.Menu.StateMachine.States
         public UniTask Exit()
         {
             _view.Enable(false);
-            _view.StartButton.onClick.RemoveListener(SetLoadGame);
             _view.CancelButton.onClick.RemoveListener(SetMainMenuState);
             
             return UniTask.CompletedTask;
         }
 
-        private void SetLoadGame()
-            => _stateMachine.Enter<LoadGame>().Forget();
 
         private void SetMainMenuState()
             => _stateMachine.Enter<MainMenu>().Forget();

@@ -28,7 +28,7 @@ namespace Game.Code.Game
 
         public async void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {
-            if (player == runner.LocalPlayer)
+            if (runner.CanSpawn)
             {
                 var pos = Vector2.one * Random.value * 3f;
                 var model = await _gameFactory.CreatePlayer(runner, pos, player);
@@ -40,7 +40,10 @@ namespace Game.Code.Game
         public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
         {
             if (runner.TryGetPlayerObject(player, out var behavior))
+            {
                 runner.Despawn(behavior);
+                Debug.Log($"<color=white>Player remove</color>");
+            }
         }
 
         #region [Unimplemented Callbacks]

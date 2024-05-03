@@ -2,6 +2,7 @@ using Game.Code.Infrastructure.SceneManaging;
 using Code.Infrastructure.AssetManaging;
 using Game.Code.Common.StateMachineBase;
 using Game.Code.Common.CoroutineRunner;
+using Game.Code.Game;
 using Game.Code.Root.StateMachine;
 using Game.Code.Game.Services;
 using VContainer.Unity;
@@ -10,7 +11,7 @@ using VContainer;
 
 namespace Game.Code.Root
 {
-    public class ProjectInstaller : LifetimeScope
+    public class ProjectScope : LifetimeScope
     {
         [Header("--- Services ---")]
         [SerializeField] private TransitionHandler _transitionHandler;
@@ -28,11 +29,15 @@ namespace Game.Code.Root
             RegisterRootStateMachine(builder);
 
             RegisterNetworkServices(builder);
+            RegisterNetworkSceneLoader(builder);
 
             RegisterAssetProvider(builder);
             RegisterCoroutineRunner(builder);
             RegisterSceneLoaderSystem(builder);
         }
+
+        private void RegisterNetworkSceneLoader(IContainerBuilder builder) =>
+            builder.Register<NetworkSceneLoader>(Lifetime.Singleton);
 
         private void RegisterAssetProvider(IContainerBuilder builder) =>
             builder.Register<AssetProvider>(Lifetime.Singleton);

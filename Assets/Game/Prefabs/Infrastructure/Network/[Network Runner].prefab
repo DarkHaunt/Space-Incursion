@@ -55,8 +55,8 @@ GameObject:
   - component: {fileID: 4631563883996335537}
   - component: {fileID: -7443412904794746387}
   - component: {fileID: 6215403572756820688}
-  - component: {fileID: 431487601994868639}
-  - component: {fileID: 4103172898670929929}
+  - component: {fileID: -5249121461524704480}
+  - component: {fileID: 4041813229898121350}
   m_Layer: 0
   m_Name: '[Network Runner]'
   m_TagString: Untagged
@@ -106,7 +106,19 @@ MonoBehaviour:
   m_Script: {fileID: -1199893898, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &431487601994868639
+--- !u!114 &-5249121461524704480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9058155975601730764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8edbe7108d8a43ab838cf8b8d9453df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4041813229898121350
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -120,21 +132,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _physicsAuthority: 2
   _physicsTiming: 3
-  ClientPhysicsSimulation: 2
+  ClientPhysicsSimulation: 3
   DeltaTimeMultiplier: 1
   SetUnityFixedTimestep: 0
---- !u!114 &4103172898670929929
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9058155975601730764}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90a93abf1a391964a94e5c139605105b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IsSceneTakeOverEnabled: 1
-  LogSceneLoadErrors: 1
-  AddressableScenesLabel: FusionScenes

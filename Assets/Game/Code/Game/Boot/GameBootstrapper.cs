@@ -13,15 +13,15 @@ namespace Game.Code.Game.Boot
     public class GameBootstrapper : IAsyncStartable, IDisposable
     {
         private readonly GameStaticDataProvider _dataProvider;
-        private readonly TransitionHandler _transitionHandler;
+        private readonly NetworkSceneLoader _sceneLoader;
         private readonly NetworkService _networkService;
         private readonly NetworkRunner _networkRunner;
 
 
-        public GameBootstrapper(NetworkServiceLocator networkServiceLocator, TransitionHandler transitionHandler, 
+        public GameBootstrapper(NetworkServiceLocator networkServiceLocator, NetworkSceneLoader sceneLoader, 
             GameStaticDataProvider dataProvider, NetworkService networkService)
         {
-            _transitionHandler = transitionHandler;
+            _sceneLoader = sceneLoader;
             _networkService = networkService;
             _dataProvider = dataProvider;
             
@@ -39,14 +39,14 @@ namespace Game.Code.Game.Boot
 
             var args = new StartGameArgs
             {
-                GameMode = GameMode.Shared,
+                GameMode = GameMode.AutoHostOrClient,
                 SessionName = "test"
             };
 
             await _dataProvider.PrewarmData();
             
             await _networkRunner.StartGame(args);
-            await _transitionHandler.PlayFadeOutAnimation();
+       //   await _sceneLoader.LoadSceneNetwork(_networkRunner, Scenes.Game);
         }
 
         public void Dispose()

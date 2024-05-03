@@ -17,6 +17,7 @@ namespace Game.Code.Game.Boot
 
             RegisterGameFactory(builder);
             RegisterInputService(builder);
+            
             RegisterNetworkService(builder);
             
             RegisterStaticDataProvider(builder);

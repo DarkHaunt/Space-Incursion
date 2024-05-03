@@ -6,10 +6,8 @@ using Game.Code.Game.StaticData;
 
 namespace Game.Code.Game.Projectiles
 {
-    public class ProjectileModel : NetworkBehaviour, ITickListener
+    public class ProjectileModel : NetworkBehaviour
     {
-        public event Action<ITickListener> OnDisposed;
-
         [SerializeField] private PlayerProjectileBehavior _behavior;
         [SerializeField] private PhysicMove _move;
         
@@ -22,8 +20,8 @@ namespace Game.Code.Game.Projectiles
             _behavior.Construct();
         }
 
-        public void Tick(float deltaTime) =>
-            _move.Move(_direction, deltaTime);
+        public override void FixedUpdateNetwork() =>
+            _move.Move(_direction, Runner.DeltaTime);
 
         public ProjectileModel SetMoveDirection(Vector2 dir)
         {
@@ -31,10 +29,7 @@ namespace Game.Code.Game.Projectiles
             return this;
         }
 
-        public void Dispose()
-        {
-            OnDisposed?.Invoke(this);
+        public void Dispose() =>
             gameObject.SetActive(false);
-        }
     }
 }

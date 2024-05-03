@@ -2,6 +2,7 @@ using Game.Scripts.Infrastructure.TickManaging;
 using System.Collections.Generic;
 using Fusion;
 using UniRx;
+using UnityEngine;
 
 namespace Game.Code.Game
 {

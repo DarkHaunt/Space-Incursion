@@ -23,7 +23,7 @@ namespace Game.Code.Root.StateMachine.States
 
         public async UniTask Enter()
         {
-            _transitionHandler.FadeImmediate();
+            //_transitionHandler.FadeImmediate(); 
             
             await PrewarmAssets();
             await GoToGameScene();

@@ -1,5 +1,3 @@
-using Game.Scripts.Infrastructure.TickManaging;
-using System;
 using Fusion;
 using Game.Code.Game.Services;
 using Game.Code.Game.Shooting;
@@ -8,10 +6,8 @@ using UnityEngine;
 
 namespace Game.Code.Game.Entities
 {
-    public class PlayerModel : NetworkBehaviour, ITickListener
+    public class PlayerNetworkModel : NetworkBehaviour
     {
-        public event Action<ITickListener> OnDisposed;
-
         [SerializeField] private ShootModule _shoot;
         [SerializeField] private PhysicMove _move;
 
@@ -24,24 +20,18 @@ namespace Game.Code.Game.Entities
             _shoot.Construct(gameFactory);
         }
 
-        public void Tick(float deltaTime)
+        public override void FixedUpdateNetwork()
         {
-            /*if (GetInput(out PlayerInputData input))
+            if (GetInput(out PlayerInputData input))
             {
                 _move.RotateToFace(input.ShootDirection);
-                _move.Move(input.MoveDirection, deltaTime);
-
+                _move.Move(input.MoveDirection, Runner.DeltaTime);
+                
                 if (input.Buttons.WasPressed(ButtonsPrevious, PlayerButtons.Shoot))
                     _shoot.Shoot(Runner);
 
                 ButtonsPrevious = input.Buttons;
-            }*/
+            }
         }
-
-        public override void Despawned(NetworkRunner runner, bool hasState) =>
-            Disable();
-
-        private void Disable() =>
-            OnDisposed?.Invoke(this);
     }
 }
