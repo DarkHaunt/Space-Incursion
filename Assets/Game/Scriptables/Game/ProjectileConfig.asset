@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: ProjectileConfig
   m_EditorClassIdentifier: 
   <Speed>k__BackingField: 20
+  <Lifetime>k__BackingField: 2

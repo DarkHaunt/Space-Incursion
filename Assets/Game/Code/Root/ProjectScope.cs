@@ -1,11 +1,12 @@
 using Game.Code.Infrastructure.SceneManaging;
 using Code.Infrastructure.AssetManaging;
+using Code.Infrastructure.UpdateRunner;
 using Game.Code.Common.StateMachineBase;
 using Game.Code.Common.CoroutineRunner;
-using Game.Code.Game;
 using Game.Code.Root.StateMachine;
 using Game.Code.Game.Services;
 using VContainer.Unity;
+using Game.Code.Game;
 using UnityEngine;
 using VContainer;
 
@@ -24,6 +25,7 @@ namespace Game.Code.Root
         protected override void Configure(IContainerBuilder builder)
         {
             RegisterBootstrapper(builder);
+            RegisterUpdateRunner(builder);
 
             RegisterStateFactory(builder);
             RegisterRootStateMachine(builder);
@@ -34,6 +36,13 @@ namespace Game.Code.Root
             RegisterAssetProvider(builder);
             RegisterCoroutineRunner(builder);
             RegisterSceneLoaderSystem(builder);
+        }
+
+        private void RegisterUpdateRunner(IContainerBuilder builder)
+        {
+            builder
+                .Register<UpdateRunner>(Lifetime.Singleton)
+                .As<ITickSource, ITickable>();
         }
 
         private void RegisterNetworkSceneLoader(IContainerBuilder builder) =>

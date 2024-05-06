@@ -1,24 +1,22 @@
 using Code.Infrastructure.AssetManaging;
-using Game.Code.Game.StaticData.Indents;
 using Game.Code.Game.Projectiles;
 using Game.Code.Game.StaticData;
 using Game.Code.Game.Entities;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using System;
 using Fusion;
-using UniRx;
+using Game.Scripts.Infrastructure.PoolComponent;
 using static Game.Code.Game.StaticData.Indents.AddressableLabels;
 
 namespace Game.Code.Game.Services
 {
     public class GameFactory
     {
-        private readonly CompositeDisposable _disposables = new ();
-        
         private readonly GameStaticDataProvider _dataProvider;
         private readonly NetworkTickService _tickService;
         private readonly AssetProvider _assetProvider;
+
+        private readonly PoolComponent<ProjectileModel> _projectilePool;
 
         
         public GameFactory(AssetProvider assetProvider, GameStaticDataProvider dataProvider, NetworkServiceLocator networkServiceLocator)
@@ -48,14 +46,12 @@ namespace Game.Code.Game.Services
 
             var model = obj.GetComponent<EnemyModel>();
             
-            _tickService.AddListener(model);
-            
             return model;
         }
 
         public async UniTask<ProjectileModel> CreateProjectile(NetworkRunner runner, Vector2 pos)
         {
-            var prefab = await _assetProvider.LoadAndGetComponent<EnemyModel>(ProjectileLabel);
+            var prefab = await _assetProvider.LoadAndGetComponent<ProjectileModel>(ProjectileLabel);
             var obj = await runner.SpawnAsync(prefab, position: pos);
 
             var model = obj.GetComponent<ProjectileModel>();

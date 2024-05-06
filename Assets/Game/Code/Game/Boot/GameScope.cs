@@ -32,6 +32,8 @@ namespace Game.Code.Game.Boot
         {
             builder
                 .Register<InputService>(Lifetime.Scoped)
+                .AsImplementedInterfaces()
+                .AsSelf()
                 .WithParameter(_inputCamera);
         }
 

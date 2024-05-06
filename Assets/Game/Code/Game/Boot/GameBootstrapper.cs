@@ -21,8 +21,8 @@ namespace Game.Code.Game.Boot
         public GameBootstrapper(NetworkServiceLocator networkServiceLocator, NetworkSceneLoader sceneLoader, 
             GameStaticDataProvider dataProvider, NetworkService networkService)
         {
-            _sceneLoader = sceneLoader;
             _networkService = networkService;
+            _sceneLoader = sceneLoader;
             _dataProvider = dataProvider;
             
             _networkRunner = networkServiceLocator.Runner;

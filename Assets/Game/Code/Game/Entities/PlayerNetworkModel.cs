@@ -22,13 +22,19 @@ namespace Game.Code.Game.Entities
 
         public override void FixedUpdateNetwork()
         {
+            if(!Object.HasStateAuthority)
+                return;
+            
             if (GetInput(out PlayerInputData input))
             {
                 _move.RotateToFace(input.ShootDirection);
                 _move.Move(input.MoveDirection, Runner.DeltaTime);
-                
+
                 if (input.Buttons.WasPressed(ButtonsPrevious, PlayerButtons.Shoot))
+                {
+                    Debug.Log($"<color=white>Shoot</color>");
                     _shoot.Shoot(Runner);
+                }
 
                 ButtonsPrevious = input.Buttons;
             }

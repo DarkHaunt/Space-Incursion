@@ -19,17 +19,11 @@ namespace Game.Code.Game
         public void AddListener(ITickListener listener)
         {
             if (!_tickListeners.Contains(listener))
-            {
-                listener.OnDisposed += RemoveListener;
                 _tickListeners.Add(listener);
-            }
         }
 
-        public void RemoveListener(ITickListener listener)
-        {
-            listener.OnDisposed -= RemoveListener;
+        public void RemoveListener(ITickListener listener) =>
             _tickListeners.Remove(listener);
-        }
 
         public void AddListener(params ITickListener[] listenersToAdd)
         {
