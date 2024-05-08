@@ -3,9 +3,9 @@ using Game.Code.Game.Projectiles;
 using Game.Code.Game.StaticData;
 using Game.Code.Game.Entities;
 using Cysharp.Threading.Tasks;
+using Game.Code.Game.Level;
 using UnityEngine;
 using Fusion;
-using Game.Scripts.Infrastructure.PoolComponent;
 using static Game.Code.Game.StaticData.Indents.AddressableLabels;
 
 namespace Game.Code.Game.Services
@@ -13,25 +13,24 @@ namespace Game.Code.Game.Services
     public class GameFactory
     {
         private readonly GameStaticDataProvider _dataProvider;
-        private readonly NetworkTickService _tickService;
         private readonly AssetProvider _assetProvider;
-
-        private readonly PoolComponent<ProjectileModel> _projectilePool;
-
         
+        private readonly NetworkRunner _runner;
+
+
         public GameFactory(AssetProvider assetProvider, GameStaticDataProvider dataProvider, NetworkServiceLocator networkServiceLocator)
         {
             _assetProvider = assetProvider;
             _dataProvider = dataProvider;
             
-            _tickService = networkServiceLocator.TickService;
+            _runner = networkServiceLocator.Runner;
         }
         
         
-        public async UniTask<PlayerNetworkModel> CreatePlayer(NetworkRunner runner, Vector2 pos, PlayerRef player)
+        public async UniTask<PlayerNetworkModel> CreatePlayer(Vector2 pos, PlayerRef player)
         {
             var prefab = await _assetProvider.LoadAndGetComponent<PlayerNetworkModel>(PlayerLabel);
-            var obj = await runner.SpawnAsync(prefab, pos, Quaternion.identity, player);
+            var obj = await _runner.SpawnAsync(prefab, pos, Quaternion.identity, player);
             
             var model = obj.GetComponent<PlayerNetworkModel>();
             model.Construct(_dataProvider.PlayerConfig, this);
@@ -39,24 +38,35 @@ namespace Game.Code.Game.Services
             return model;
         }        
         
-        public async UniTask<EnemyModel> CreateEnemy(NetworkRunner runner, Vector2 pos)
+        public async UniTask<EnemyNetworkModel> CreateEnemy(Vector2 pos)
         {
-            var prefab = await _assetProvider.LoadAndGetComponent<EnemyModel>(EnemyLabel);
-            var obj = await runner.SpawnAsync(prefab, position: pos);
+            var prefab = await _assetProvider.LoadAndGetComponent<EnemyNetworkModel>(EnemyLabel);
+            var obj = await _runner.SpawnAsync(prefab, position: pos);
 
-            var model = obj.GetComponent<EnemyModel>();
+            var model = obj.GetComponent<EnemyNetworkModel>();
+            model.Construct(_dataProvider.EnemyConfig);
             
             return model;
         }
 
-        public async UniTask<ProjectileModel> CreateProjectile(NetworkRunner runner, Vector2 pos)
+        public async UniTask<ProjectileModel> CreateProjectile(Vector2 pos)
         {
             var prefab = await _assetProvider.LoadAndGetComponent<ProjectileModel>(ProjectileLabel);
-            var obj = await runner.SpawnAsync(prefab, position: pos);
+            var obj = await _runner.SpawnAsync(prefab, position: pos);
 
             var model = obj.GetComponent<ProjectileModel>();
             model.Construct(_dataProvider.ProjectileConfig);
             
+            return model;
+        }
+
+        public async UniTask<LevelModel> CreateLevel()
+        {
+            var prefab = await _assetProvider.LoadAndGetComponent<LevelModel>(LevelLabel);
+            var obj = await _runner.SpawnAsync(prefab);
+            
+            var model = obj.GetComponent<LevelModel>();
+
             return model;
         }
     }

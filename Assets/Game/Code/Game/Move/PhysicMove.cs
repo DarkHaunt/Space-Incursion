@@ -1,3 +1,5 @@
+using DG.Tweening;
+using Game.Scripts.Extensions;
 using UnityEngine;
 
 namespace Game.Code.Game
@@ -8,6 +10,9 @@ namespace Game.Code.Game
         [SerializeField] private Rigidbody2D _rigidbody;
         
         private float _speed;
+
+        public Vector2 Position
+            => _rigidbody.position;
 
         public void Construct(float speed) =>
             _speed = speed;

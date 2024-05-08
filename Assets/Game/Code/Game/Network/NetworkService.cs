@@ -31,7 +31,12 @@ namespace Game.Code.Game
             if (runner.CanSpawn)
             {
                 var pos = Vector2.one * Random.value * 3f;
-                var model = await _gameFactory.CreatePlayer(runner, pos, player);
+                var model = await _gameFactory.CreatePlayer(pos, player);
+
+                var level = await _gameFactory.CreateLevel();
+
+                var enemyPos = level.ArenaArea.GetRandomPositionInsideExclude();
+                var enemy = await _gameFactory.CreateEnemy(enemyPos);
 
                 Debug.Log($"<color=white>Player Created</color>");
             }

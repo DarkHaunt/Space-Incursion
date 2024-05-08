@@ -9,8 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7296820144593184568}
+  - component: {fileID: 2101521301439363368}
   - component: {fileID: 7619694761055956475}
   - component: {fileID: 3579906741343681083}
+  - component: {fileID: 1682177771490346330}
+  - component: {fileID: 795314156149179058}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -34,6 +37,33 @@ Transform:
   - {fileID: 3898280497821898089}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &2101521301439363368
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3622630250047854823}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!114 &7619694761055956475
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52,6 +82,7 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 3579906741343681083}
+  - {fileID: 1682177771490346330}
 --- !u!114 &3579906741343681083
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64,6 +95,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbbaeb5b47d44353b93e25ed99d93069, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _move: {fileID: 795314156149179058}
+--- !u!114 &1682177771490346330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3622630250047854823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5e690b5fb1084f5ab1c86457af401d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SyncScale: 0
+  SyncParent: 1
+  _interpolationTarget: {fileID: 3898280497821898089}
+  UsePreciseRotation: 0
+  UseRenderSleepThresholds: 1
+  RenderThresholds:
+    UseEnergy: 1
+    Position: 0.01
+    Rotation: 0.01
+    Scale: 0.01
+--- !u!114 &795314156149179058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3622630250047854823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83bb533721744ffda0dfcc12d710d2d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rigidbody: {fileID: 2101521301439363368}
 --- !u!1 &7492070839277955651
 GameObject:
   m_ObjectHideFlags: 0

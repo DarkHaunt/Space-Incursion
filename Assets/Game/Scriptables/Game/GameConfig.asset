@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27076acc2cb84be8bba279af6f093d23, type: 3}
+  m_Name: GameConfig
+  m_EditorClassIdentifier: 
+  <EnemiesSpawnIncome>k__BackingField:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.0000000018626451
+      value: 0.23444772
+      inSlope: 0.4147872
+      outSlope: 0.4147872
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.15567805
+    - serializedVersion: 3
+      time: 0.47804657
+      value: 0.5414297
+      inSlope: 3.013601
+      outSlope: 3.013601
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.19886449
+      outWeight: 0.053861223
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 0
+    m_RotationOrder: 4
+  <EnemiesSpawnPickCount>k__BackingField: 50
+  <EnemiesSpawnIncomeTime>k__BackingField: 60

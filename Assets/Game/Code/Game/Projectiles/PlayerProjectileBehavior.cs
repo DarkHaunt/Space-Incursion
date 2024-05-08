@@ -20,7 +20,7 @@ namespace Game.Code.Game.Projectiles
 
         private void HandleTriggerEnter(Collider2D obj)
         {
-            if (obj.TryGetComponent(out EnemyModel enemyModel))
+            if (obj.TryGetComponent(out EnemyNetworkModel enemyModel))
             {
                 // TODO: LOgic
             }

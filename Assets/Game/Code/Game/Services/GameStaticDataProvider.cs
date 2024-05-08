@@ -1,3 +1,4 @@
+using Game.Code.Game.StaticData.Scriptables;
 using Code.Infrastructure.AssetManaging;
 using Game.Code.Game.StaticData.Player;
 using Cysharp.Threading.Tasks;
@@ -9,8 +10,10 @@ namespace Game.Code.Game.StaticData
     {
         private readonly AssetProvider _assetProvider;
 
+        public ProjectileConfig ProjectileConfig { private set; get; }
         public PlayerConfig PlayerConfig { get; private set; }
-        public ProjectileConfig ProjectileConfig { get; private set; }
+        public EnemyConfig EnemyConfig { get; private set; }
+        public GameConfig GameConfig { get; private set; }
 
 
         public GameStaticDataProvider(AssetProvider assetProvider)
@@ -20,10 +23,12 @@ namespace Game.Code.Game.StaticData
 
         public async UniTask PrewarmData()
         {
-            var tasks = new UniTask[]
+            var tasks = new[]
             {
-                LoadPlayerConfig(),
                 LoadProjectileConfig(),
+                LoadPlayerConfig(),
+                LoadEnemyConfig(),
+                LoadGameConfig(),
             };
 
             await UniTask.WhenAll(tasks);
@@ -34,5 +39,11 @@ namespace Game.Code.Game.StaticData
 
         private async UniTask LoadPlayerConfig() =>
             PlayerConfig = await _assetProvider.Load<PlayerConfig>(PlayerConfigLabel);
+
+        private async UniTask LoadEnemyConfig() =>
+            EnemyConfig = await _assetProvider.Load<EnemyConfig>(EnemyConfigLabel);
+
+        private async UniTask LoadGameConfig() =>
+            GameConfig = await _assetProvider.Load<GameConfig>(GameConfigLabel);
     }
 }

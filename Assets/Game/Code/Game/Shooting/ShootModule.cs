@@ -16,7 +16,7 @@ namespace Game.Code.Game.Shooting
 
         public async void Shoot(NetworkRunner runner)
         {
-            var projectile = await _gameFactory.CreateProjectile(runner, _shootPoint.position);
+            var projectile = await _gameFactory.CreateProjectile(_shootPoint.position);
             projectile.SetMoveDirection(GetShootDirection());
         }
 
