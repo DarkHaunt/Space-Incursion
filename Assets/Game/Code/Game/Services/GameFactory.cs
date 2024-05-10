@@ -6,7 +6,7 @@ using Cysharp.Threading.Tasks;
 using Game.Code.Game.Level;
 using UnityEngine;
 using Fusion;
-using static Game.Code.Game.StaticData.Indents.AddressableLabels;
+using static Game.Code.Game.StaticData.Indents.AddressableIndents;
 
 namespace Game.Code.Game.Services
 {
@@ -29,7 +29,7 @@ namespace Game.Code.Game.Services
         
         public async UniTask<PlayerNetworkModel> CreatePlayer(Vector2 pos, PlayerRef player)
         {
-            var prefab = await _assetProvider.LoadAndGetComponent<PlayerNetworkModel>(PlayerLabel);
+            var prefab = await _assetProvider.LoadAndGetComponent<PlayerNetworkModel>(PlayerAssetPath);
             var obj = await _runner.SpawnAsync(prefab, pos, Quaternion.identity, player);
             
             var model = obj.GetComponent<PlayerNetworkModel>();
@@ -40,7 +40,7 @@ namespace Game.Code.Game.Services
         
         public async UniTask<EnemyNetworkModel> CreateEnemy(Vector2 pos)
         {
-            var prefab = await _assetProvider.LoadAndGetComponent<EnemyNetworkModel>(EnemyLabel);
+            var prefab = await _assetProvider.LoadAndGetComponent<EnemyNetworkModel>(EnemyAssetPath);
             var obj = await _runner.SpawnAsync(prefab, position: pos);
 
             var model = obj.GetComponent<EnemyNetworkModel>();
@@ -51,7 +51,7 @@ namespace Game.Code.Game.Services
 
         public async UniTask<ProjectileModel> CreateProjectile(Vector2 pos)
         {
-            var prefab = await _assetProvider.LoadAndGetComponent<ProjectileModel>(ProjectileLabel);
+            var prefab = await _assetProvider.LoadAndGetComponent<ProjectileModel>(ProjectileAssetPath);
             var obj = await _runner.SpawnAsync(prefab, position: pos);
 
             var model = obj.GetComponent<ProjectileModel>();
@@ -62,7 +62,7 @@ namespace Game.Code.Game.Services
 
         public async UniTask<LevelModel> CreateLevel()
         {
-            var prefab = await _assetProvider.LoadAndGetComponent<LevelModel>(LevelLabel);
+            var prefab = await _assetProvider.LoadAndGetComponent<LevelModel>(LevelAssetPath);
             var obj = await _runner.SpawnAsync(prefab);
             
             var model = obj.GetComponent<LevelModel>();

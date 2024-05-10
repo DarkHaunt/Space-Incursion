@@ -2,7 +2,7 @@ using Game.Code.Game.StaticData.Scriptables;
 using Code.Infrastructure.AssetManaging;
 using Game.Code.Game.StaticData.Player;
 using Cysharp.Threading.Tasks;
-using static Game.Code.Game.StaticData.Indents.AddressableLabels;
+using static Game.Code.Game.StaticData.Indents.AddressableIndents;
 
 namespace Game.Code.Game.StaticData
 {
@@ -35,15 +35,15 @@ namespace Game.Code.Game.StaticData
         }
 
         private async UniTask LoadProjectileConfig() =>
-            ProjectileConfig = await _assetProvider.Load<ProjectileConfig>(ProjectileConfigLabel);
+            ProjectileConfig = await _assetProvider.Load<ProjectileConfig>(ProjectileConfigAssetPath);
 
         private async UniTask LoadPlayerConfig() =>
-            PlayerConfig = await _assetProvider.Load<PlayerConfig>(PlayerConfigLabel);
+            PlayerConfig = await _assetProvider.Load<PlayerConfig>(PlayerConfigAssetPath);
 
         private async UniTask LoadEnemyConfig() =>
-            EnemyConfig = await _assetProvider.Load<EnemyConfig>(EnemyConfigLabel);
+            EnemyConfig = await _assetProvider.Load<EnemyConfig>(EnemyConfigAssetPath);
 
         private async UniTask LoadGameConfig() =>
-            GameConfig = await _assetProvider.Load<GameConfig>(GameConfigLabel);
+            GameConfig = await _assetProvider.Load<GameConfig>(GameConfigAssetPath);
     }
 }

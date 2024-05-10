@@ -6,6 +6,13 @@ namespace Game.Code.Infrastructure.SceneManaging
 {
     public class SceneLoader
     {
+        private readonly TransitionHandler _transitionHandler;
+
+        public SceneLoader(TransitionHandler transitionHandler)
+        {
+            _transitionHandler = transitionHandler;
+        }
+        
         public UniTask Load(Scenes scene, Action onLoaded = null) =>
             LoadSceneAsync(scene.ToString(), LoadSceneMode.Single, onLoaded);
 
@@ -17,6 +24,8 @@ namespace Game.Code.Infrastructure.SceneManaging
 
         private async UniTask LoadSceneAsync(string nextScene, LoadSceneMode loadMode, Action onLoaded = null)
         {
+            await _transitionHandler.PlayFadeInAnimation();
+            
             if (SceneManager.GetActiveScene().name == nextScene)
             {
                 onLoaded?.Invoke();
@@ -28,6 +37,8 @@ namespace Game.Code.Infrastructure.SceneManaging
                 .ToUniTask();
             
             onLoaded?.Invoke();
+            
+            await _transitionHandler.PlayFadeOutAnimation();
         }
 
         private async UniTask UnloadSceneAsync(string sceneName, Action onUnloaded = null)

@@ -1,5 +1,5 @@
 using Game.Code.Menu.StateMachine;
-using Game.Code.Menu.UI;
+using Game.Code.Menu.View;
 using VContainer.Unity;
 using UnityEngine;
 using VContainer;
@@ -8,25 +8,24 @@ namespace Game.Code.Menu.Core
 {
     public class MenuScope : LifetimeScope
     {
-        [Header("--- Views ---")]
         [SerializeField] private MenuView _menuView;
-        [SerializeField] private StartGameView _startGameView;
 
         protected override void Configure(IContainerBuilder builder)
         {
             RegisterBootstrapper(builder);
             
-            RegisterViews(builder);
+            RegisterMVPComponents(builder);
             RegisterStateMachine(builder);
         }
 
         private void RegisterBootstrapper(IContainerBuilder builder) =>
             builder.RegisterEntryPoint<MenuBootstrapper>(Lifetime.Scoped);
 
-        private void RegisterViews(IContainerBuilder builder)
+        private void RegisterMVPComponents(IContainerBuilder builder)
         {
+            builder.Register<MenuPresenter>(Lifetime.Scoped);
+            builder.Register<MenuModel>(Lifetime.Scoped);
             builder.RegisterInstance(_menuView);
-            builder.RegisterInstance(_startGameView);
         }
 
         private void RegisterStateMachine(IContainerBuilder builder) =>

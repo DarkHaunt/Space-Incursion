@@ -1,38 +1,54 @@
-using Cysharp.Threading.Tasks;
 using Game.Code.Common.StateMachineBase.Interfaces;
-using Game.Code.Menu.UI;
+using Cysharp.Threading.Tasks;
+using Fusion;
+using Game.Code.Game;
+using Game.Code.Game.Services;
+using Game.Code.Game.StaticData.Indents;
+using Game.Code.Menu.View;
 
 namespace Game.Code.Menu.StateMachine.States
 {
     public class StartGame : IState
     {
+        private readonly NetworkServiceLocator _networkServiceLocator;
+        private readonly NetworkSceneLoader _sceneLoader;
         private readonly MenuStateMachine _stateMachine;
-        private readonly StartGameView _view;
+        private readonly MenuModel _model;
 
-        public StartGame(MenuStateMachine stateMachine, StartGameView view)
+        public StartGame(MenuStateMachine stateMachine, MenuModel model, 
+            NetworkServiceLocator networkServiceLocator, NetworkSceneLoader sceneLoader)
         {
+            _networkServiceLocator = networkServiceLocator;
             _stateMachine = stateMachine;
-            _view = view;
+            _sceneLoader = sceneLoader;
+            _model = model;
         }
 
         public UniTask Enter()
         {
-            _view.Enable(true);
-            _view.CancelButton.onClick.AddListener(SetMainMenuState);
-
+            
+            
             return UniTask.CompletedTask;
         }
 
         public UniTask Exit()
         {
-            _view.Enable(false);
-            _view.CancelButton.onClick.RemoveListener(SetMainMenuState);
-            
             return UniTask.CompletedTask;
         }
 
-
+        private StartGameArgs GetGameStartGameArgs()
+        {
+            return new StartGameArgs
+            {
+                GameMode = GameMode.AutoHostOrClient,
+                PlayerCount = GameIndents.PlayerCount,
+                SessionName = _model.RoomName,
+            };
+        }
+        
         private void SetMainMenuState()
-            => _stateMachine.Enter<MainMenu>().Forget();
+        {
+            _stateMachine.Enter<MainMenu>().Forget();
+        }
     }
 }
