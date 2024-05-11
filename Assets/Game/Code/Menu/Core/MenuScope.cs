@@ -29,6 +29,6 @@ namespace Game.Code.Menu.Core
         }
 
         private void RegisterStateMachine(IContainerBuilder builder) =>
-            builder.Register<MenuStateMachine>(Lifetime.Scoped);
+            builder.Register<MenuStateMachine>(Lifetime.Scoped); 
     }
 }

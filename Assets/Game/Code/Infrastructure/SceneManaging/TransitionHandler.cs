@@ -24,6 +24,7 @@ namespace Game.Code.Infrastructure.SceneManaging
         public async UniTask PlayFadeInAnimation()
         {
             _canvas.interactable = true;
+            _canvas.blocksRaycasts = true;
             
             await PlayAnimationClip(_canvas.DOFade(1f, FadeInTime));
         }
@@ -31,6 +32,7 @@ namespace Game.Code.Infrastructure.SceneManaging
         public async UniTask PlayFadeOutAnimation()
         {
             _canvas.interactable = false;
+            _canvas.blocksRaycasts = false;
             
             await PlayAnimationClip(_canvas.DOFade(0f, FadeOutTime));
         }

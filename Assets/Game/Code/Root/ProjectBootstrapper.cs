@@ -29,6 +29,7 @@ namespace Game.Code.Root
         private void SetUpStateMachine()
         {
             _stateMachine.RegisterState(_stateFactory.Create<BootstrapState>(Lifetime.Scoped));
+            _stateMachine.RegisterState(_stateFactory.Create<NetworkSetUpState>(Lifetime.Scoped));
             _stateMachine.RegisterState(_stateFactory.Create<GameState>(Lifetime.Scoped));
         }
     }

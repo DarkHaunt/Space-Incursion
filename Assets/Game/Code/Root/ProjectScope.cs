@@ -32,6 +32,7 @@ namespace Game.Code.Root
 
             RegisterNetworkServices(builder);
             RegisterNetworkSceneLoader(builder);
+            RegisterNetworkArgsProvider(builder);
 
             RegisterAssetProvider(builder);
             RegisterCoroutineRunner(builder);
@@ -48,6 +49,9 @@ namespace Game.Code.Root
         private void RegisterNetworkSceneLoader(IContainerBuilder builder) =>
             builder.Register<NetworkSceneLoader>(Lifetime.Singleton);
 
+        private void RegisterNetworkArgsProvider(IContainerBuilder builder) =>
+            builder.Register<NetworkArgsProvider>(Lifetime.Singleton);
+
         private void RegisterAssetProvider(IContainerBuilder builder) =>
             builder.Register<AssetProvider>(Lifetime.Singleton);
 
@@ -55,7 +59,7 @@ namespace Game.Code.Root
             builder.RegisterEntryPoint<ProjectBootstrapper>();
 
         private void RegisterStateFactory(IContainerBuilder builder) =>
-            builder.Register<StateFactory>(Lifetime.Singleton);
+            builder.Register<StateFactory>(Lifetime.Transient);
 
         private void RegisterRootStateMachine(IContainerBuilder builder) =>
             builder.Register<RootStateMachine>(Lifetime.Singleton);

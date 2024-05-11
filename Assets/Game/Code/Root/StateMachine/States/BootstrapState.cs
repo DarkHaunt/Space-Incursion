@@ -25,14 +25,14 @@ namespace Game.Code.Root.StateMachine.States
             await PrewarmAssets();
             await GoToMenuScene();
 
-            await _stateMachine.Enter<GameState>();
+            await _stateMachine.Enter<NetworkSetUpState>();
         }
 
         public UniTask Exit() =>
             UniTask.CompletedTask;
 
-        private UniTask GoToMenuScene() =>
-            _sceneLoader.Load(Scenes.Menu);
+        private async UniTask GoToMenuScene() =>
+            await _sceneLoader.Load(Scenes.Menu);
 
         private async UniTask PrewarmAssets()
         {

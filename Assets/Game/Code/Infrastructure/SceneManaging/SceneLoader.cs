@@ -24,13 +24,13 @@ namespace Game.Code.Infrastructure.SceneManaging
 
         private async UniTask LoadSceneAsync(string nextScene, LoadSceneMode loadMode, Action onLoaded = null)
         {
-            await _transitionHandler.PlayFadeInAnimation();
-            
             if (SceneManager.GetActiveScene().name == nextScene)
             {
                 onLoaded?.Invoke();
                 return;
             }
+            
+            await _transitionHandler.PlayFadeInAnimation();
             
             await SceneManager
                 .LoadSceneAsync(nextScene, loadMode)

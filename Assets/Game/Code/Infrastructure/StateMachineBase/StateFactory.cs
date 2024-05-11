@@ -7,7 +7,7 @@ namespace Game.Code.Common.StateMachineBase
     {
         private readonly IObjectResolver _objectResolver;
 
-        public StateFactory(IObjectResolver objectResolver) => 
+        public StateFactory(IObjectResolver objectResolver) =>
             _objectResolver = objectResolver;
 
         public TState Create<TState>(Lifetime lifetime) where TState : IExitableState

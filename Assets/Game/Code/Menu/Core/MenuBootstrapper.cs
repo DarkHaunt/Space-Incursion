@@ -3,6 +3,7 @@ using Game.Code.Common.StateMachineBase;
 using Game.Code.Menu.StateMachine;
 using Cysharp.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
 using VContainer;
 using VContainer.Unity;
 
@@ -21,6 +22,8 @@ namespace Game.Code.Menu.Core
 
         public async UniTask StartAsync(CancellationToken cancellation)
         {
+            await Task.Delay(100, cancellation); 
+            
             SetUpStateMachine();
 
             await _stateMachine.Enter<MainMenu>();
@@ -28,7 +31,7 @@ namespace Game.Code.Menu.Core
 
         private void SetUpStateMachine()
         {
-            _stateMachine.RegisterState(_stateFactory.Create<MainMenu>(Lifetime.Scoped));
+            _stateMachine.RegisterState(_stateFactory.Create<MainMenu>(Lifetime.Scoped)); 
             _stateMachine.RegisterState(_stateFactory.Create<StartGame>(Lifetime.Scoped));
             _stateMachine.RegisterState(_stateFactory.Create<ExitGame>(Lifetime.Scoped));
         }
