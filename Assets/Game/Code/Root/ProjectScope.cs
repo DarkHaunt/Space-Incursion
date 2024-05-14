@@ -4,6 +4,7 @@ using Code.Infrastructure.UpdateRunner;
 using Game.Code.Common.StateMachineBase;
 using Game.Code.Common.CoroutineRunner;
 using Game.Code.Root.StateMachine;
+using Game.Code.Game.StaticData;
 using Game.Code.Game.Services;
 using VContainer.Unity;
 using Game.Code.Game;
@@ -19,25 +20,38 @@ namespace Game.Code.Root
         [SerializeField] private CoroutineRunner _coroutineRunner;
 
         [Header("--- Network ---")]
-        [SerializeField] private NetworkServiceLocator _networkServices;
+        [SerializeField] private NetworkMonoServiceLocator _networkServices;
 
 
         protected override void Configure(IContainerBuilder builder)
         {
-            RegisterBootstrapper(builder);
-            RegisterUpdateRunner(builder);
-
             RegisterStateFactory(builder);
-            RegisterRootStateMachine(builder);
-
-            RegisterNetworkServices(builder);
-            RegisterNetworkSceneLoader(builder);
-            RegisterNetworkArgsProvider(builder);
-
-            RegisterAssetProvider(builder);
             RegisterCoroutineRunner(builder);
+            
+            RegisterBootstrapper(builder);
+            RegisterRootStateMachine(builder);
+            
+            RegisterStaticDataProvider(builder);
+            RegisterNetworkArgsProvider(builder);
+            RegisterNetworkServiceLocator(builder);
+
+            RegisterGameFactory(builder);
+            RegisterUpdateRunner(builder);
+            RegisterAssetProvider(builder);
             RegisterSceneLoaderSystem(builder);
         }
+
+        private void RegisterNetworkArgsProvider(IContainerBuilder builder) =>
+            builder.Register<NetworkStartArgsProvider>(Lifetime.Singleton);
+
+        private void RegisterBootstrapper(IContainerBuilder builder) =>
+            builder.RegisterEntryPoint<ProjectBootstrapper>();
+
+        private void RegisterStaticDataProvider(IContainerBuilder builder) =>
+            builder.Register<GameStaticDataProvider>(Lifetime.Singleton);
+
+        private void RegisterGameFactory(IContainerBuilder builder) =>
+            builder.Register<GameFactory>(Lifetime.Singleton);
 
         private void RegisterUpdateRunner(IContainerBuilder builder)
         {
@@ -46,17 +60,8 @@ namespace Game.Code.Root
                 .As<ITickSource, ITickable>();
         }
 
-        private void RegisterNetworkSceneLoader(IContainerBuilder builder) =>
-            builder.Register<NetworkSceneLoader>(Lifetime.Singleton);
-
-        private void RegisterNetworkArgsProvider(IContainerBuilder builder) =>
-            builder.Register<NetworkArgsProvider>(Lifetime.Singleton);
-
         private void RegisterAssetProvider(IContainerBuilder builder) =>
             builder.Register<AssetProvider>(Lifetime.Singleton);
-
-        private void RegisterBootstrapper(IContainerBuilder builder) =>
-            builder.RegisterEntryPoint<ProjectBootstrapper>();
 
         private void RegisterStateFactory(IContainerBuilder builder) =>
             builder.Register<StateFactory>(Lifetime.Transient);
@@ -64,7 +69,7 @@ namespace Game.Code.Root
         private void RegisterRootStateMachine(IContainerBuilder builder) =>
             builder.Register<RootStateMachine>(Lifetime.Singleton);
 
-        private void RegisterNetworkServices(IContainerBuilder builder)
+        private void RegisterNetworkServiceLocator(IContainerBuilder builder)
         {
             builder
                 .RegisterComponentInNewPrefab(_networkServices, Lifetime.Singleton)
@@ -85,7 +90,9 @@ namespace Game.Code.Root
 
             builder
                 .RegisterComponentInNewPrefab(_transitionHandler, Lifetime.Singleton)
-                .DontDestroyOnLoad();
+                .DontDestroyOnLoad()
+                .AsImplementedInterfaces()
+                .AsSelf();
         }
     }
 }

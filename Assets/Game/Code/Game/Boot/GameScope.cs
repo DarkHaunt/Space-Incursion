@@ -1,5 +1,6 @@
-using Game.Code.Game.Services;
 using Game.Code.Game.StaticData;
+using Game.Code.Game.Services;
+using Game.Code.Game.Core;
 using VContainer.Unity;
 using UnityEngine;
 using VContainer;
@@ -14,19 +15,21 @@ namespace Game.Code.Game.Boot
         protected override void Configure(IContainerBuilder builder)
         {
             RegisterBootstrapper(builder);
-
-            RegisterGameFactory(builder);
+            RegisterStateMachine(builder);
+            
             RegisterInputService(builder);
-            
-            RegisterNetworkService(builder);
-            
-            RegisterStaticDataProvider(builder);
+            RegisterNetworkFacade(builder);
+            RegisterNetworkHostService(builder);
         }
+        
+        private void RegisterNetworkFacade(IContainerBuilder builder) =>
+            builder.Register<NetworkFacade>(Lifetime.Scoped);
 
-        private void RegisterStaticDataProvider(IContainerBuilder builder)
-        {
-            builder.Register<GameStaticDataProvider>(Lifetime.Scoped);
-        }
+        private void RegisterNetworkHostService(IContainerBuilder builder) =>
+            builder.Register<NetworkHostService>(Lifetime.Scoped);
+
+        private void RegisterStateMachine(IContainerBuilder builder) =>
+            builder.Register<GameStateMachine>(Lifetime.Scoped);
 
         private void RegisterInputService(IContainerBuilder builder)
         {
@@ -36,12 +39,6 @@ namespace Game.Code.Game.Boot
                 .AsSelf()
                 .WithParameter(_inputCamera);
         }
-
-        private void RegisterGameFactory(IContainerBuilder builder) =>
-            builder.Register<GameFactory>(Lifetime.Scoped);
-
-        private void RegisterNetworkService(IContainerBuilder builder) =>
-            builder.Register<NetworkService>(Lifetime.Scoped);
 
         private void RegisterBootstrapper(IContainerBuilder builder) =>
             builder.RegisterEntryPoint<GameBootstrapper>(Lifetime.Scoped);

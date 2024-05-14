@@ -2,10 +2,9 @@ using Game.Code.Menu.StateMachine.States;
 using Game.Code.Common.StateMachineBase;
 using Game.Code.Menu.StateMachine;
 using Cysharp.Threading.Tasks;
-using System.Threading;
-using System.Threading.Tasks;
-using VContainer;
 using VContainer.Unity;
+using System.Threading;
+using VContainer;
 
 namespace Game.Code.Menu.Core
 {
@@ -22,8 +21,6 @@ namespace Game.Code.Menu.Core
 
         public async UniTask StartAsync(CancellationToken cancellation)
         {
-            await Task.Delay(100, cancellation); 
-            
             SetUpStateMachine();
 
             await _stateMachine.Enter<MainMenu>();

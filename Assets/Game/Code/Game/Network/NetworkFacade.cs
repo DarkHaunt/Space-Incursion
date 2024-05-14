@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Game.Code.Game.Services;
+using Cysharp.Threading.Tasks;
 using Fusion.Sockets;
 using UnityEngine;
 using System;
@@ -8,48 +8,33 @@ using Random = UnityEngine.Random;
 
 namespace Game.Code.Game
 {
-    public class NetworkService : INetworkRunnerCallbacks
+    public class NetworkFacade : INetworkRunnerCallbacks
     {
+        private readonly NetworkHostService _hostService;
         private readonly InputService _inputService;
-        private readonly GameFactory _gameFactory;
 
 
-        public NetworkService(InputService inputService, GameFactory gameFactory)
+        public NetworkFacade(InputService inputService, NetworkHostService hostService)
         {
             _inputService = inputService;
-            _gameFactory = gameFactory;
+            _hostService = hostService;
         }
 
 
-        public void OnInput(NetworkRunner runner, NetworkInput input)
-        {
+        public void OnInput(NetworkRunner runner, NetworkInput input) =>
             input.Set(_inputService.GetPlayerInput());
-        }
 
-        public async void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
+        public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {
-            if (runner.CanSpawn)
-            {
-                var pos = Vector2.one * Random.value * 3f;
-                var model = await _gameFactory.CreatePlayer(pos, player);
-
-                var level = await _gameFactory.CreateLevel();
-
-                var enemyPos = level.ArenaArea.GetRandomPositionInsideExclude();
-                var enemy = await _gameFactory.CreateEnemy(enemyPos);
-
-                Debug.Log($"<color=white>Player Created</color>");
-            }
+            
+            // TODO: Make network setup in Game scene, not in root state machine
+            Debug.Log($"<color=white>Player joined</color>");
+            var pos = Vector2.one * Random.value * 3f;
+            _hostService.TryToSpawnPlayer(pos, player).Forget();
         }
 
-        public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
-        {
-            if (runner.TryGetPlayerObject(player, out var behavior))
-            {
-                runner.Despawn(behavior);
-                Debug.Log($"<color=white>Player remove</color>");
-            }
-        }
+        public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) =>
+            _hostService.TryToDespawnObject(player);
 
         #region [Unimplemented Callbacks]
 

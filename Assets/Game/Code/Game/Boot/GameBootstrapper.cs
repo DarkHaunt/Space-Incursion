@@ -3,44 +3,48 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Fusion;
+using Game.Code.Common.StateMachineBase;
+using Game.Code.Game.Core;
+using Game.Code.Game.Core.States;
 using Game.Code.Game.Services;
-using Game.Code.Game.StaticData;
+using UnityEngine;
+using VContainer;
 
 namespace Game.Code.Game.Boot
 {
     public class GameBootstrapper : IAsyncStartable, IDisposable
     {
-        private readonly GameStaticDataProvider _dataProvider;
-        private readonly NetworkService _networkService;
+        private readonly GameStateMachine _stateMachine;
+        private readonly StateFactory _stateFactory;
+        
+        private readonly NetworkFacade _networkFacade;
         private readonly NetworkRunner _networkRunner;
 
 
-        public GameBootstrapper(NetworkServiceLocator networkServiceLocator,
-            GameStaticDataProvider dataProvider, NetworkService networkService)
+        public GameBootstrapper(NetworkMonoServiceLocator networkServiceLocator, GameStateMachine stateMachine, NetworkFacade networkFacade, 
+            StateFactory stateFactory)
         {
-            _networkService = networkService;
-            _dataProvider = dataProvider;
+            _stateMachine = stateMachine;
+            _stateFactory = stateFactory;
 
+            _networkFacade = networkFacade;
             _networkRunner = networkServiceLocator.Runner;
         }
 
 
         public async UniTask StartAsync(CancellationToken cancellation)
         {
-            _networkRunner.AddCallbacks
-            (
-                _networkService
-            );
+            _networkRunner.AddCallbacks(_networkFacade);
 
-            await _dataProvider.PrewarmData();
+            Debug.Log($"<color=white>Added callback</color>");
+            
+            _stateMachine.RegisterState(_stateFactory.Create<GameBootstrapState>(Lifetime.Scoped));
+            _stateMachine.RegisterState(_stateFactory.Create<GameLobbyState>(Lifetime.Scoped));
+
+            await _stateMachine.Enter<GameBootstrapState>();
         }
 
-        public void Dispose()
-        {
-            _networkRunner.RemoveCallbacks
-            (
-                _networkService
-            );
-        }
+        public void Dispose() =>
+            _networkRunner.RemoveCallbacks(_networkFacade);
     }
 }

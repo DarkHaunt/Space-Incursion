@@ -18,7 +18,7 @@ namespace Game.Code.Game.Services
         private readonly NetworkRunner _runner;
 
 
-        public GameFactory(AssetProvider assetProvider, GameStaticDataProvider dataProvider, NetworkServiceLocator networkServiceLocator)
+        public GameFactory(AssetProvider assetProvider, GameStaticDataProvider dataProvider, NetworkMonoServiceLocator networkServiceLocator)
         {
             _assetProvider = assetProvider;
             _dataProvider = dataProvider;
