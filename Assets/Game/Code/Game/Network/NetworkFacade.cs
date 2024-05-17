@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
+using Game.Code.Game.Services;
 using Fusion.Sockets;
 using UnityEngine;
 using System;
@@ -10,13 +10,19 @@ namespace Game.Code.Game
 {
     public class NetworkFacade : INetworkRunnerCallbacks
     {
+        private readonly NetworkPlayerDataProvider _dataProvider;
+        private readonly PlayerColorProvider _colorProvider;
+        
         private readonly NetworkHostService _hostService;
         private readonly InputService _inputService;
 
 
-        public NetworkFacade(InputService inputService, NetworkHostService hostService)
+        public NetworkFacade(InputService inputService, NetworkHostService hostService, 
+            PlayerColorProvider colorProvider, NetworkPlayerDataProvider dataProvider)
         {
+            _colorProvider = colorProvider;
             _inputService = inputService;
+            _dataProvider = dataProvider;
             _hostService = hostService;
         }
 
@@ -24,13 +30,17 @@ namespace Game.Code.Game
         public void OnInput(NetworkRunner runner, NetworkInput input) =>
             input.Set(_inputService.GetPlayerInput());
 
-        public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
+        public async void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {
-            
             // TODO: Make network setup in Game scene, not in root state machine
             Debug.Log($"<color=white>Player joined</color>");
+            
             var pos = Vector2.one * Random.value * 3f;
-            _hostService.TryToSpawnPlayer(pos, player).Forget();
+            var name = _dataProvider.PlayerData.Nickname;
+            var color = _colorProvider.GetAvailableColor();
+
+            await _hostService.TryToSpawnPlayer(player, pos, color);
+            await _hostService.TryToSpawnPlayerUI(color, name);
         }
 
         public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) =>

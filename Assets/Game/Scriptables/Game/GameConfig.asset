@@ -47,3 +47,9 @@ MonoBehaviour:
     m_RotationOrder: 4
   <EnemiesSpawnPickCount>k__BackingField: 50
   <EnemiesSpawnIncomeTime>k__BackingField: 60
+  <AvailableColor>k__BackingField:
+  - {r: 1, g: 0.51522136, b: 0, a: 1}
+  - {r: 0.77931595, g: 1, b: 0, a: 1}
+  - {r: 0, g: 1, b: 0.9608457, a: 1}
+  - {r: 0.021979094, g: 1, b: 0, a: 1}
+  - {r: 0.6969166, g: 0, b: 1, a: 1}

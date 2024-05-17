@@ -1,6 +1,7 @@
 using System;
 using Code.Infrastructure.UpdateRunner;
 using Game.Code.Extensions;
+using Game.Code.Game.Scene;
 using Game.Scripts.Infrastructure.TickManaging;
 using UnityEngine;
 using VContainer.Unity;
@@ -11,16 +12,17 @@ namespace Game.Code.Game
     {
         private static readonly Vector2 CameraCenterViewport = Vector2.one * 0.5f;
 
+        private readonly SceneDependenciesProvider _dependenciesProvider;
         private readonly ITickSource _tickSource;
-        private readonly Camera _camera;
+        private Camera _camera;
 
         private bool _pressedShootButton;
         private Vector2 _shootDirection;
         private Vector2 _moveDirection;
 
-        public InputService(Camera camera, ITickSource tickSource)
+        public InputService(SceneDependenciesProvider dependenciesProvider, ITickSource tickSource)
         {
-            _camera = camera;
+            _dependenciesProvider = dependenciesProvider;
             _tickSource = tickSource;
         }
 
@@ -73,8 +75,12 @@ namespace Game.Code.Game
             _pressedShootButton || Input.GetButtonDown("Fire1");
 
         
-        public void Start() =>
+        public void Start()
+        {
+            _camera = _dependenciesProvider.MainCamera; 
             _tickSource.AddListener(this);
+        }
+
         public void Dispose() =>
             _tickSource.RemoveListener(this);
     }

@@ -42,7 +42,7 @@ namespace Game.Code.Root
         }
 
         private void RegisterNetworkArgsProvider(IContainerBuilder builder) =>
-            builder.Register<NetworkStartArgsProvider>(Lifetime.Singleton);
+            builder.Register<NetworkPlayerDataProvider>(Lifetime.Singleton);
 
         private void RegisterBootstrapper(IContainerBuilder builder) =>
             builder.RegisterEntryPoint<ProjectBootstrapper>();

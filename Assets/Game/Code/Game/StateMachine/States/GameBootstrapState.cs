@@ -11,20 +11,20 @@ namespace Game.Code.Game.Core.States
     {
         private readonly GameStateMachine _stateMachine;
 
-        private readonly NetworkStartArgsProvider _startArgsProvider;
+        private readonly NetworkPlayerDataProvider _playerDataProvider;
         private readonly TransitionHandler _transitionHandler;
         private readonly NetworkHostService _hostService;
         private readonly NetworkFacade _networkFacade;
         private readonly NetworkRunner _networkRunner;
 
 
-        public GameBootstrapState(GameStateMachine stateMachine, TransitionHandler transitionHandler, NetworkHostService hostService, 
-            NetworkFacade networkFacade, NetworkMonoServiceLocator serviceLocator, NetworkStartArgsProvider startArgsProvider)
+        public GameBootstrapState(GameStateMachine stateMachine, TransitionHandler transitionHandler, NetworkHostService hostService,
+            NetworkFacade networkFacade, NetworkMonoServiceLocator serviceLocator, NetworkPlayerDataProvider playerDataProvider)
         {
             _stateMachine = stateMachine;
-            
+
             _transitionHandler = transitionHandler;
-            _startArgsProvider = startArgsProvider;
+            _playerDataProvider = playerDataProvider;
             _networkFacade = networkFacade;
             _hostService = hostService;
 
@@ -34,13 +34,22 @@ namespace Game.Code.Game.Core.States
         public async UniTask Enter()
         {
             await StartGame();
-            
-            if (_hostService.IsHost)
-                await _hostService.SpawnLevel();
-            
+            await SetUpHostSide();
+
             await _transitionHandler.PlayFadeOutAnimation();
 
             await GoToLobbyState();
+        }
+
+        public UniTask Exit()
+        {
+            return UniTask.CompletedTask;
+        }
+
+        private async UniTask SetUpHostSide()
+        {
+            await _hostService.TryToSpawnUIRoot();
+            await _hostService.TryToSpawnLevel();
         }
 
         private async UniTask StartGame()
@@ -48,12 +57,7 @@ namespace Game.Code.Game.Core.States
             _networkRunner.AddCallbacks(_networkFacade);
             _networkRunner.ProvideInput = true;
 
-            await _networkRunner.StartGame(_startArgsProvider.GameArgs);
-        }
-
-        public UniTask Exit()
-        {
-            return UniTask.CompletedTask;
+            await _networkRunner.StartGame(_playerDataProvider.PlayerData.GameArgs);
         }
 
         private async UniTask GoToLobbyState() =>

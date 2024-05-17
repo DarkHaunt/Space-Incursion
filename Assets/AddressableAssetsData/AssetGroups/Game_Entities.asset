@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Gameplay
+  m_Name: Game_Entities
   m_EditorClassIdentifier: 
-  m_GroupName: Gameplay
+  m_GroupName: Game_Entities
   m_Data:
     m_SerializedData: []
   m_GUID: 57402e773560ce245a82140e68039a08
@@ -31,24 +31,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f358b77a5c2402d41bc278a3820681b3
     m_Address: Projectile
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - gameplay
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: bdb56bee70b7c384d85b45f85a8c9c00
-    m_Address: PlayerConfig
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - gameplay
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: aca3f10af99db7646bf69b83b95a2c83
-    m_Address: ProjectileConfig
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - gameplay
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c507b36801142f74b9dd602ce86decda
-    m_Address: EnemyConfig
     m_ReadOnly: 0
     m_SerializedLabels:
     - gameplay

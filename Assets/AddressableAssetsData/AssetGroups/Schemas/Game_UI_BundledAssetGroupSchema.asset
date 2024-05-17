@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e5d17a21594effb4e9591490b009e7aa, type: 3}
-  m_Name: Gameplay_BundledAssetGroupSchema
+  m_Name: Game_UI_BundledAssetGroupSchema
   m_EditorClassIdentifier: 
-  m_Group: {fileID: 11400000, guid: 919e42efdeb5c4d4d9336410c405b12e, type: 2}
+  m_Group: {fileID: 11400000, guid: 5847b6d12b4db594b810776b348ea4b4, type: 2}
   m_InternalBundleIdMode: 1
   m_Compression: 1
   m_IncludeAddressInCatalog: 1

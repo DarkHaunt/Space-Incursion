@@ -3,7 +3,9 @@ namespace Game.Code.Game.StaticData.Indents
     public static class GameIndents
     {
         public const int PlayerCount = 4;
-        
+
+        public const string DefaultPlayerName = "Player";
+        public const string DefaultRoomName = "Room";
         
         public const int InitProjectilePoolCapacity = 5;
         public const float ProjectileLifeTime = 5f;

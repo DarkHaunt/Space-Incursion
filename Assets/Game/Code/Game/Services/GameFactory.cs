@@ -6,6 +6,7 @@ using Cysharp.Threading.Tasks;
 using Game.Code.Game.Level;
 using UnityEngine;
 using Fusion;
+using Game.Code.Game.UI;
 using static Game.Code.Game.StaticData.Indents.AddressableIndents;
 
 namespace Game.Code.Game.Services
@@ -47,6 +48,26 @@ namespace Game.Code.Game.Services
             model.Construct(_dataProvider.EnemyConfig);
             
             return model;
+        }
+
+        public async UniTask<PlayerUIView> CreatePlayerUI(RectTransform parent)
+        {
+            var prefab = await _assetProvider.LoadAndGetComponent<PlayerUIView>(PlayerUIAssetPath);
+            var obj = await _runner.SpawnAsync(prefab);
+
+            var view = obj.GetComponent<PlayerUIView>();
+            var rect = view.GetComponent<RectTransform>();
+            rect.SetParent(parent);
+
+            return view;
+        }
+
+        public async UniTask<UIRoot> CreateUIRoot(Transform parent)
+        {
+            var prefab = await _assetProvider.LoadAndGetComponent<UIRoot>(RootUIAssetPath);
+            var root = Object.Instantiate(prefab, parent, true);
+
+            return root;
         }
 
         public async UniTask<ProjectileModel> CreateProjectile(Vector2 pos)

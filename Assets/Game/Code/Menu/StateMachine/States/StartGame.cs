@@ -10,21 +10,26 @@ namespace Game.Code.Menu.StateMachine.States
     public class StartGame : IState
     {
         private readonly RootStateMachine _rootStateMachine;
-        
-        private readonly NetworkStartArgsProvider _networkStartArgsProvider;
+
+        private readonly NetworkPlayerDataProvider _networkPlayerDataProvider;
         private readonly MenuModel _model;
 
-        public StartGame(RootStateMachine rootStateMachine, NetworkStartArgsProvider networkStartArgsProvider, MenuModel model)
+        public StartGame(RootStateMachine rootStateMachine, NetworkPlayerDataProvider networkPlayerDataProvider, MenuModel model)
         {
             _rootStateMachine = rootStateMachine;
-            
-            _networkStartArgsProvider = networkStartArgsProvider;
+
+            _networkPlayerDataProvider = networkPlayerDataProvider;
             _model = model;
         }
 
         public async UniTask Enter()
         {
-            _networkStartArgsProvider.SetStartArgs(_model.RoomName);
+            _networkPlayerDataProvider.SetPlayerData
+            (
+                roomName: _model.RoomName,
+                nickName: _model.PlayerName
+            );
+            
             await _rootStateMachine.Enter<NetworkSetUpState>();
         }
 

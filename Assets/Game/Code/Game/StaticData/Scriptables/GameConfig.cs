@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game.Code.Game.StaticData.Scriptables
@@ -7,7 +8,12 @@ namespace Game.Code.Game.StaticData.Scriptables
     {
         [field: Header("--- Enemies ---")]
         [field: SerializeField] public AnimationCurve EnemiesSpawnIncome { get; private set; }
+
         [field: SerializeField] public int EnemiesSpawnPickCount { get; private set; }
         [field: SerializeField] public float EnemiesSpawnIncomeTime { get; private set; }
+
+
+        [field: Header("--- Players ---")]
+        [field: SerializeField] public List<Color> AvailableColor { get; private set; }
     }
 }

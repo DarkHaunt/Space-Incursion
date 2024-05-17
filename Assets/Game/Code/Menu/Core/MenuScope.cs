@@ -23,8 +23,13 @@ namespace Game.Code.Menu.Core
 
         private void RegisterMVPComponents(IContainerBuilder builder)
         {
-            builder.Register<MenuPresenter>(Lifetime.Scoped);
-            builder.Register<MenuModel>(Lifetime.Scoped);
+            builder.Register<MenuPresenter>(Lifetime.Scoped)
+                .AsImplementedInterfaces();
+            
+            builder.Register<MenuModel>(Lifetime.Scoped)
+                .AsImplementedInterfaces()
+                .AsSelf();
+            
             builder.RegisterInstance(_menuView);
         }
 
