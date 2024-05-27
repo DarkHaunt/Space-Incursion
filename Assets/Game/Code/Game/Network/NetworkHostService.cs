@@ -1,10 +1,10 @@
 using Cysharp.Threading.Tasks;
 using Game.Code.Game.Services;
-using Game.Code.Game.Entities;
 using Game.Code.Game.Level;
 using Game.Code.Game.UI;
 using UnityEngine;
 using Fusion;
+using Game.Code.Game.Entities;
 using Game.Code.Game.Scene;
 
 namespace Game.Code.Game
@@ -12,17 +12,22 @@ namespace Game.Code.Game
     public class NetworkHostService
     {
         private readonly SceneDependenciesProvider _sceneDependenciesProvider;
+        private readonly PlayerHandleService _playerHandleService;
+        private readonly PlayerColorProvider _colorProvider;
+
         private readonly GameFactory _gameFactory;
         private readonly NetworkRunner _runner;
-
-        private UIRoot _uiRoot;
 
         private bool IsHost
             => _runner.CanSpawn;
 
-        public NetworkHostService(NetworkMonoServiceLocator serviceLocator, SceneDependenciesProvider sceneDependenciesProvider, GameFactory gameFactory)
+        public NetworkHostService(NetworkMonoServiceLocator serviceLocator, SceneDependenciesProvider sceneDependenciesProvider,
+            GameFactory gameFactory, PlayerColorProvider colorProvider, PlayerHandleService playerHandleService)
         {
             _sceneDependenciesProvider = sceneDependenciesProvider;
+            _playerHandleService = playerHandleService;
+
+            _colorProvider = colorProvider;
             _gameFactory = gameFactory;
 
             _runner = serviceLocator.Runner;
@@ -36,52 +41,30 @@ namespace Game.Code.Game
             return await _gameFactory.CreateLevel();
         }
 
-        public async UniTask<PlayerNetworkModel> TryToSpawnPlayer(PlayerRef playerRef, Vector2 pos, Color color)
+        public async UniTask<UIRoot> TryToSpawnUIRoot() =>
+            await _gameFactory.CreateUIRoot(_sceneDependenciesProvider.UIRoot);
+
+        public async UniTask<PlayerNetworkModel> TryToCreatePlayerData(PlayerRef playerRef, PlayerUIView uiView, string nickName, Vector2 pos)
         {
             if (!IsHost)
                 return null;
+
+            var playerColor = _colorProvider.GetAvailableColor();
             
-            var player = await _gameFactory.CreatePlayer(pos, playerRef);
-            player.SetColor(color);
-            
-            Debug.Log($"<color=white>Player Created</color>"); 
+            var player = await _gameFactory.CreatePlayer(pos, playerRef, uiView);
+            player.RPC_NetworkDataSetUp(playerColor, nickName);
 
             return player;
         }
 
-        public async UniTask<UIRoot> TryToSpawnUIRoot()
-        {
-            if (!IsHost)
-                return null;
-            
-            return _uiRoot = await _gameFactory.CreateUIRoot(_sceneDependenciesProvider.UIRoot);
-        }
-
-        public async UniTask<PlayerUIView> TryToSpawnPlayerUI(Color color, string nickName)
-        {
-            if (!IsHost)
-                return null;
-            
-            var playerUI = await _gameFactory.CreatePlayerUI(_uiRoot.PlayerViewsContainer);
-            
-            // TODO: Temporary, locate it in service handling
-            playerUI.UpdateNickname(nickName);
-            playerUI.UpdateTextColor(color);
-            playerUI.UpdateScore(0); 
-            
-            Debug.Log($"<color=white>Player UI Created</color>"); 
-
-            return playerUI;
-        }
-        
-        public void TryToDespawnObject(PlayerRef player)
+        public void TryToDespawnPlayer(PlayerRef player)
         {
             if (!IsHost)
                 return;
-            
+
             if (_runner.TryGetPlayerObject(player, out var behavior))
             {
-                Debug.Log($"<color=white>Player remove</color>");
+                _playerHandleService.RemovePlayer(player);
                 _runner.Despawn(behavior);
             }
         }

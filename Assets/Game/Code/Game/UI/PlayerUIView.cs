@@ -17,6 +17,7 @@ namespace Game.Code.Game.UI
 
         public void UpdateTextColor(Color color)
         {
+            Debug.Log($"<color=white>Color - {color}</color>");
             _nickText.color = color;
             _scoreText.color = color;
         }

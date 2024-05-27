@@ -1,6 +1,5 @@
 using Game.Code.Game.StaticData.Indents;
 using Fusion;
-using UnityEngine;
 
 namespace Game.Code.Game
 {
@@ -21,8 +20,6 @@ namespace Game.Code.Game
 
                 Nickname = nickName
             };
-
-            Debug.Log($"<color=white>Nick - {nickName}</color>");
         }
     }
 

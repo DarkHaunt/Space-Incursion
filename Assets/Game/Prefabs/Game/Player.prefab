@@ -337,6 +337,9 @@ MonoBehaviour:
   _graphic: {fileID: 2394395632029298425}
   _shoot: {fileID: 8781395072676585218}
   _move: {fileID: -5728526138182322784}
+  _rigidbody: {fileID: -7374657717479480482}
+  _GraphicColor: {r: 0, g: 0, b: 0, a: 0}
+  _Nickname: 
 --- !u!114 &-3326318210032774468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -398,3 +401,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spriteRenderer: {fileID: 6084518030989306645}
+  _nickText: {fileID: 0}

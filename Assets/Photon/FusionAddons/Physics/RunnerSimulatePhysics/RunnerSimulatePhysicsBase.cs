@@ -217,8 +217,10 @@ namespace Fusion.Addons.Physics {
       }
 #endif
 
+      _enabledRunnersCount++;
+
       // When the first Runner becomes active, determine if Unity or Fusion should be Simulating Physics, and cache the previous setting for shutdown restore
-      if (++_enabledRunnersCount == 1) {
+      if (_enabledRunnersCount == 1) {
         OverrideAutoSimulate(_physicsAuthority == PhysicsAuthorities.Unity);
       }
 
@@ -234,9 +236,15 @@ namespace Fusion.Addons.Physics {
     /// Shutdown code executed when associated <see cref="NetworkRunner"/> shuts down.
     /// </summary>
     protected virtual void Shutdown() {
+      if (_isInitialized == false)
+        return;
+
+      _isInitialized = false;
+
+      _enabledRunnersCount--;
 
       // When the last Runner shuts down, restore Physics.AutoSimulate
-      if (PhysicsAuthority == PhysicsAuthorities.Fusion && --_enabledRunnersCount == 0) {
+      if (PhysicsAuthority == PhysicsAuthorities.Fusion && _enabledRunnersCount == 0) {
         RestoreAutoSimulate();
       }
     }
@@ -254,6 +262,11 @@ namespace Fusion.Addons.Physics {
       var deltaTime = Time.deltaTime * DeltaTimeMultiplier;
       // Debug.LogWarning($"Update Sim {deltaTime}");
       SimulationExecute(deltaTime, false);
+    }
+
+    private void OnDestroy()
+    {
+      Shutdown();
     }
 
     /// <summary>

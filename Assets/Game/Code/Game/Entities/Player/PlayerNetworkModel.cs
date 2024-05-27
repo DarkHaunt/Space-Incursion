@@ -1,8 +1,12 @@
+using System;
+using DG.Tweening;
 using Fusion;
+using Game.Code.Extensions;
 using Game.Code.Game.Services;
 using Game.Code.Game.Shooting;
 using Game.Code.Game.StaticData.Player;
 using UnityEngine;
+using VContainer;
 
 namespace Game.Code.Game.Entities
 {
@@ -11,57 +15,57 @@ namespace Game.Code.Game.Entities
         [SerializeField] private PlayerGraphic _graphic;
         [SerializeField] private ShootModule _shoot;
         [SerializeField] private PhysicMove _move;
-        
-        private ChangeDetector _changeDetector;
+        [SerializeField] private Rigidbody2D _rigidbody;
+
+        private PlayerHandleService _playerHandleService;
 
         [Networked] private NetworkButtons ButtonsPrevious { get; set; }
-        [Networked] private NetworkString<_16> NickName { get; set; }
+        [Networked] public Color GraphicColor { get; set; }
+        [Networked] public string Nickname { get; set; }
         [Networked] private int Score { get; set; }
 
 
         public void Construct(PlayerConfig config, GameFactory gameFactory)
         {
-            _move.Construct(config.MoveSpeed);
             _shoot.Construct(gameFactory);
+
+            UpdateNetworkDependentData();
         }
 
-        public void SetColor(Color color) =>
-            _graphic.SetColor(color);
+        [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.InputAuthority | RpcTargets.StateAuthority)]
+        public void RPC_NetworkDataSetUp(Color color, string nickName)
+        {
+            GraphicColor = color;
+            Nickname = nickName;
+            Score = 0;
 
-        public override void Spawned() =>
-            _changeDetector = GetChangeDetector(ChangeDetector.Source.SimulationState);
+            UpdateNetworkDependentData();
+        }
+
+        public override void Spawned()
+        {
+            _move.Construct(3f);
+
+            if (!HasStateAuthority)
+                UpdateNetworkDependentData();
+        }
+
+        private void UpdateNetworkDependentData()
+        {
+            _graphic.SetColor(GraphicColor);
+        }
 
         public override void FixedUpdateNetwork()
         {
-            if (!Object.HasStateAuthority)
-                return;
-
-            if (GetInput(out PlayerInputData input))
+            if (Runner.TryGetInputForPlayer(Object.InputAuthority, out PlayerInputData input))
             {
                 _move.RotateToFace(input.ShootDirection);
                 _move.Move(input.MoveDirection, Runner.DeltaTime);
 
-                if (input.Buttons.WasPressed(ButtonsPrevious, PlayerButtons.Shoot))
-                {
-                    Debug.Log($"<color=white>Shoot</color>");
-                    _shoot.Shoot(Runner);
-                }
-
+                /*if (input.Buttons.WasPressed(ButtonsPrevious, PlayerButtons.Shoot))
+                    _shoot.Shoot(Runner);*/
+                
                 ButtonsPrevious = input.Buttons;
-            }
-        }
-
-        public override void Render()
-        {
-            foreach (var change in _changeDetector.DetectChanges(this, out var previousBuffer, out var currentBuffer))
-            {
-                switch (change)
-                {
-                    case nameof(NickName):
-                        break;
-                    case nameof(Score):
-                        break;
-                }
             }
         }
     }

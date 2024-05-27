@@ -51,9 +51,6 @@ namespace Fusion.Addons.Physics {
     }
 #endif
 
-    [StaticField(StaticFieldResetMode.None)]
-    static bool? _physicsAutoSyncRestore;
-
     /// <inheritdoc/>
     protected override bool AutoSyncTransforms {
       get => UnityEngine.Physics.autoSyncTransforms;

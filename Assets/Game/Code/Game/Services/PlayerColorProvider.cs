@@ -22,8 +22,6 @@ namespace Game.Code.Game.Services
         {
             var availableColors = _staticDataProvider.GameConfig.AvailableColor.ShuffleIE();
             _availableColors = new Stack<Color>(availableColors);
-            
-            Debug.Log($"<color=white>Inited</color>");
         }
 
         public void Dispose() =>

@@ -1,9 +1,11 @@
 using System.Collections.Generic;
-using Game.Code.Game.Services;
 using Fusion.Sockets;
 using UnityEngine;
 using System;
+using Cysharp.Threading.Tasks;
 using Fusion;
+using Game.Code.Game.Entities;
+using Game.Code.Game.Services;
 using Random = UnityEngine.Random;
 
 namespace Game.Code.Game
@@ -11,18 +13,20 @@ namespace Game.Code.Game
     public class NetworkFacade : INetworkRunnerCallbacks
     {
         private readonly NetworkPlayerDataProvider _dataProvider;
-        private readonly PlayerColorProvider _colorProvider;
-        
+        private readonly GameFactory _gameFactory;
+
+        private readonly PlayerHandleService _playerHandleService;
         private readonly NetworkHostService _hostService;
         private readonly InputService _inputService;
 
 
-        public NetworkFacade(InputService inputService, NetworkHostService hostService, 
-            PlayerColorProvider colorProvider, NetworkPlayerDataProvider dataProvider)
+        public NetworkFacade(InputService inputService, PlayerHandleService playerHandleService, NetworkHostService hostService,
+            NetworkPlayerDataProvider dataProvider, GameFactory gameFactory)
         {
-            _colorProvider = colorProvider;
+            _playerHandleService = playerHandleService;
             _inputService = inputService;
             _dataProvider = dataProvider;
+            _gameFactory = gameFactory;
             _hostService = hostService;
         }
 
@@ -34,17 +38,39 @@ namespace Game.Code.Game
         {
             // TODO: Make network setup in Game scene, not in root state machine
             Debug.Log($"<color=white>Player joined</color>");
-            
+
+            var playerView = await _gameFactory.CreatePlayerUI();
+
+            Debug.Log($"<color=white>Create player</color>");
             var pos = Vector2.one * Random.value * 3f;
             var name = _dataProvider.PlayerData.Nickname;
-            var color = _colorProvider.GetAvailableColor();
 
-            await _hostService.TryToSpawnPlayer(player, pos, color);
-            await _hostService.TryToSpawnPlayerUI(color, name);
+            var playerModel = await _hostService.TryToCreatePlayerData(player, playerView, name, pos);
+
+            /*if (!runner.TryGetPlayerObject(player, out var networkObj))
+            {
+                Debug.Log($"<color=white>Create player</color>");
+                var pos = Vector2.one * Random.value * 3f;
+                var name = _dataProvider.PlayerData.Nickname;
+
+                playerModel = await _hostService.TryToCreatePlayerData(player, playerView, name, pos);
+            }
+            else
+            {
+                Debug.Log($"<color=white>Get existing</color>");
+                playerModel = networkObj.GetBehaviour<PlayerNetworkModel>();
+            }
+
+            Debug.Log($"<color=white>{runner.TryGetPlayerObject(player, out var _)}</color>");
+
+            playerView.UpdateTextColor(playerModel.GraphicColor);
+            _playerHandleService.AddPlayer(player, playerModel.Nickname, playerView);*/
         }
 
-        public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) =>
-            _hostService.TryToDespawnObject(player);
+        public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
+        {
+            _hostService.TryToDespawnPlayer(player);
+        }
 
         #region [Unimplemented Callbacks]
 
@@ -70,10 +96,12 @@ namespace Game.Code.Game
 
         public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
         {
+            Debug.Log($"<color=white>Shut</color>");
         }
 
         public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason)
         {
+            Debug.Log($"<color=white>Disconnected</color>");
         }
 
         public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason)

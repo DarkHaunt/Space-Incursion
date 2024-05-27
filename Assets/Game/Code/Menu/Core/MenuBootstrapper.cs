@@ -23,7 +23,9 @@ namespace Game.Code.Menu.Core
         {
             SetUpStateMachine();
 
-            await _stateMachine.Enter<MainMenu>();
+            //TODO : For testing
+            await _stateMachine.Enter<StartGame>();
+//            await _stateMachine.Enter<MainMenu>();
         }
 
         private void SetUpStateMachine()

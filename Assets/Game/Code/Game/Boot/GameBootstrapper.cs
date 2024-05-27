@@ -7,7 +7,6 @@ using Game.Code.Common.StateMachineBase;
 using Game.Code.Game.Core;
 using Game.Code.Game.Core.States;
 using Game.Code.Game.Services;
-using UnityEngine;
 using VContainer;
 
 namespace Game.Code.Game.Boot
@@ -36,8 +35,6 @@ namespace Game.Code.Game.Boot
         {
             _networkRunner.AddCallbacks(_networkFacade);
 
-            Debug.Log($"<color=white>Added callback</color>");
-            
             _stateMachine.RegisterState(_stateFactory.Create<GameBootstrapState>(Lifetime.Scoped));
             _stateMachine.RegisterState(_stateFactory.Create<GameLobbyState>(Lifetime.Scoped));
 

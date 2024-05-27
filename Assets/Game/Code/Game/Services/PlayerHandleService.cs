@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Game.Code.Game.UI;
 using System.Linq;
 using Fusion;
+using UnityEngine;
 
 namespace Game.Code.Game.Services
 {
@@ -25,14 +26,30 @@ namespace Game.Code.Game.Services
             _views.Remove(playerRef);
         }
 
-        public void UpdatePlayerScore(PlayerRef playerRef, int newScore)
+        public void SetPlayerView(PlayerRef playerRef, PlayerUIView view)
+        {
+            _views[playerRef] = view;
+        }
+
+        public void SetPlayerScore(PlayerRef playerRef, int newScore)
         {
             _scores[playerRef] = newScore;
         }
 
-        public void UpdatePlayerNickname(PlayerRef playerRef, string playerNickname)
+        public void SetPlayerNickname(PlayerRef playerRef, string playerNickname)
         {
             _nicknames[playerRef] = playerNickname;
+        }
+
+        public void UpdateView(PlayerRef playerRef, Color color)
+        {
+            var view = _views[playerRef];
+            var score = _scores[playerRef];
+            var nickname = _nicknames[playerRef];
+            
+            view.UpdateScore(score);
+            view.UpdateTextColor(color);
+            view.UpdateNickname(nickname);
         }
 
         public PlayerRef GetPlayerWithHighestScore()

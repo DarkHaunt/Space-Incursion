@@ -24,8 +24,13 @@ namespace Game.Code.Game.Boot
             
             RegisterNetworkFacade(builder);
             RegisterNetworkHostService(builder);
-            RegisterPlayerColorProvider(builder);
+            
+            RegisterPlayerColorProvider(builder); 
+            RegisterPlayerHandleService(builder);
         }
+
+        private void RegisterPlayerHandleService(IContainerBuilder builder) =>
+            builder.Register<PlayerHandleService>(Lifetime.Scoped);
 
         private void RegisterPlayerColorProvider(IContainerBuilder builder) =>
             builder.Register<PlayerColorProvider>(Lifetime.Scoped)

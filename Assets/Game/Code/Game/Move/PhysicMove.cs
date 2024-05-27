@@ -1,10 +1,7 @@
-using DG.Tweening;
-using Game.Scripts.Extensions;
 using UnityEngine;
 
 namespace Game.Code.Game
 {
-    [RequireComponent(typeof(Rigidbody2D))]
     public class PhysicMove : MonoBehaviour
     {
         [SerializeField] private Rigidbody2D _rigidbody;
@@ -20,7 +17,7 @@ namespace Game.Code.Game
         public void RotateToFace(Vector2 direction)
         {
             var tan = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            _rigidbody.SetRotation(Quaternion.Euler(new Vector3(0f, 0f, tan)));
+            _rigidbody.MoveRotation(Quaternion.Euler(new Vector3(0f, 0f, tan)));
         }
 
         public void Move(Vector2 direction, float timeStep)

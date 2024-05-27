@@ -10,7 +10,7 @@ namespace Game.Code.Menu.StateMachine.States
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 #else
-            Application.Quit();
+            UnityEngine.Application.Quit();
 #endif
 
             return UniTask.CompletedTask;
