@@ -1,15 +1,11 @@
-using System;
-using DG.Tweening;
 using Fusion;
-using Game.Code.Extensions;
 using Game.Code.Game.Services;
 using Game.Code.Game.Shooting;
-using Game.Code.Game.StaticData.Player;
 using UnityEngine;
-using VContainer;
 
 namespace Game.Code.Game.Entities
 {
+    [ScriptHelp(BackColor = ScriptHeaderBackColor.Olive)]
     public class PlayerNetworkModel : NetworkBehaviour
     {
         [SerializeField] private PlayerGraphic _graphic;
@@ -19,24 +15,18 @@ namespace Game.Code.Game.Entities
 
         private PlayerHandleService _playerHandleService;
 
+        public Color PlayerColor =>
+            Data.Color;
+
+        [Networked] private NetworkPlayerStaticData Data { get; set; }
         [Networked] private NetworkButtons ButtonsPrevious { get; set; }
-        [Networked] public Color GraphicColor { get; set; }
-        [Networked] public string Nickname { get; set; }
         [Networked] private int Score { get; set; }
 
 
-        public void Construct(PlayerConfig config, GameFactory gameFactory)
-        {
-            _shoot.Construct(gameFactory);
-
-            UpdateNetworkDependentData();
-        }
-
         [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.InputAuthority | RpcTargets.StateAuthority)]
-        public void RPC_NetworkDataSetUp(Color color, string nickName)
+        public void RPC_NetworkDataSetUp(NetworkPlayerStaticData staticData)
         {
-            GraphicColor = color;
-            Nickname = nickName;
+            Data = staticData;
             Score = 0;
 
             UpdateNetworkDependentData();
@@ -44,15 +34,14 @@ namespace Game.Code.Game.Entities
 
         public override void Spawned()
         {
-            _move.Construct(3f);
-
             if (!HasStateAuthority)
                 UpdateNetworkDependentData();
         }
 
         private void UpdateNetworkDependentData()
         {
-            _graphic.SetColor(GraphicColor);
+            _graphic.SetColor(Data.Color); 
+            _move.Construct(Data.Speed);
         }
 
         public override void FixedUpdateNetwork()

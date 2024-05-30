@@ -16,18 +16,18 @@ namespace Game.Code.Game
         private readonly GameFactory _gameFactory;
 
         private readonly PlayerHandleService _playerHandleService;
-        private readonly NetworkHostService _hostService;
+        private readonly NetworkSpawnService _spawnService;
         private readonly InputService _inputService;
 
 
-        public NetworkFacade(InputService inputService, PlayerHandleService playerHandleService, NetworkHostService hostService,
+        public NetworkFacade(InputService inputService, PlayerHandleService playerHandleService, NetworkSpawnService spawnService,
             NetworkPlayerDataProvider dataProvider, GameFactory gameFactory)
         {
             _playerHandleService = playerHandleService;
             _inputService = inputService;
             _dataProvider = dataProvider;
             _gameFactory = gameFactory;
-            _hostService = hostService;
+            _spawnService = spawnService;
         }
 
 
@@ -40,36 +40,18 @@ namespace Game.Code.Game
             Debug.Log($"<color=white>Player joined</color>");
 
             var playerView = await _gameFactory.CreatePlayerUI();
-
-            Debug.Log($"<color=white>Create player</color>");
-            var pos = Vector2.one * Random.value * 3f;
             var name = _dataProvider.PlayerData.Nickname;
 
-            var playerModel = await _hostService.TryToCreatePlayerData(player, playerView, name, pos);
+            var playerModel = await _spawnService.TryToGetPlayerData(player, name);
 
-            /*if (!runner.TryGetPlayerObject(player, out var networkObj))
-            {
-                Debug.Log($"<color=white>Create player</color>");
-                var pos = Vector2.one * Random.value * 3f;
-                var name = _dataProvider.PlayerData.Nickname;
+            Debug.Log($"<color=white>{playerModel.Object.Id}</color>");
 
-                playerModel = await _hostService.TryToCreatePlayerData(player, playerView, name, pos);
-            }
-            else
-            {
-                Debug.Log($"<color=white>Get existing</color>");
-                playerModel = networkObj.GetBehaviour<PlayerNetworkModel>();
-            }
-
-            Debug.Log($"<color=white>{runner.TryGetPlayerObject(player, out var _)}</color>");
-
-            playerView.UpdateTextColor(playerModel.GraphicColor);
-            _playerHandleService.AddPlayer(player, playerModel.Nickname, playerView);*/
+            _playerHandleService.AddPlayer(player, name, playerModel.PlayerColor, playerView);
         }
 
         public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
         {
-            _hostService.TryToDespawnPlayer(player);
+            _spawnService.TryToDespawnPlayer(player);
         }
 
         #region [Unimplemented Callbacks]
@@ -141,5 +123,15 @@ namespace Game.Code.Game
         }
 
         #endregion
+
+        public void AfterSpawned()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Spawned()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

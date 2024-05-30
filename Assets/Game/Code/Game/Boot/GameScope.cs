@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Game.Code.Game.Core;
 using Game.Code.Game.Scene;
 using Game.Code.Game.Services;
@@ -11,7 +12,8 @@ namespace Game.Code.Game.Boot
     {
         [Header("--- Scene Dependencies ---")]
         [SerializeField] private Camera _inputCamera;
-        [SerializeField] private Transform _uIParent; 
+        [SerializeField] private Transform _uIParent;
+        [SerializeField] private List<Transform> _playerSpawnPoints;
         
 
         protected override void Configure(IContainerBuilder builder)
@@ -23,7 +25,7 @@ namespace Game.Code.Game.Boot
             RegisterSceneDependenciesProvider(builder);
             
             RegisterNetworkFacade(builder);
-            RegisterNetworkHostService(builder);
+            RegisterNetworkSpawnService(builder);
             
             RegisterPlayerColorProvider(builder); 
             RegisterPlayerHandleService(builder);
@@ -40,13 +42,14 @@ namespace Game.Code.Game.Boot
         private void RegisterSceneDependenciesProvider(IContainerBuilder builder) =>
             builder.Register<SceneDependenciesProvider>(Lifetime.Scoped)
                 .WithParameter(_inputCamera)
-                .WithParameter(_uIParent);
+                .WithParameter(_uIParent)
+                .WithParameter(_playerSpawnPoints);
 
         private void RegisterNetworkFacade(IContainerBuilder builder) =>
             builder.Register<NetworkFacade>(Lifetime.Scoped);
 
-        private void RegisterNetworkHostService(IContainerBuilder builder) =>
-            builder.Register<NetworkHostService>(Lifetime.Scoped);
+        private void RegisterNetworkSpawnService(IContainerBuilder builder) =>
+            builder.Register<NetworkSpawnService>(Lifetime.Scoped);
 
         private void RegisterStateMachine(IContainerBuilder builder) =>
             builder.Register<GameStateMachine>(Lifetime.Scoped);

@@ -3,11 +3,10 @@ using Game.Code.Game.Projectiles;
 using Game.Code.Game.StaticData;
 using Game.Code.Game.Entities;
 using Cysharp.Threading.Tasks;
-using Cysharp.Threading.Tasks.Triggers;
 using Game.Code.Game.Level;
+using Game.Code.Game.UI;
 using UnityEngine;
 using Fusion;
-using Game.Code.Game.UI;
 using static Game.Code.Game.StaticData.Indents.AddressableIndents;
 
 namespace Game.Code.Game.Services
@@ -29,20 +28,29 @@ namespace Game.Code.Game.Services
 
             _runner = networkServiceLocator.Runner;
         }
-
-
-        public async UniTask<PlayerNetworkModel> CreatePlayer(Vector2 pos, PlayerRef player, PlayerUIView uiView)
+        
+        public async UniTask<PlayerNetworkModel> CreatePlayer(Vector2 pos, PlayerRef player, string nickName, Color color)
         {
             var prefab = await _assetProvider.LoadAndGetComponent<PlayerNetworkModel>(PlayerAssetPath);
             var obj = await _runner.SpawnAsync(prefab, pos, Quaternion.identity, player);
 
             var model = obj.GetComponent<PlayerNetworkModel>();
-            model.Construct(_dataProvider.PlayerConfig, this);
+            var staticData = _dataProvider.PlayerConfig;
 
+            var playerData = new NetworkPlayerStaticData
+            {
+                Nickname = nickName,
+                Color = color,
+                Speed = staticData.MoveSpeed,
+                Cooldown = staticData.ShootCooldown
+            };
+            
+            model.RPC_NetworkDataSetUp(playerData);
+            
             _runner.SetPlayerObject(player, obj);
             _runner.SetIsSimulated(obj, true);
 
-            return model;
+            return model;    
         }
 
         public async UniTask<EnemyNetworkModel> CreateEnemy(Vector2 pos)

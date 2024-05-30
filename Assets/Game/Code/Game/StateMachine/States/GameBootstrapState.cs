@@ -13,12 +13,12 @@ namespace Game.Code.Game.Core.States
 
         private readonly NetworkPlayerDataProvider _playerDataProvider;
         private readonly TransitionHandler _transitionHandler;
-        private readonly NetworkHostService _hostService;
+        private readonly NetworkSpawnService _spawnService;
         private readonly NetworkFacade _networkFacade;
         private readonly NetworkRunner _networkRunner;
 
 
-        public GameBootstrapState(GameStateMachine stateMachine, TransitionHandler transitionHandler, NetworkHostService hostService,
+        public GameBootstrapState(GameStateMachine stateMachine, TransitionHandler transitionHandler, NetworkSpawnService spawnService,
             NetworkFacade networkFacade, NetworkMonoServiceLocator serviceLocator, NetworkPlayerDataProvider playerDataProvider)
         {
             _stateMachine = stateMachine;
@@ -26,7 +26,7 @@ namespace Game.Code.Game.Core.States
             _transitionHandler = transitionHandler;
             _playerDataProvider = playerDataProvider;
             _networkFacade = networkFacade;
-            _hostService = hostService;
+            _spawnService = spawnService;
 
             _networkRunner = serviceLocator.Runner;
         }
@@ -48,8 +48,8 @@ namespace Game.Code.Game.Core.States
 
         private async UniTask SetUpHostSide()
         {
-            await _hostService.TryToSpawnUIRoot();
-            await _hostService.TryToSpawnLevel();
+            await _spawnService.TryToSpawnUIRoot();
+            await _spawnService.TryToSpawnLevel();
         }
 
         private async UniTask StartGame()

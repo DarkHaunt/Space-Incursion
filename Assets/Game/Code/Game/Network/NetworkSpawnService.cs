@@ -1,15 +1,16 @@
+using System;
 using Cysharp.Threading.Tasks;
 using Game.Code.Game.Services;
 using Game.Code.Game.Level;
 using Game.Code.Game.UI;
-using UnityEngine;
 using Fusion;
+using Game.Code.Extensions;
 using Game.Code.Game.Entities;
 using Game.Code.Game.Scene;
 
 namespace Game.Code.Game
 {
-    public class NetworkHostService
+    public class NetworkSpawnService
     {
         private readonly SceneDependenciesProvider _sceneDependenciesProvider;
         private readonly PlayerHandleService _playerHandleService;
@@ -21,7 +22,7 @@ namespace Game.Code.Game
         private bool IsHost
             => _runner.CanSpawn;
 
-        public NetworkHostService(NetworkMonoServiceLocator serviceLocator, SceneDependenciesProvider sceneDependenciesProvider,
+        public NetworkSpawnService(NetworkMonoServiceLocator serviceLocator, SceneDependenciesProvider sceneDependenciesProvider,
             GameFactory gameFactory, PlayerColorProvider colorProvider, PlayerHandleService playerHandleService)
         {
             _sceneDependenciesProvider = sceneDependenciesProvider;
@@ -44,15 +45,22 @@ namespace Game.Code.Game
         public async UniTask<UIRoot> TryToSpawnUIRoot() =>
             await _gameFactory.CreateUIRoot(_sceneDependenciesProvider.UIRoot);
 
-        public async UniTask<PlayerNetworkModel> TryToCreatePlayerData(PlayerRef playerRef, PlayerUIView uiView, string nickName, Vector2 pos)
+        public async UniTask<PlayerNetworkModel> TryToGetPlayerData(PlayerRef playerRef, string nickName)
         {
             if (!IsHost)
-                return null;
+            {
+                await UniTask.Delay(500); // To wait player be spawned by NetworkRunner
 
-            var playerColor = _colorProvider.GetAvailableColor();
+                if (!_runner.TryGetPlayerObject(playerRef, out var obj))
+                    throw new Exception($"Player {playerRef} is not in runner");
+                
+                return obj.GetBehaviour<PlayerNetworkModel>();
+            }
+
+            var pos = _sceneDependenciesProvider.PlayerSpawnPoints.PickRandom().position;
+            var color = _colorProvider.GetAvailableColor();
             
-            var player = await _gameFactory.CreatePlayer(pos, playerRef, uiView);
-            player.RPC_NetworkDataSetUp(playerColor, nickName);
+            var player = await _gameFactory.CreatePlayer(pos, playerRef, nickName, color);
 
             return player;
         }
