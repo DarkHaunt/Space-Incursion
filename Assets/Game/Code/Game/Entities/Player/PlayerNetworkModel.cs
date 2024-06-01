@@ -1,6 +1,7 @@
 using Fusion;
 using Game.Code.Game.Services;
 using Game.Code.Game.Shooting;
+using UnityEditor;
 using UnityEngine;
 
 namespace Game.Code.Game.Entities
@@ -38,9 +39,14 @@ namespace Game.Code.Game.Entities
                 UpdateNetworkDependentData();
         }
 
+        public void Construct(GameFactory gameFactory)
+        {
+            _shoot.Construct(gameFactory);
+        }
+
         private void UpdateNetworkDependentData()
         {
-            _graphic.SetColor(Data.Color); 
+            _graphic.SetColor(Data.Color);
             _move.Construct(Data.Speed);
         }
 
@@ -51,11 +57,12 @@ namespace Game.Code.Game.Entities
                 _move.RotateToFace(input.ShootDirection);
                 _move.Move(input.MoveDirection, Runner.DeltaTime);
 
-                /*if (input.Buttons.WasPressed(ButtonsPrevious, PlayerButtons.Shoot))
-                    _shoot.Shoot(Runner);*/
-                
+                if (input.Buttons.WasPressed(ButtonsPrevious, PlayerButtons.Shoot) && HasStateAuthority)
+                    _shoot.Shoot();
+
                 ButtonsPrevious = input.Buttons;
             }
         }
     }
 }
+

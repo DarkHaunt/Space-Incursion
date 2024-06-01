@@ -1,4 +1,3 @@
-using System;
 using Cysharp.Threading.Tasks;
 using Game.Code.Game.Services;
 using Game.Code.Game.Level;
@@ -7,6 +6,8 @@ using Fusion;
 using Game.Code.Extensions;
 using Game.Code.Game.Entities;
 using Game.Code.Game.Scene;
+using Game.Code.Game.StaticData.Indents;
+using Object = UnityEngine.Object;
 
 namespace Game.Code.Game
 {
@@ -45,24 +46,42 @@ namespace Game.Code.Game
         public async UniTask<UIRoot> TryToSpawnUIRoot() =>
             await _gameFactory.CreateUIRoot(_sceneDependenciesProvider.UIRoot);
 
-        public async UniTask<PlayerNetworkModel> TryToGetPlayerData(PlayerRef playerRef, string nickName)
+        public async UniTask<PlayerNetworkModel> SetUpPlayerData(PlayerRef playerRef, string nickName)
         {
-            if (!IsHost)
-            {
-                await UniTask.Delay(500); // To wait player be spawned by NetworkRunner
+            var model = IsHost 
+                ? await CreatePlayer(playerRef, nickName) 
+                : await GetExistedPlayer(playerRef);
+            
+            var view = await _gameFactory.CreatePlayerUI();
 
-                if (!_runner.TryGetPlayerObject(playerRef, out var obj))
-                    throw new Exception($"Player {playerRef} is not in runner");
-                
-                return obj.GetBehaviour<PlayerNetworkModel>();
-            }
+            RegisterPlayer(playerRef, nickName, model, view);
+            
+            return model;
+        }
 
+        private UniTask<PlayerNetworkModel> CreatePlayer(PlayerRef playerRef, string nickName)
+        {
             var pos = _sceneDependenciesProvider.PlayerSpawnPoints.PickRandom().position;
             var color = _colorProvider.GetAvailableColor();
             
-            var player = await _gameFactory.CreatePlayer(pos, playerRef, nickName, color);
+            return _gameFactory.CreatePlayer(pos, playerRef, nickName, color);
+        }
 
-            return player;
+        private async UniTask<PlayerNetworkModel> GetExistedPlayer(PlayerRef playerRef)
+        {
+            await UniTask.WaitUntil(() => _runner.TryGetPlayerObject(playerRef, out _))
+                .Timeout(NetworkIndents.ClientObjectSearchTimeout);
+            
+            var obj = _runner.GetPlayerObject(playerRef);
+            return obj.GetBehaviour<PlayerNetworkModel>();
+        }
+
+        private void RegisterPlayer(PlayerRef playerRef, string nickName, PlayerNetworkModel model, PlayerUIView view)
+        {
+            _playerHandleService.AddPlayer(playerRef, nickName, model, view);
+            
+            _runner.SetPlayerObject(playerRef, model.Object);
+            _runner.SetIsSimulated(model.Object, true);
         }
 
         public void TryToDespawnPlayer(PlayerRef player)
@@ -70,11 +89,13 @@ namespace Game.Code.Game
             if (!IsHost)
                 return;
 
-            if (_runner.TryGetPlayerObject(player, out var behavior))
-            {
-                _playerHandleService.RemovePlayer(player);
-                _runner.Despawn(behavior);
-            }
+            var obj = _playerHandleService.GetPlayerObject(player);
+            var view = _playerHandleService.GetPlayerView(player);
+            
+            _playerHandleService.RemovePlayer(player);
+            
+            Object.Destroy(view.gameObject);
+            _runner.Despawn(obj);
         }
     }
 }

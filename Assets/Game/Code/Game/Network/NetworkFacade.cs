@@ -4,9 +4,8 @@ using UnityEngine;
 using System;
 using Cysharp.Threading.Tasks;
 using Fusion;
-using Game.Code.Game.Entities;
 using Game.Code.Game.Services;
-using Random = UnityEngine.Random;
+using VContainer.Unity;
 
 namespace Game.Code.Game
 {
@@ -36,22 +35,22 @@ namespace Game.Code.Game
 
         public async void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {
-            // TODO: Make network setup in Game scene, not in root state machine
-            Debug.Log($"<color=white>Player joined</color>");
+            if (_playerHandleService.IsPlayerAlreadyRegistered(player))
+                return;
 
-            var playerView = await _gameFactory.CreatePlayerUI();
             var name = _dataProvider.PlayerData.Nickname;
 
-            var playerModel = await _spawnService.TryToGetPlayerData(player, name);
-
-            Debug.Log($"<color=white>{playerModel.Object.Id}</color>");
-
-            _playerHandleService.AddPlayer(player, name, playerModel.PlayerColor, playerView);
+            var playerModel = await _spawnService.SetUpPlayerData(player, name);
+            playerModel.Construct(_gameFactory);
         }
 
-        public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
-        {
+        public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) =>
             _spawnService.TryToDespawnPlayer(player);
+
+        public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
+        {
+            foreach (var player in runner.ActivePlayers)
+                _spawnService.TryToDespawnPlayer(player);
         }
 
         #region [Unimplemented Callbacks]
@@ -72,18 +71,13 @@ namespace Game.Code.Game
         {
         }
 
+
         public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input)
         {
         }
 
-        public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
-        {
-            Debug.Log($"<color=white>Shut</color>");
-        }
-
         public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason)
         {
-            Debug.Log($"<color=white>Disconnected</color>");
         }
 
         public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason)
@@ -123,15 +117,5 @@ namespace Game.Code.Game
         }
 
         #endregion
-
-        public void AfterSpawned()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Spawned()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

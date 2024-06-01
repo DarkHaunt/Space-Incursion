@@ -1,10 +1,9 @@
 using UnityEngine;
-using Fusion;
 using TMPro;
 
 namespace Game.Code.Game.UI
 {
-    public class PlayerUIView : NetworkBehaviour
+    public class PlayerUIView : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI _scoreText;
         [SerializeField] private TextMeshProUGUI _nickText;
@@ -18,7 +17,6 @@ namespace Game.Code.Game.UI
 
         public void UpdateTextColor(Color color)
         {
-            Debug.Log($"<color=white>Color - {color}</color>");
             _nickText.color = color;
             _scoreText.color = color;
         }

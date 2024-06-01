@@ -46,9 +46,6 @@ namespace Game.Code.Game.Services
             };
             
             model.RPC_NetworkDataSetUp(playerData);
-            
-            _runner.SetPlayerObject(player, obj);
-            _runner.SetIsSimulated(obj, true);
 
             return model;    
         }

@@ -1,7 +1,6 @@
 using Game.Code.Game.Services;
 using Game.Code.Extensions;
 using UnityEngine;
-using Fusion;
 
 namespace Game.Code.Game.Shooting
 {
@@ -14,7 +13,7 @@ namespace Game.Code.Game.Shooting
         public void Construct(GameFactory gameFactory) =>
             _gameFactory = gameFactory;
 
-        public async void Shoot(NetworkRunner runner)
+        public async void Shoot()
         {
             var projectile = await _gameFactory.CreateProjectile(_shootPoint.position);
             projectile.SetMoveDirection(GetShootDirection());

@@ -41,9 +41,9 @@ namespace Game.Code.Game.Boot
 
         private void RegisterSceneDependenciesProvider(IContainerBuilder builder) =>
             builder.Register<SceneDependenciesProvider>(Lifetime.Scoped)
+                .WithParameter(_playerSpawnPoints)
                 .WithParameter(_inputCamera)
-                .WithParameter(_uIParent)
-                .WithParameter(_playerSpawnPoints);
+                .WithParameter(_uIParent);
 
         private void RegisterNetworkFacade(IContainerBuilder builder) =>
             builder.Register<NetworkFacade>(Lifetime.Scoped);
