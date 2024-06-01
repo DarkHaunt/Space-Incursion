@@ -16,7 +16,7 @@ namespace Game.Code.Game.Shooting
         public async void Shoot()
         {
             var projectile = await _gameFactory.CreateProjectile(_shootPoint.position);
-            projectile.SetMoveDirection(GetShootDirection());
+            projectile.SetupAndMove(GetShootDirection());
         }
 
         private Vector2 GetShootDirection() =>

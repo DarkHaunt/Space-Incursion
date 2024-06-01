@@ -4,7 +4,7 @@ using Fusion;
 
 namespace Game.Code.Game.Projectiles
 {
-    public class ProjectileModel : NetworkBehaviour
+    public class ProjectileNetworkedModel : NetworkBehaviour
     {
         [SerializeField] private PlayerProjectileBehavior _behavior;
         [SerializeField] private PhysicMove _move;
@@ -33,16 +33,17 @@ namespace Game.Code.Game.Projectiles
             Lifetime = TickTimer.CreateFromSeconds(Runner, projectileConfig.Lifetime);
         }
 
-        public ProjectileModel SetMoveDirection(Vector2 dir)
+        public void SetupAndMove(Vector2 moveDirection)
         {
-            _direction = dir;
-            return this;
+            _direction = moveDirection;
         }
 
         private void Dispose()
         {
-            Destroy(gameObject); // TODO: Add custom pool implementation
+            Runner.Despawn(Object);
             Lifetime = TickTimer.None;
+            
+            Destroy(gameObject); // TODO: Add custom pool implementation
         }
     }
 }

@@ -48,14 +48,14 @@ namespace Game.Code.Game
 
         public async UniTask<PlayerNetworkModel> SetUpPlayerData(PlayerRef playerRef, string nickName)
         {
-            var model = IsHost 
-                ? await CreatePlayer(playerRef, nickName) 
+            var model = IsHost
+                ? await CreatePlayer(playerRef, nickName)
                 : await GetExistedPlayer(playerRef);
-            
+
             var view = await _gameFactory.CreatePlayerUI();
 
             RegisterPlayer(playerRef, nickName, model, view);
-            
+
             return model;
         }
 
@@ -63,7 +63,7 @@ namespace Game.Code.Game
         {
             var pos = _sceneDependenciesProvider.PlayerSpawnPoints.PickRandom().position;
             var color = _colorProvider.GetAvailableColor();
-            
+
             return _gameFactory.CreatePlayer(pos, playerRef, nickName, color);
         }
 
@@ -71,7 +71,7 @@ namespace Game.Code.Game
         {
             await UniTask.WaitUntil(() => _runner.TryGetPlayerObject(playerRef, out _))
                 .Timeout(NetworkIndents.ClientObjectSearchTimeout);
-            
+
             var obj = _runner.GetPlayerObject(playerRef);
             return obj.GetBehaviour<PlayerNetworkModel>();
         }
@@ -79,23 +79,23 @@ namespace Game.Code.Game
         private void RegisterPlayer(PlayerRef playerRef, string nickName, PlayerNetworkModel model, PlayerUIView view)
         {
             _playerHandleService.AddPlayer(playerRef, nickName, model, view);
-            
+
             _runner.SetPlayerObject(playerRef, model.Object);
             _runner.SetIsSimulated(model.Object, true);
         }
 
-        public void TryToDespawnPlayer(PlayerRef player)
+        public void DespawnPlayer(PlayerRef player)
         {
-            if (!IsHost)
-                return;
+            if (IsHost)
+            {
+                var obj = _playerHandleService.GetPlayerObject(player);
+                _runner.Despawn(obj);
+            }
 
-            var obj = _playerHandleService.GetPlayerObject(player);
             var view = _playerHandleService.GetPlayerView(player);
-            
             _playerHandleService.RemovePlayer(player);
-            
+
             Object.Destroy(view.gameObject);
-            _runner.Despawn(obj);
         }
     }
 }

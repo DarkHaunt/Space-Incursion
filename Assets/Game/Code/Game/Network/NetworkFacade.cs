@@ -45,12 +45,12 @@ namespace Game.Code.Game
         }
 
         public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) =>
-            _spawnService.TryToDespawnPlayer(player);
+            _spawnService.DespawnPlayer(player);
 
         public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
         {
             foreach (var player in runner.ActivePlayers)
-                _spawnService.TryToDespawnPlayer(player);
+                _spawnService.DespawnPlayer(player);
         }
 
         #region [Unimplemented Callbacks]
