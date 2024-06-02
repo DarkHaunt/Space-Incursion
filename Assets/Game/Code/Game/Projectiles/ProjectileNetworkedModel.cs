@@ -27,7 +27,7 @@ namespace Game.Code.Game.Projectiles
 
         public void Construct(ProjectileConfig projectileConfig)
         {
-            _move.Construct(projectileConfig.Speed);
+            _move.SetMoveSpeed(projectileConfig.Speed);
             _behavior.Construct();
 
             Lifetime = TickTimer.CreateFromSeconds(Runner, projectileConfig.Lifetime);

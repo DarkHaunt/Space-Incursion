@@ -1,11 +1,11 @@
-using Fusion;
-using Game.Code.Game.Level.BoxArea;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game.Code.Game.Level
 {
-    public class LevelModel : NetworkBehaviour
+    public class LevelModel : MonoBehaviour
     {
-        [field: SerializeField] public BoxPointsArea ArenaArea { get; private set; }
+        [field: SerializeField] public Transform LeftBottomEnemySpawnPoint { get; private set; } 
+        [field: SerializeField] public Transform RightTopEnemySpawnPoint { get; private set; }
     }
 }

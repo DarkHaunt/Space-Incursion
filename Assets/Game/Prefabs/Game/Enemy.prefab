@@ -10,11 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 7296820144593184568}
   - component: {fileID: 2101521301439363368}
+  - component: {fileID: -170432617710881127}
   - component: {fileID: 7619694761055956475}
   - component: {fileID: 3579906741343681083}
   - component: {fileID: 1682177771490346330}
   - component: {fileID: 795314156149179058}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64,6 +65,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!210 &-170432617710881127
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3622630250047854823}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 9
+  m_SortAtRoot: 0
 --- !u!114 &7619694761055956475
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -141,7 +154,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3898280497821898089}
   - component: {fileID: 6747414052635042577}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Self
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -158,7 +171,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7296820144593184568}
@@ -204,12 +217,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 26ec45af059d6cd4e99cc868dff296a5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f7eb00cb3ec9bab45b85d561558c4250, type: 3}
   m_Color: {r: 1, g: 0.5424528, b: 0.6577854, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.8374193, y: 1.7799999}
+  m_Size: {x: 0.4, y: 0.7}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

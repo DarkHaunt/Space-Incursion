@@ -8,20 +8,25 @@ namespace Game.Code.Game.Core.States
     {
         private readonly GameStateMachine _stateMachine;
 
+        private readonly PhysicCollisionService _collisionService;
         private readonly EnemyHandleService _enemyHandleService;
         private readonly NetworkSpawnService _spawnService;
 
 
-        public GameBootstrapState(GameStateMachine stateMachine, NetworkSpawnService spawnService, EnemyHandleService enemyHandleService)
+        public GameBootstrapState(GameStateMachine stateMachine, NetworkSpawnService spawnService, 
+            PhysicCollisionService collisionService, EnemyHandleService enemyHandleService)
         {
             _stateMachine = stateMachine;
 
             _enemyHandleService = enemyHandleService;
+            _collisionService = collisionService;
             _spawnService = spawnService;
         }
 
         public async UniTask Enter()
         {
+            _collisionService.Enable();
+            
             await SetUpSpawning();
             
             await GoToLobbyState();
@@ -35,7 +40,7 @@ namespace Game.Code.Game.Core.States
             if (_spawnService.IsHost)
             {
                 var level = await _spawnService.SpawnLevel();
-                _enemyHandleService.Init(level.ArenaArea);
+                _enemyHandleService.Init(level);
             }
             
             await _spawnService.SpawnUIRoot();

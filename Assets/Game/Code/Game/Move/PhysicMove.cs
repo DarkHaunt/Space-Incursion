@@ -11,13 +11,13 @@ namespace Game.Code.Game
         public Vector2 Position
             => _rigidbody.position;
 
-        public void Construct(float speed) =>
+        public void SetMoveSpeed(float speed) =>
             _speed = speed;
 
         public void RotateToFace(Vector2 direction)
         {
-            var tan = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            _rigidbody.MoveRotation(Quaternion.Euler(new Vector3(0f, 0f, tan)));
+            var angle = (Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f);
+            _rigidbody.MoveRotation(Quaternion.Euler(new Vector3(0f, 0f, angle)));
         }
 
         public void Move(Vector2 direction, float timeStep)

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using Game.Code.Game.Core;
-using Game.Code.Game.Scene;
 using Game.Code.Game.Services;
+using Game.Code.Game.Scene;
+using Game.Code.Game.Core;
 using VContainer.Unity;
 using UnityEngine;
 using VContainer;
@@ -24,6 +24,7 @@ namespace Game.Code.Game.Boot
             RegisterStateMachine(builder);
 
             RegisterInputService(builder);
+            RegisterPhysicCollisionService(builder);
             RegisterSceneDependenciesProvider(builder);
             
             RegisterNetworkFacade(builder);
@@ -33,6 +34,7 @@ namespace Game.Code.Game.Boot
             RegisterPlayerHandleService(builder);
 
             RegisterEnemiesHandleService(builder);
+            RegisterEnemiesPositionProvider(builder);
             RegisterEnemiesSpawnPossibilityProvider(builder);
         }
 
@@ -48,8 +50,14 @@ namespace Game.Code.Game.Boot
                 .AsImplementedInterfaces()
                 .AsSelf();
 
+        private void RegisterEnemiesPositionProvider(IContainerBuilder builder) =>
+            builder.Register<EnemyPositionProvider>(Lifetime.Scoped);
+
         private void RegisterPlayerHandleService(IContainerBuilder builder) =>
             builder.Register<PlayerHandleService>(Lifetime.Scoped);
+
+        private void RegisterPhysicCollisionService(IContainerBuilder builder) =>
+            builder.Register<PhysicCollisionService>(Lifetime.Scoped);
 
         private void RegisterPlayerColorProvider(IContainerBuilder builder) =>
             builder.Register<PlayerColorProvider>(Lifetime.Scoped)

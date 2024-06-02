@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2413484759539956365}
   - component: {fileID: 3055306277634796980}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Graphics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -81,7 +81,7 @@ SpriteRenderer:
   m_Size: {x: 1.8100001, y: 1.7817187}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &3991570824908693472
@@ -95,13 +95,14 @@ GameObject:
   - component: {fileID: 6550071809288963877}
   - component: {fileID: 563279431410763096}
   - component: {fileID: 1180335126934600420}
+  - component: {fileID: 2463988496683039188}
   - component: {fileID: 6546219262561445562}
   - component: {fileID: 7295869079166034819}
   - component: {fileID: 9013132032529472392}
   - component: {fileID: 7270012734511972992}
   - component: {fileID: -6424521999235476627}
   - component: {fileID: -5007264309242206739}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -186,6 +187,18 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.90500003
+--- !u!210 &2463988496683039188
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3991570824908693472}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 12
+  m_SortAtRoot: 0
 --- !u!114 &6546219262561445562
 MonoBehaviour:
   m_ObjectHideFlags: 0

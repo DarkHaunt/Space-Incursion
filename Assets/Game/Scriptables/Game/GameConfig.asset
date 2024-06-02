@@ -47,11 +47,14 @@ MonoBehaviour:
     m_RotationOrder: 4
   <EnemiesSpawnPickCount>k__BackingField: 50
   <EnemiesSpawnIncomeTime>k__BackingField: 1
+  <EnemiesSpawnFullForceTime>k__BackingField: 0
   <AvailableColor>k__BackingField:
-  - {r: 1, g: 0.51522136, b: 0, a: 1}
   - {r: 0.77931595, g: 1, b: 0, a: 1}
   - {r: 0, g: 1, b: 0.9608457, a: 1}
-  - {r: 1, g: 0, b: 0.26845217, a: 1}
   - {r: 0.6969166, g: 0, b: 1, a: 1}
-  - {r: 0.18275928, g: 0, b: 1, a: 1}
   - {r: 1, g: 0, b: 0.7783561, a: 1}
+  <PlayerSprites>k__BackingField:
+  - {fileID: 21300000, guid: 8d5f697c999643441bb417d834c597de, type: 3}
+  - {fileID: 21300000, guid: 394b5b0edcab9644e883ef25893924dd, type: 3}
+  - {fileID: 21300000, guid: 367c33b49e78721499761b909b570691, type: 3}
+  - {fileID: 21300000, guid: a93c36da6f7182e4096ca2c951efbf42, type: 3}

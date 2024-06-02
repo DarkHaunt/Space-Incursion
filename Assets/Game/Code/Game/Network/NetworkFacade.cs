@@ -1,16 +1,15 @@
 using System.Collections.Generic;
 using Fusion.Sockets;
-using UnityEngine;
 using System;
-using Cysharp.Threading.Tasks;
 using Fusion;
+using Game.Code.Game.Scene;
 using Game.Code.Game.Services;
-using VContainer.Unity;
 
 namespace Game.Code.Game
 {
     public class NetworkFacade : INetworkRunnerCallbacks
     {
+        private readonly SceneDependenciesProvider _sceneDependencies;
         private readonly NetworkPlayerDataProvider _dataProvider;
         private readonly GameFactory _gameFactory;
 
@@ -20,13 +19,15 @@ namespace Game.Code.Game
 
 
         public NetworkFacade(InputService inputService, PlayerHandleService playerHandleService, NetworkSpawnService spawnService,
-            NetworkPlayerDataProvider dataProvider, GameFactory gameFactory)
+            NetworkPlayerDataProvider dataProvider, GameFactory gameFactory, SceneDependenciesProvider sceneDependencies)
         {
             _playerHandleService = playerHandleService;
+            _sceneDependencies = sceneDependencies;
+            
             _inputService = inputService;
             _dataProvider = dataProvider;
-            _gameFactory = gameFactory;
             _spawnService = spawnService;
+            _gameFactory = gameFactory;
         }
 
 
