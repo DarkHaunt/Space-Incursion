@@ -7,6 +7,7 @@ using Game.Code.Extensions;
 using Game.Code.Game.Entities;
 using Game.Code.Game.Scene;
 using Game.Code.Game.StaticData.Indents;
+using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace Game.Code.Game
@@ -20,7 +21,7 @@ namespace Game.Code.Game
         private readonly GameFactory _gameFactory;
         private readonly NetworkRunner _runner;
 
-        private bool IsHost
+        public bool IsHost
             => _runner.CanSpawn;
 
         public NetworkSpawnService(NetworkMonoServiceLocator serviceLocator, SceneDependenciesProvider sceneDependenciesProvider,
@@ -35,16 +36,14 @@ namespace Game.Code.Game
             _runner = serviceLocator.Runner;
         }
 
-        public async UniTask<LevelModel> TryToSpawnLevel()
-        {
-            if (!IsHost)
-                return null;
+        public async UniTask<LevelModel> SpawnLevel() =>
+            await _gameFactory.CreateLevel();
 
-            return await _gameFactory.CreateLevel();
-        }
-
-        public async UniTask<UIRoot> TryToSpawnUIRoot() =>
+        public async UniTask<UIRoot> SpawnUIRoot() =>
             await _gameFactory.CreateUIRoot(_sceneDependenciesProvider.UIRoot);
+
+        public async UniTask<EnemyNetworkModel> CreateEnemy(Vector2 pos) =>
+            await _gameFactory.CreateEnemy(pos);
 
         public async UniTask<PlayerNetworkModel> SetUpPlayerData(PlayerRef playerRef, string nickName)
         {

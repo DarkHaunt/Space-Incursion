@@ -35,10 +35,11 @@ namespace Game.Code.Game.Boot
         {
             _networkRunner.AddCallbacks(_networkFacade);
 
+            _stateMachine.RegisterState(_stateFactory.Create<GameNetworkBootstrapState>(Lifetime.Scoped));
             _stateMachine.RegisterState(_stateFactory.Create<GameBootstrapState>(Lifetime.Scoped));
             _stateMachine.RegisterState(_stateFactory.Create<GameLobbyState>(Lifetime.Scoped));
 
-            await _stateMachine.Enter<GameBootstrapState>();
+            await _stateMachine.Enter<GameNetworkBootstrapState>();
         }
 
         public void Dispose() =>

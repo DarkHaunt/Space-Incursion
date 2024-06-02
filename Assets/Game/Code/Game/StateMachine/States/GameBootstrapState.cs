@@ -1,9 +1,6 @@
-using System.Threading.Tasks;
 using Game.Code.Common.StateMachineBase.Interfaces;
 using Cysharp.Threading.Tasks;
-using Fusion;
 using Game.Code.Game.Services;
-using Game.Code.Infrastructure.SceneManaging;
 
 namespace Game.Code.Game.Core.States
 {
@@ -11,53 +8,37 @@ namespace Game.Code.Game.Core.States
     {
         private readonly GameStateMachine _stateMachine;
 
-        private readonly NetworkPlayerDataProvider _playerDataProvider;
-        private readonly TransitionHandler _transitionHandler;
+        private readonly EnemyHandleService _enemyHandleService;
         private readonly NetworkSpawnService _spawnService;
-        private readonly NetworkFacade _networkFacade;
-        private readonly NetworkRunner _networkRunner;
 
 
-        public GameBootstrapState(GameStateMachine stateMachine, TransitionHandler transitionHandler, NetworkSpawnService spawnService,
-            NetworkFacade networkFacade, NetworkMonoServiceLocator serviceLocator, NetworkPlayerDataProvider playerDataProvider)
+        public GameBootstrapState(GameStateMachine stateMachine, NetworkSpawnService spawnService, EnemyHandleService enemyHandleService)
         {
             _stateMachine = stateMachine;
 
-            _transitionHandler = transitionHandler;
-            _playerDataProvider = playerDataProvider;
-            _networkFacade = networkFacade;
+            _enemyHandleService = enemyHandleService;
             _spawnService = spawnService;
-
-            _networkRunner = serviceLocator.Runner;
         }
 
         public async UniTask Enter()
         {
-            await StartGame();
-            await SetUpHostSide();
-
-            await _transitionHandler.PlayFadeOutAnimation();
-
+            await SetUpSpawning();
+            
             await GoToLobbyState();
         }
 
-        public UniTask Exit()
-        {
-            return UniTask.CompletedTask;
-        }
+        public UniTask Exit() =>
+            UniTask.CompletedTask;
 
-        private async UniTask SetUpHostSide()
+        private async UniTask SetUpSpawning()
         {
-            await _spawnService.TryToSpawnUIRoot();
-            await _spawnService.TryToSpawnLevel();
-        }
-
-        private async UniTask StartGame()
-        {
-            _networkRunner.AddCallbacks(_networkFacade);
-            _networkRunner.ProvideInput = true;
-
-            await _networkRunner.StartGame(_playerDataProvider.PlayerData.GameArgs);
+            if (_spawnService.IsHost)
+            {
+                var level = await _spawnService.SpawnLevel();
+                _enemyHandleService.Init(level.ArenaArea);
+            }
+            
+            await _spawnService.SpawnUIRoot();
         }
 
         private async UniTask GoToLobbyState() =>

@@ -27,7 +27,12 @@ namespace Game.Code.Game.Services
         public void Dispose() =>
             _availableColors.Clear();
 
-        public Color GetAvailableColor() =>
-            _availableColors.Pop();
+        public Color GetAvailableColor()
+        {
+            if (_availableColors.Count == 0)
+                throw new ArgumentException("There is no more available colors for players!");
+            
+            return _availableColors.Pop();
+        }
     }
 }

@@ -27,9 +27,9 @@ namespace Game.Code.Game
         }
 
         public void Tick(float deltaTime) =>
-            CollectInput(deltaTime);
+            CollectInput();
 
-        private void CollectInput(float deltaTime)
+        private void CollectInput()
         {
             _pressedShootButton = IsShootButtonPressed();
             
@@ -37,10 +37,8 @@ namespace Game.Code.Game
             _moveDirection = GetMoveDirection();
         }
 
-        private void ClearInput()
-        {
+        private void ClearInput() =>
             _pressedShootButton = false;
-        }
 
         public PlayerInputData GetPlayerInput()
         {

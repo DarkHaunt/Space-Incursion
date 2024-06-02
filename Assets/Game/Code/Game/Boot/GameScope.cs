@@ -18,6 +18,8 @@ namespace Game.Code.Game.Boot
 
         protected override void Configure(IContainerBuilder builder)
         {
+            // TODO: Make Installers for readability
+            
             RegisterBootstrapper(builder);
             RegisterStateMachine(builder);
 
@@ -29,7 +31,22 @@ namespace Game.Code.Game.Boot
             
             RegisterPlayerColorProvider(builder); 
             RegisterPlayerHandleService(builder);
+
+            RegisterEnemiesHandleService(builder);
+            RegisterEnemiesSpawnPossibilityProvider(builder);
         }
+
+        private void RegisterEnemiesSpawnPossibilityProvider(IContainerBuilder builder)
+        {
+            builder.Register<EnemySpawnPossibilityProvider>(Lifetime.Scoped)
+                .AsImplementedInterfaces()
+                .AsSelf();
+        }
+
+        private void RegisterEnemiesHandleService(IContainerBuilder builder) =>
+            builder.Register<EnemyHandleService>(Lifetime.Scoped)
+                .AsImplementedInterfaces()
+                .AsSelf();
 
         private void RegisterPlayerHandleService(IContainerBuilder builder) =>
             builder.Register<PlayerHandleService>(Lifetime.Scoped);

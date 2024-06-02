@@ -11,6 +11,7 @@ namespace Game.Code.Game.StaticData.Scriptables
 
         [field: SerializeField] public int EnemiesSpawnPickCount { get; private set; }
         [field: SerializeField] public float EnemiesSpawnIncomeTime { get; private set; }
+        [field: SerializeField] public float EnemiesSpawnFullForceTime { get; private set; }
 
 
         [field: Header("--- Players ---")]

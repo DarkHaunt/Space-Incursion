@@ -46,7 +46,7 @@ MonoBehaviour:
     m_PostInfinity: 0
     m_RotationOrder: 4
   <EnemiesSpawnPickCount>k__BackingField: 50
-  <EnemiesSpawnIncomeTime>k__BackingField: 60
+  <EnemiesSpawnIncomeTime>k__BackingField: 1
   <AvailableColor>k__BackingField:
   - {r: 1, g: 0.51522136, b: 0, a: 1}
   - {r: 0.77931595, g: 1, b: 0, a: 1}

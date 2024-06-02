@@ -15,8 +15,8 @@ namespace Game.Code.Menu.View
 
         public void Initialize()
         {
-            PlayerName = GameIndents.DefaultPlayerName;
-            RoomName = GameIndents.DefaultRoomName;
+            PlayerName = NetworkIndents.DefaultPlayerName;
+            RoomName = NetworkIndents.DefaultRoomName;
         }
     }
 }
