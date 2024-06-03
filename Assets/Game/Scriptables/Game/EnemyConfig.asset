@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bed7ce46f98493098277160d25f6c69, type: 3}
   m_Name: EnemyConfig
   m_EditorClassIdentifier: 
-  <MoveSpeed>k__BackingField: 7
+  <MoveSpeed>k__BackingField: 3.5

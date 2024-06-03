@@ -2,16 +2,15 @@ using System.Collections.Generic;
 using Fusion.Sockets;
 using System;
 using Fusion;
-using Game.Code.Game.Scene;
 using Game.Code.Game.Services;
 
 namespace Game.Code.Game
 {
     public class NetworkFacade : INetworkRunnerCallbacks
     {
-        private readonly SceneDependenciesProvider _sceneDependencies;
         private readonly NetworkPlayerDataProvider _dataProvider;
         private readonly GameFactory _gameFactory;
+        private readonly CameraService _cameraService;
 
         private readonly PlayerHandleService _playerHandleService;
         private readonly NetworkSpawnService _spawnService;
@@ -19,15 +18,15 @@ namespace Game.Code.Game
 
 
         public NetworkFacade(InputService inputService, PlayerHandleService playerHandleService, NetworkSpawnService spawnService,
-            NetworkPlayerDataProvider dataProvider, GameFactory gameFactory, SceneDependenciesProvider sceneDependencies)
+            NetworkPlayerDataProvider dataProvider, GameFactory gameFactory, CameraService cameraService)
         {
             _playerHandleService = playerHandleService;
-            _sceneDependencies = sceneDependencies;
             
             _inputService = inputService;
             _dataProvider = dataProvider;
             _spawnService = spawnService;
             _gameFactory = gameFactory;
+            _cameraService = cameraService;
         }
 
 
@@ -43,6 +42,8 @@ namespace Game.Code.Game
 
             var playerModel = await _spawnService.SetUpPlayerData(player, name);
             playerModel.Construct(_gameFactory);
+            
+            _cameraService.SetFollowTarget(playerModel.transform);
         }
 
         public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) =>

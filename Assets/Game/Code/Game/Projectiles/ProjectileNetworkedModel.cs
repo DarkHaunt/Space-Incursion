@@ -19,7 +19,7 @@ namespace Game.Code.Game.Projectiles
             if(!Object.HasStateAuthority)
                 return;
                 
-            _move.Move(_direction, Runner.DeltaTime);
+            _move.Move(_direction);
 
             if (Lifetime.Expired(Runner))
                 Dispose();

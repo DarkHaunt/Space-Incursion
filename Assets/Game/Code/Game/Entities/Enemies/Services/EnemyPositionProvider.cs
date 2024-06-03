@@ -17,36 +17,55 @@ namespace Game.Code.Game.Services
         }
 
         /// <summary>
-        /// Gets position strictly on spawn border
+        /// Gets enemy core points of mirror arena sides
         /// </summary>
-        public Vector2 GetEnemySpawnPosition()
+        /// <param name="startPos">Enemy start postion</param>
+        /// <param name="movePos">Enemy move end position</param>
+        public void CalculateEnemyPositions(out Vector2 startPos, out Vector2 movePos)
         {
-            bool pickStableX = RandomExtensions.boolean;
+            var isStableX = RandomExtensions.boolean;
+            var isLeftSpawnPoint = RandomExtensions.boolean;
+                
+            startPos = GetEnemySpawnPos(isStableX, isLeftSpawnPoint);
+            movePos = GetEnemyMovePosition(isStableX, isLeftSpawnPoint);
+        }
+
+        private Vector2 GetEnemySpawnPos(bool isStableX, bool isLeftSpawnPoint)
+        {
             float x, y;
 
-            if (pickStableX)
+            if (isStableX)
             {
-                x = RandomExtensions.boolean ? _leftBottomSpawnPos.x : _rightTopSpawnPos.x;
+                x = isLeftSpawnPoint ? _leftBottomSpawnPos.x : _rightTopSpawnPos.x;
                 y = Random.Range(_leftBottomSpawnPos.y, _rightTopSpawnPos.y);
             }
             else
             {
-                y = RandomExtensions.boolean ? _leftBottomSpawnPos.y : _rightTopSpawnPos.y;
+                y = isLeftSpawnPoint ? _leftBottomSpawnPos.y : _rightTopSpawnPos.y;
+                x = Random.Range(_leftBottomSpawnPos.x, _rightTopSpawnPos.x);
+            }
+            
+            var startPos = new Vector2(x, y);
+            return startPos;
+        }
+
+        private Vector2 GetEnemyMovePosition(bool isStableX, bool isLeftSpawnPoint)
+        {
+            float x;
+            float y;
+            
+            if (isStableX)
+            {
+                x = isLeftSpawnPoint ? _rightTopSpawnPos.x : _leftBottomSpawnPos.x;
+                y = Random.Range(_leftBottomSpawnPos.y, _rightTopSpawnPos.y);
+            }
+            else
+            {
+                y = isLeftSpawnPoint ? _rightTopSpawnPos.y : _leftBottomSpawnPos.y;
                 x = Random.Range(_leftBottomSpawnPos.x, _rightTopSpawnPos.x);
             }
 
             return new Vector2(x, y);
-        }
-
-        /// <summary>
-        /// Gets mirror position inside spawn area, within some angle range
-        /// </summary>
-        /// <param name="pos"></param>
-        public Vector2 GetEnemyMovePosition(Vector2 pos)
-        {
-            var normal = Vector2.Perpendicular(pos.normalized);
-            
-            return Vector2.zero;
         }
     }
 }

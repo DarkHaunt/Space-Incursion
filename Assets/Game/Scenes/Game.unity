@@ -302,6 +302,7 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   _inputCamera: {fileID: 1754836812645162699}
+  _cameraService: {fileID: 7137414089160633347}
   _uIParent: {fileID: 1915634201}
   _playerSpawnPoints:
   - {fileID: 1630598210}
@@ -579,7 +580,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 31
+    m_Bits: 479
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -602,6 +603,7 @@ GameObject:
   - component: {fileID: 4399303799759138364}
   - component: {fileID: 1754836812645162699}
   - component: {fileID: 1527290045974073026}
+  - component: {fileID: 7137414089160633347}
   - component: {fileID: 7137414089160633346}
   m_Layer: 0
   m_Name: Main Camera
@@ -641,6 +643,18 @@ MonoBehaviour:
   Components:
   - {fileID: 1527290045974073026}
   _guid: 8703469d-c320-4c25-
+--- !u!114 &7137414089160633347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3486935328443406763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4836d2bd57344fca276253355eec945, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

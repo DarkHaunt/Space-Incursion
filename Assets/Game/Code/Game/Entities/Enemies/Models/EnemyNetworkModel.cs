@@ -20,7 +20,7 @@ namespace Game.Code.Game.Services
 
         public override void FixedUpdateNetwork()
         {
-            var direction = Vector2Extensions.Direction(_movePosition, _move.Position);
+            var direction = Vector2Extensions.Direction(_move.Position, _movePosition);
             var distance = Vector3.Distance(transform.position, _movePosition);
 
             if (distance <= GameIndents.EnemyDistanceReachEpsilon)
@@ -29,7 +29,7 @@ namespace Game.Code.Game.Services
                 return;
             }
 
-            _move.Move(direction, Runner.DeltaTime);
+            _move.Move(direction);
         }
 
         private void HandleReachedPoint() =>

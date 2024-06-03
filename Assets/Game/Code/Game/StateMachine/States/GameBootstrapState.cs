@@ -11,15 +11,17 @@ namespace Game.Code.Game.Core.States
         private readonly PhysicCollisionService _collisionService;
         private readonly EnemyHandleService _enemyHandleService;
         private readonly NetworkSpawnService _spawnService;
+        private readonly CameraService _cameraService;
 
 
-        public GameBootstrapState(GameStateMachine stateMachine, NetworkSpawnService spawnService, 
+        public GameBootstrapState(GameStateMachine stateMachine, NetworkSpawnService spawnService, CameraService cameraService,
             PhysicCollisionService collisionService, EnemyHandleService enemyHandleService)
         {
             _stateMachine = stateMachine;
 
             _enemyHandleService = enemyHandleService;
             _collisionService = collisionService;
+            _cameraService = cameraService;
             _spawnService = spawnService;
         }
 
@@ -27,7 +29,7 @@ namespace Game.Code.Game.Core.States
         {
             _collisionService.Enable();
             
-            await SetUpSpawning();
+            await SetUpLevelDependentServices();
             
             await GoToLobbyState();
         }
@@ -35,12 +37,14 @@ namespace Game.Code.Game.Core.States
         public UniTask Exit() =>
             UniTask.CompletedTask;
 
-        private async UniTask SetUpSpawning()
+        private async UniTask SetUpLevelDependentServices()
         {
             if (_spawnService.IsHost)
             {
                 var level = await _spawnService.SpawnLevel();
+                
                 _enemyHandleService.Init(level);
+                _cameraService.Init(level);
             }
             
             await _spawnService.SpawnUIRoot();

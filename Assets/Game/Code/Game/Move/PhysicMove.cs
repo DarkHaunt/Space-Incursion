@@ -20,10 +20,7 @@ namespace Game.Code.Game
             _rigidbody.MoveRotation(Quaternion.Euler(new Vector3(0f, 0f, angle)));
         }
 
-        public void Move(Vector2 direction, float timeStep)
-        {
-            var pos = (Vector2)transform.position + direction * (_speed * timeStep);
-            _rigidbody.MovePosition(pos);
-        }
+        public void Move(Vector2 direction) =>
+            _rigidbody.velocity = direction * _speed;
     }
 }

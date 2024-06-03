@@ -12,6 +12,9 @@ namespace Game.Code.Game.Boot
     {
         [Header("--- Scene Dependencies ---")]
         [SerializeField] private Camera _inputCamera;
+        [SerializeField] private CameraService _cameraService;
+
+        [Header("--- Points ---")]
         [SerializeField] private Transform _uIParent;
         [SerializeField] private List<Transform> _playerSpawnPoints;
         
@@ -24,6 +27,7 @@ namespace Game.Code.Game.Boot
             RegisterStateMachine(builder);
 
             RegisterInputService(builder);
+            RegisterCameraService(builder);
             RegisterPhysicCollisionService(builder);
             RegisterSceneDependenciesProvider(builder);
             
@@ -36,6 +40,11 @@ namespace Game.Code.Game.Boot
             RegisterEnemiesHandleService(builder);
             RegisterEnemiesPositionProvider(builder);
             RegisterEnemiesSpawnPossibilityProvider(builder);
+        }
+
+        private void RegisterCameraService(IContainerBuilder builder)
+        {
+            builder.RegisterInstance(_cameraService);
         }
 
         private void RegisterEnemiesSpawnPossibilityProvider(IContainerBuilder builder)

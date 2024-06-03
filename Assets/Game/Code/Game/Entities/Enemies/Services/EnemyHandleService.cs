@@ -23,7 +23,7 @@ namespace Game.Code.Game.Services
         private IEnumerator _spawning;
         
 
-        public EnemyHandleService(ICoroutineRunner coroutineRunner, EnemySpawnPossibilityProvider spawnPossibilityProvider, 
+        public EnemyHandleService(ICoroutineRunner coroutineRunner, EnemySpawnPossibilityProvider spawnPossibilityProvider,
             GameStaticDataProvider staticDataProvider, EnemyPositionProvider positionProvider, NetworkSpawnService networkSpawnService)
         {
             _spawnPossibilityProvider = spawnPossibilityProvider;
@@ -60,10 +60,9 @@ namespace Game.Code.Game.Services
 
         private async void SpawnEnemy()
         {
-            var spawnPosition = _positionProvider.GetEnemySpawnPosition();
-            var movePos = _positionProvider.GetEnemyMovePosition(spawnPosition);
+            _positionProvider.CalculateEnemyPositions(out var spawnPos, out var movePos);
             
-            var enemy = await _networkSpawnService.CreateEnemy(spawnPosition);
+            var enemy = await _networkSpawnService.CreateEnemy(spawnPos);
             enemy.Construct(_enemyConfig);
             enemy.SetMovePoint(movePos);
         }
