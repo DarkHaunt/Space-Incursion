@@ -1,5 +1,6 @@
 using Game.Code.Game.Level;
 using System.Collections;
+using Game.Code.Extensions;
 using UnityEngine;
 
 namespace Game.Code.Game.Services
@@ -7,6 +8,8 @@ namespace Game.Code.Game.Services
     [RequireComponent(typeof(Camera))]
     public class CameraService : MonoBehaviour
     {
+        [SerializeField] private float _smooth = 1;
+        
         private Vector3 _leftBottomBorder;
         private Vector3 _rightTopBorder;
         
@@ -24,6 +27,8 @@ namespace Game.Code.Game.Services
         public void SetFollowTarget(Transform target)
         {
             _target = target;
+
+            SetCameraInPosition(_target.position);
             StartCoroutine(FollowTarget());
         }
 
@@ -33,22 +38,23 @@ namespace Game.Code.Game.Services
             {
                 yield return null;
                 
-                var desiredPosition = _target.position;
+                Vector2 desiredPosition = _target.position;
 
-                // Calculate the world space bounds of the camera's viewport
                 var halfHeight = _camera.orthographicSize;
                 var halfWidth = halfHeight * _camera.aspect;
 
-                // Clamp the camera position to ensure its viewport does not exceed the borders
                 desiredPosition.x = Mathf.Clamp(desiredPosition.x, _leftBottomBorder.x + halfWidth, _rightTopBorder.x - halfWidth);
                 desiredPosition.y = Mathf.Clamp(desiredPosition.y, _leftBottomBorder.y + halfHeight, _rightTopBorder.y - halfHeight);
 
-                // Maintain camera's z position
-                desiredPosition.z = transform.position.z;
-
-                // Smoothly move the camera to the clamped position
-                transform.position = Vector3.Lerp(transform.position, desiredPosition, Time.deltaTime);
+                var adjustedPosition = Vector2.Lerp(_camera.transform.position, desiredPosition, Time.deltaTime * _smooth);
+                SetCameraInPosition(adjustedPosition);
             }
+        }
+
+        private void SetCameraInPosition(Vector3 pos)
+        {
+            pos.z = _camera.transform.position.z;
+            _camera.transform.SetInPosition(pos);
         }
     }
 }

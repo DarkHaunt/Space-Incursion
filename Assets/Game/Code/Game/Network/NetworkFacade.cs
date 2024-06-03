@@ -21,7 +21,7 @@ namespace Game.Code.Game
             NetworkPlayerDataProvider dataProvider, GameFactory gameFactory, CameraService cameraService)
         {
             _playerHandleService = playerHandleService;
-            
+
             _inputService = inputService;
             _dataProvider = dataProvider;
             _spawnService = spawnService;
@@ -42,8 +42,9 @@ namespace Game.Code.Game
 
             var playerModel = await _spawnService.SetUpPlayerData(player, name);
             playerModel.Construct(_gameFactory);
-            
-            _cameraService.SetFollowTarget(playerModel.transform);
+
+            if (playerModel.Runner.LocalPlayer == player)
+                _cameraService.SetFollowTarget(playerModel.transform);
         }
 
         public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) =>
@@ -72,7 +73,6 @@ namespace Game.Code.Game
         public void OnObjectEnterAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player)
         {
         }
-
 
         public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input)
         {

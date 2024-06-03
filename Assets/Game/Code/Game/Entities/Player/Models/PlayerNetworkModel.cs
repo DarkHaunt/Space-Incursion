@@ -46,7 +46,7 @@ namespace Game.Code.Game.Entities
             if (Runner.TryGetInputForPlayer(Object.InputAuthority, out PlayerInputData input))
             {
                 _move.RotateToFace(input.ShootDirection);
-                _move.Move(input.MoveDirection);
+                _move.MoveWithVelocity(input.MoveDirection);
 
                 if (input.Buttons.WasPressed(ButtonsPrevious, PlayerButtons.Shoot) && HasStateAuthority)
                     _shoot.Shoot();

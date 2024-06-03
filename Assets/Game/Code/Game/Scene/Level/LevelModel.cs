@@ -1,9 +1,9 @@
-using System.Collections.Generic;
+using Fusion;
 using UnityEngine;
 
 namespace Game.Code.Game.Level
 {
-    public class LevelModel : MonoBehaviour
+    public class LevelModel : NetworkBehaviour
     {
         [field: Header("--- Enemies ---")]
         [field: SerializeField] public Transform LeftBottomEnemySpawnPoint { get; private set; } 

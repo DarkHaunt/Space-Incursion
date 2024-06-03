@@ -52,9 +52,9 @@ namespace Game.Code.Game
                 : await GetExistedPlayer(playerRef);
 
             var view = await _gameFactory.CreatePlayerUI();
-
+            
             RegisterPlayer(playerRef, nickName, model, view);
-
+            
             return model;
         }
 
@@ -70,7 +70,7 @@ namespace Game.Code.Game
         {
             await UniTask.WaitUntil(() => _runner.TryGetPlayerObject(playerRef, out _))
                 .Timeout(NetworkIndents.ClientObjectSearchTimeout);
-
+            
             var obj = _runner.GetPlayerObject(playerRef);
             return obj.GetBehaviour<PlayerNetworkModel>();
         }

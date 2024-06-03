@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using VContainer.Unity;
 using WebSocketSharp;
-using static Game.Code.Game.StaticData.Indents.GameIndents;
 
 namespace Game.Code.Menu.View
 {

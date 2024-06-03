@@ -22,7 +22,8 @@ namespace Game.Code.Game.Projectiles
         {
             if (obj.TryGetComponent(out EnemyNetworkModel enemyModel))
             {
-                // TODO: LOgic
+                // TODO: Logic to provide player score
+                enemyModel.Kill();
             }
         }
     }

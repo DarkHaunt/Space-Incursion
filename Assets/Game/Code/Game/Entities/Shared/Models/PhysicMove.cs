@@ -1,3 +1,5 @@
+using DG.Tweening;
+using Game.Scripts.Extensions;
 using UnityEngine;
 
 namespace Game.Code.Game
@@ -20,7 +22,16 @@ namespace Game.Code.Game
             _rigidbody.MoveRotation(Quaternion.Euler(new Vector3(0f, 0f, angle)));
         }
 
-        public void Move(Vector2 direction) =>
+        public void MoveWithVelocity(Vector2 direction) =>
             _rigidbody.velocity = direction * _speed;
+
+        public Tween MoveWithTween(Vector2 pos) =>
+            _rigidbody.DOMoveWithSpeed(pos, _speed);
+
+        public void Stop()
+        {
+            _rigidbody.DOKill();
+            _rigidbody.velocity = Vector2.zero;
+        }
     }
 }

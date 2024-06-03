@@ -11,39 +11,31 @@ namespace Game.Code.Game.Projectiles
 
         [Networked] private TickTimer Lifetime { get; set; }
 
-        private Vector2 _direction;
-
-
-        public override void FixedUpdateNetwork()
-        {
-            if(!Object.HasStateAuthority)
-                return;
-                
-            _move.Move(_direction);
-
-            if (Lifetime.Expired(Runner))
-                Dispose();
-        }
 
         public void Construct(ProjectileConfig projectileConfig)
         {
-            _move.SetMoveSpeed(projectileConfig.Speed);
             _behavior.Construct();
-
+            
+            _move.SetMoveSpeed(projectileConfig.Speed);
             Lifetime = TickTimer.CreateFromSeconds(Runner, projectileConfig.Lifetime);
         }
 
         public void SetupAndMove(Vector2 moveDirection)
         {
-            _direction = moveDirection;
+            _move.MoveWithVelocity(moveDirection);
+            _move.RotateToFace(moveDirection);
+        }
+
+        public override void FixedUpdateNetwork()
+        {
+            if (Lifetime.Expired(Runner))
+                Dispose();
         }
 
         private void Dispose()
         {
+            _behavior.Dispose();
             Runner.Despawn(Object);
-            Lifetime = TickTimer.None;
-            
-            Destroy(gameObject); // TODO: Add custom pool implementation
         }
     }
 }

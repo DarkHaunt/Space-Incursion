@@ -64,7 +64,7 @@ namespace Game.Code.Game.Services
             
             var enemy = await _networkSpawnService.CreateEnemy(spawnPos);
             enemy.Construct(_enemyConfig);
-            enemy.SetMovePoint(movePos);
+            enemy.StartMoveTo(movePos);
         }
 
         public void Dispose()

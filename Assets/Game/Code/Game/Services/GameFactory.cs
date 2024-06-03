@@ -95,7 +95,7 @@ namespace Game.Code.Game.Services
         public async UniTask<LevelModel> CreateLevel()
         {
             var prefab = await _assetProvider.LoadAndGetComponent<LevelModel>(LevelAssetPath);
-            var obj = Object.Instantiate(prefab);
+            var obj = await _runner.SpawnAsync(prefab);
 
             var model = obj.GetComponent<LevelModel>();
 
