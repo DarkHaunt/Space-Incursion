@@ -81,13 +81,13 @@ namespace Game.Code.Game.Services
             return _uiRoot = root;
         }
 
-        public async UniTask<ProjectileNetworkedModel> CreateProjectile(Vector2 pos)
+        public async UniTask<ProjectileNetworkedModel> CreateProjectile(Vector2 pos, PlayerRef owner)
         {
             var prefab = await _assetProvider.LoadAndGetComponent<ProjectileNetworkedModel>(ProjectileAssetPath);
-            var obj = await _runner.SpawnAsync(prefab, position: pos);
+            var obj = await _runner.SpawnAsync(prefab, position: pos, inputAuthority: owner);
 
             var model = obj.GetComponent<ProjectileNetworkedModel>();
-            model.Construct(_dataProvider.ProjectileConfig);
+            model.Construct(_dataProvider.ProjectileConfig, owner);
 
             return model;
         }

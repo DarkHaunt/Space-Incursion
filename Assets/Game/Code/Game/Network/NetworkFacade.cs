@@ -41,10 +41,10 @@ namespace Game.Code.Game
             var name = _dataProvider.PlayerData.Nickname;
 
             var playerModel = await _spawnService.SetUpPlayerData(player, name);
-            playerModel.Construct(_gameFactory);
+            playerModel.Construct(_playerHandleService, _gameFactory);
 
-            if (playerModel.Runner.LocalPlayer == player)
-                _cameraService.SetFollowTarget(playerModel.transform);
+            /*if (playerModel.Runner.LocalPlayer == player)
+                _cameraService.SetFollowTarget(playerModel.transform);*/
         }
 
         public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) =>

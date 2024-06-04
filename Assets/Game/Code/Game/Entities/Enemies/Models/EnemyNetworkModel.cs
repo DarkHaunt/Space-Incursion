@@ -3,12 +3,15 @@ using Game.Code.Game.Services.Models;
 using Game.Code.Extensions;
 using UnityEngine;
 using DG.Tweening;
+using System;
 using Fusion;
 
 namespace Game.Code.Game.Services
 {
     public class EnemyNetworkModel : NetworkBehaviour
     {
+        public event Action<PlayerRef> OnKilledBy;
+        
         [SerializeField] private Collider2D _collider2D;
 
         [Header("--- Models ---")]
@@ -29,8 +32,10 @@ namespace Game.Code.Game.Services
                 .OnComplete(Despawn);
         }
 
-        public async void Kill()
+        public async void Kill(PlayerRef killer)
         {
+            OnKilledBy?.Invoke(killer);
+            
             _collider2D.enabled = false;
             _move.Stop();
 

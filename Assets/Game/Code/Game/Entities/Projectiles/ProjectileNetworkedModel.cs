@@ -12,9 +12,9 @@ namespace Game.Code.Game.Projectiles
         [Networked] private TickTimer Lifetime { get; set; }
 
 
-        public void Construct(ProjectileConfig projectileConfig)
+        public void Construct(ProjectileConfig projectileConfig, PlayerRef ownerRef)
         {
-            _behavior.Construct();
+            _behavior.Construct(ownerRef);
             
             _move.SetMoveSpeed(projectileConfig.Speed);
             Lifetime = TickTimer.CreateFromSeconds(Runner, projectileConfig.Lifetime);
@@ -32,10 +32,7 @@ namespace Game.Code.Game.Projectiles
                 Dispose();
         }
 
-        private void Dispose()
-        {
-            _behavior.Dispose();
+        private void Dispose() =>
             Runner.Despawn(Object);
-        }
     }
 }

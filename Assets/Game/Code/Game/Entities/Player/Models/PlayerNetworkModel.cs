@@ -1,7 +1,7 @@
-using Fusion;
 using Game.Code.Game.Services;
 using Game.Code.Game.Shooting;
 using UnityEngine;
+using Fusion;
 
 namespace Game.Code.Game.Entities
 {
@@ -11,28 +11,39 @@ namespace Game.Code.Game.Entities
         [SerializeField] private PlayerGraphic _graphic;
         [SerializeField] private ShootModule _shoot;
         [SerializeField] private PhysicMove _move;
+        
+        private PlayerHandleService _handleService;
+        private ChangeDetector _changeDetector;
 
-        public Color PlayerColor =>
-            Data.Color;
-
-        [Networked] private NetworkPlayerStaticData Data { get; set; }
+        [Networked] public NetworkPlayerStaticData Data { get; set; }
+        [Networked] public int Score { get; set; }
         [Networked] private NetworkButtons ButtonsPrevious { get; set; }
-        [Networked] private int Score { get; set; }
 
 
-        public void Construct(GameFactory gameFactory) =>
+        public void Construct(PlayerHandleService handleService, GameFactory gameFactory)
+        {
+            _handleService = handleService;
             _shoot.Construct(gameFactory);
+        }
 
         private void UpdateNetworkDependentData() =>
             _move.SetMoveSpeed(Data.Speed);
 
         public override void Spawned()
         {
+            _changeDetector = GetChangeDetector(ChangeDetector.Source.SimulationState);
+            
             if (!HasStateAuthority)
                 UpdateNetworkDependentData();
         }
 
-        [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.InputAuthority | RpcTargets.StateAuthority)]
+        public void IncreaseScore()
+        {
+            if (HasStateAuthority)
+                Score++;
+        }
+
+        //[Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.InputAuthority | RpcTargets.StateAuthority)]
         public void RPC_NetworkDataSetUp(NetworkPlayerStaticData staticData)
         {
             Data = staticData;
@@ -49,9 +60,22 @@ namespace Game.Code.Game.Entities
                 _move.MoveWithVelocity(input.MoveDirection);
 
                 if (input.Buttons.WasPressed(ButtonsPrevious, PlayerButtons.Shoot) && HasStateAuthority)
-                    _shoot.Shoot();
+                    _shoot.Shoot(Object.InputAuthority);
 
                 ButtonsPrevious = input.Buttons;
+            }
+        }
+
+        public override void Render()
+        {
+            foreach (var change in _changeDetector.DetectChanges(this, out var previousBuffer, out var currentBuffer))
+            {
+                switch (change)
+                {
+                    case nameof(Score):
+                        _handleService.UpdatePlayerScoreView(Object.InputAuthority, Score);
+                        break;
+                }
             }
         }
     }

@@ -1,3 +1,4 @@
+using Fusion;
 using UnityEngine;
 using TMPro;
 
@@ -12,7 +13,7 @@ namespace Game.Code.Game.UI
         public void UpdateScore(int score) =>
             _scoreText.text = score.ToString();
 
-        public void UpdateNickname(string nickName) =>
+        public void UpdateNickname(NetworkString<_16> nickName) =>
             _nickText.text = $"{nickName}:";
 
         public void UpdateTextColor(Color color)

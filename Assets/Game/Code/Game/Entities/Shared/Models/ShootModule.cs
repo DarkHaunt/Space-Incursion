@@ -1,6 +1,7 @@
 using Game.Code.Game.Services;
 using Game.Code.Extensions;
 using UnityEngine;
+using Fusion;
 
 namespace Game.Code.Game.Shooting
 {
@@ -13,10 +14,12 @@ namespace Game.Code.Game.Shooting
         public void Construct(GameFactory gameFactory) =>
             _gameFactory = gameFactory;
 
-        public async void Shoot()
+        public async void Shoot(PlayerRef shooterRef)
         {
-            var projectile = await _gameFactory.CreateProjectile(_shootPoint.position);
-            projectile.SetupAndMove(GetShootDirection());
+            var shootDirection = GetShootDirection();
+            
+            var projectile = await _gameFactory.CreateProjectile(_shootPoint.position, shooterRef);
+            projectile.SetupAndMove(shootDirection);
         }
 
         private Vector2 GetShootDirection() =>

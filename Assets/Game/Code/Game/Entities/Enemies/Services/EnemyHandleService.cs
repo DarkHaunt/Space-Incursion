@@ -17,16 +17,18 @@ namespace Game.Code.Game.Services
         
         private readonly GameStaticDataProvider _staticDataProvider;
         private readonly NetworkSpawnService _networkSpawnService;
+        private readonly PlayerHandleService _playerHandleService;
         private readonly ICoroutineRunner _coroutineRunner;
 
         private EnemyConfig _enemyConfig;
         private IEnumerator _spawning;
         
 
-        public EnemyHandleService(ICoroutineRunner coroutineRunner, EnemySpawnPossibilityProvider spawnPossibilityProvider,
+        public EnemyHandleService(ICoroutineRunner coroutineRunner, PlayerHandleService playerHandleService,  EnemySpawnPossibilityProvider spawnPossibilityProvider,
             GameStaticDataProvider staticDataProvider, EnemyPositionProvider positionProvider, NetworkSpawnService networkSpawnService)
         {
             _spawnPossibilityProvider = spawnPossibilityProvider;
+            _playerHandleService = playerHandleService;
             _networkSpawnService = networkSpawnService;
             _staticDataProvider = staticDataProvider;
             _positionProvider = positionProvider;
@@ -65,6 +67,8 @@ namespace Game.Code.Game.Services
             var enemy = await _networkSpawnService.CreateEnemy(spawnPos);
             enemy.Construct(_enemyConfig);
             enemy.StartMoveTo(movePos);
+            
+            enemy.OnKilledBy += _playerHandleService.IncreasePlayerScore;
         }
 
         public void Dispose()

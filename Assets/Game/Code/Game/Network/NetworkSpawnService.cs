@@ -77,7 +77,7 @@ namespace Game.Code.Game
 
         private void RegisterPlayer(PlayerRef playerRef, string nickName, PlayerNetworkModel model, PlayerUIView view)
         {
-            _playerHandleService.AddPlayer(playerRef, nickName, model, view);
+            _playerHandleService.AddPlayer(playerRef, model, view);
 
             _runner.SetPlayerObject(playerRef, model.Object);
             _runner.SetIsSimulated(model.Object, true);
