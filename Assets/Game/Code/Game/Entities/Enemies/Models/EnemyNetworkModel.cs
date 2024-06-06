@@ -8,6 +8,7 @@ using Fusion;
 
 namespace Game.Code.Game.Services
 {
+    [ScriptHelp(BackColor = ScriptHeaderBackColor.Olive)]
     public class EnemyNetworkModel : NetworkBehaviour
     {
         public event Action<PlayerRef> OnKilledBy;
@@ -17,8 +18,11 @@ namespace Game.Code.Game.Services
         [Header("--- Models ---")]
         [SerializeField] private EntityGraphic _graphic;
         [SerializeField] private PhysicMove _move;
-        
-        
+
+
+        public override void Spawned() =>
+            _graphic.PlayFireParticle(true);
+
         public void Construct(EnemyConfig config) =>
             _move.SetMoveSpeed(config.MoveSpeed);
 
@@ -38,10 +42,19 @@ namespace Game.Code.Game.Services
             
             _collider2D.enabled = false;
             _move.Stop();
+            
+            RPC_DeathGraphicEffect();
 
-            await _graphic.PlayDestroyGraphics();
+            await _graphic.WaitUntilDeathEffectEnds();
 
             Despawn();
+        }
+
+        [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
+        private void RPC_DeathGraphicEffect()
+        {
+            _graphic.PlayDestroyGraphics();
+            _graphic.PlayFireParticle(false);
         }
 
         private void Despawn() =>

@@ -4,6 +4,7 @@ using Fusion;
 
 namespace Game.Code.Game.Projectiles
 {
+    [ScriptHelp(BackColor = ScriptHeaderBackColor.Olive)]
     public class ProjectileNetworkedModel : NetworkBehaviour
     {
         [SerializeField] private PlayerProjectileBehavior _behavior;
@@ -15,6 +16,7 @@ namespace Game.Code.Game.Projectiles
         public void Construct(ProjectileConfig projectileConfig, PlayerRef ownerRef)
         {
             _behavior.Construct(ownerRef);
+            _behavior.OnEnemyHit += Dispose;
             
             _move.SetMoveSpeed(projectileConfig.Speed);
             Lifetime = TickTimer.CreateFromSeconds(Runner, projectileConfig.Lifetime);
@@ -31,7 +33,7 @@ namespace Game.Code.Game.Projectiles
             if (Lifetime.Expired(Runner))
                 Dispose();
         }
-
+        
         private void Dispose() =>
             Runner.Despawn(Object);
     }

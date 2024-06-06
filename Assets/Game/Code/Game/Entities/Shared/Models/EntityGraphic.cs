@@ -9,20 +9,24 @@ namespace Game.Code.Game.Services.Models
         [SerializeField] private ParticleSystem _destroyParticle;
         [SerializeField] private ParticleSystem _fireParticle;
 
-        public UniTask PlayDestroyGraphics()
+        public void PlayDestroyGraphics()
         {
             _spriteRenderer.enabled = false;
             _destroyParticle.Play();
-
-            return UniTask.WaitWhile(() => _destroyParticle.isPlaying);
         }
+
+        public UniTask WaitUntilDeathEffectEnds() =>
+            UniTask.WaitWhile(() => _destroyParticle.isPlaying);
 
         public void PlayFireParticle(bool play)
         {
             if(play)
                 _fireParticle.Play();
             else
+            {
                 _fireParticle.Stop();
+                _fireParticle.gameObject.SetActive(false);
+            }
         }
     }
 }

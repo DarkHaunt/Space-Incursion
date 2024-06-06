@@ -66,7 +66,9 @@ namespace Game.Code.Game.Boot
             builder.Register<PlayerHandleService>(Lifetime.Scoped);
 
         private void RegisterPhysicCollisionService(IContainerBuilder builder) =>
-            builder.Register<PhysicCollisionService>(Lifetime.Scoped);
+            builder.Register<PhysicCollisionService>(Lifetime.Scoped)
+                .AsImplementedInterfaces()
+                .AsSelf();
 
         private void RegisterPlayerColorProvider(IContainerBuilder builder) =>
             builder.Register<PlayerColorProvider>(Lifetime.Scoped)

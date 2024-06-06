@@ -45,7 +45,7 @@ namespace Game.Code.Game.Services
                 Cooldown = staticData.ShootCooldown
             };
             
-            model.RPC_NetworkDataSetUp(playerData);
+            model.SetNetworkData(playerData);
 
             return model;    
         }

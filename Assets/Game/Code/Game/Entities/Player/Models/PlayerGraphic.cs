@@ -9,6 +9,6 @@ namespace Game.Code.Game.Entities
         [SerializeField] private EntityGraphic _entityGraphic;
         
         public UniTask PlayDeathParticle() =>
-            _entityGraphic.PlayDestroyGraphics();
+            _entityGraphic.WaitUntilDeathEffectEnds();
     }
 }

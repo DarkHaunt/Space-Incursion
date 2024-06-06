@@ -11,7 +11,7 @@ namespace Game.Code.Game.Entities
         [SerializeField] private PlayerGraphic _graphic;
         [SerializeField] private ShootModule _shoot;
         [SerializeField] private PhysicMove _move;
-        
+
         private PlayerHandleService _handleService;
         private ChangeDetector _changeDetector;
 
@@ -24,33 +24,24 @@ namespace Game.Code.Game.Entities
         {
             _handleService = handleService;
             _shoot.Construct(gameFactory);
-        }
-
-        private void UpdateNetworkDependentData() =>
-            _move.SetMoveSpeed(Data.Speed);
-
-        public override void Spawned()
-        {
-            _changeDetector = GetChangeDetector(ChangeDetector.Source.SimulationState);
-            
-            if (!HasStateAuthority)
-                UpdateNetworkDependentData();
-        }
-
-        public void IncreaseScore()
-        {
-            if (HasStateAuthority)
-                Score++;
-        }
-
-        //[Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.InputAuthority | RpcTargets.StateAuthority)]
-        public void RPC_NetworkDataSetUp(NetworkPlayerStaticData staticData)
-        {
-            Data = staticData;
-            Score = 0;
 
             UpdateNetworkDependentData();
         }
+
+        public void SetNetworkData(NetworkPlayerStaticData staticData) =>
+            Data = staticData;
+
+        public void IncreaseScore() =>
+            Score++;
+
+        private void UpdateNetworkDependentData()
+        {
+            _handleService.UpdatePlayerScoreView(Object.InputAuthority, Score);
+            _move.SetMoveSpeed(Data.Speed);
+        }
+
+        public override void Spawned() =>
+            _changeDetector = GetChangeDetector(ChangeDetector.Source.SimulationState);
 
         public override void FixedUpdateNetwork()
         {
@@ -75,9 +66,11 @@ namespace Game.Code.Game.Entities
                     case nameof(Score):
                         _handleService.UpdatePlayerScoreView(Object.InputAuthority, Score);
                         break;
+                    case nameof(Data):
+                        _move.SetMoveSpeed(Data.Speed);
+                        break;
                 }
             }
         }
     }
 }
-
