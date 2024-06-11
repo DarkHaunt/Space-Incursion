@@ -5,6 +5,7 @@ namespace Game.Code.Game.StaticData.Indents
         public const string GameplayAssetsLabel = "gameplay";
         public const string GlobalAssetsLabel = "global";
         
+        public const string CameraServiceAssetPath = "CameraService";
         public const string ProjectileAssetPath = "Projectile";
         public const string PlayerUIAssetPath = "PlayerUI";
         public const string RootUIAssetPath = "RootUI";

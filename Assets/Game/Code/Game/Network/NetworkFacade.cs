@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using Fusion.Sockets;
 using System;
 using Fusion;
+using Game.Code.Game.Scene;
 using Game.Code.Game.Services;
+using UnityEngine;
 
 namespace Game.Code.Game
 {
@@ -10,7 +12,7 @@ namespace Game.Code.Game
     {
         private readonly NetworkPlayerDataProvider _dataProvider;
         private readonly GameFactory _gameFactory;
-        private readonly CameraService _cameraService;
+        private readonly SceneDependenciesProvider _sceneDependenciesProvider;
 
         private readonly PlayerHandleService _playerHandleService;
         private readonly NetworkSpawnService _spawnService;
@@ -18,7 +20,7 @@ namespace Game.Code.Game
 
 
         public NetworkFacade(InputService inputService, PlayerHandleService playerHandleService, NetworkSpawnService spawnService,
-            NetworkPlayerDataProvider dataProvider, GameFactory gameFactory, CameraService cameraService)
+            NetworkPlayerDataProvider dataProvider, GameFactory gameFactory, SceneDependenciesProvider sceneDependenciesProvider)
         {
             _playerHandleService = playerHandleService;
 
@@ -26,7 +28,8 @@ namespace Game.Code.Game
             _dataProvider = dataProvider;
             _spawnService = spawnService;
             _gameFactory = gameFactory;
-            _cameraService = cameraService;
+            
+            _sceneDependenciesProvider = sceneDependenciesProvider;
         }
 
 
@@ -35,6 +38,10 @@ namespace Game.Code.Game
 
         public async void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {
+            await _spawnService.WaitUntilHostInitialized();
+            
+            Debug.Log($"<color=white>Player Spawn</color>");
+            
             if (_playerHandleService.IsPlayerAlreadyRegistered(player))
                 return;
 
@@ -43,8 +50,8 @@ namespace Game.Code.Game
             var playerModel = await _spawnService.SetUpPlayerData(player, name);
             playerModel.Construct(_playerHandleService, _gameFactory);
 
-            /*if (playerModel.Runner.LocalPlayer == player)
-                _cameraService.SetFollowTarget(playerModel.transform);*/
+            if (playerModel.Runner.LocalPlayer == player)
+                _sceneDependenciesProvider.CameraService.SetTarget(playerModel.transform);
         }
 
         public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) =>

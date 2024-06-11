@@ -16,23 +16,23 @@ namespace Game.Code.Game.Services
         private readonly EnemyPositionProvider _positionProvider;
         
         private readonly GameStaticDataProvider _staticDataProvider;
-        private readonly NetworkSpawnService _networkSpawnService;
         private readonly PlayerHandleService _playerHandleService;
         private readonly ICoroutineRunner _coroutineRunner;
+        private readonly GameFactory _gameFactory;
 
         private EnemyConfig _enemyConfig;
         private IEnumerator _spawning;
         
 
         public EnemyHandleService(ICoroutineRunner coroutineRunner, PlayerHandleService playerHandleService,  EnemySpawnPossibilityProvider spawnPossibilityProvider,
-            GameStaticDataProvider staticDataProvider, EnemyPositionProvider positionProvider, NetworkSpawnService networkSpawnService)
+            GameStaticDataProvider staticDataProvider, EnemyPositionProvider positionProvider, GameFactory gameFactory)
         {
             _spawnPossibilityProvider = spawnPossibilityProvider;
             _playerHandleService = playerHandleService;
-            _networkSpawnService = networkSpawnService;
             _staticDataProvider = staticDataProvider;
             _positionProvider = positionProvider;
             _coroutineRunner = coroutineRunner;
+            _gameFactory = gameFactory;
         }
 
         public void Init(LevelModel levelArea)
@@ -64,7 +64,7 @@ namespace Game.Code.Game.Services
         {
             _positionProvider.CalculateEnemyPositions(out var spawnPos, out var movePos);
             
-            var enemy = await _networkSpawnService.CreateEnemy(spawnPos);
+            var enemy = await _gameFactory.CreateEnemy(spawnPos);
             enemy.Construct(_enemyConfig);
             enemy.StartMoveTo(movePos);
             

@@ -1,13 +1,12 @@
+using Game.Code.Game.StaticData.Indents;
+using Game.Code.Game.Entities;
 using Cysharp.Threading.Tasks;
 using Game.Code.Game.Services;
+using Game.Code.Extensions;
+using Game.Code.Game.Scene;
 using Game.Code.Game.Level;
 using Game.Code.Game.UI;
 using Fusion;
-using Game.Code.Extensions;
-using Game.Code.Game.Entities;
-using Game.Code.Game.Scene;
-using Game.Code.Game.StaticData.Indents;
-using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace Game.Code.Game
@@ -21,9 +20,14 @@ namespace Game.Code.Game
         private readonly GameFactory _gameFactory;
         private readonly NetworkRunner _runner;
 
+        private CameraService _cameraService;
+        private bool _isHostInitializing = true; // TODO: This is bad decision, need to rework service as something more high-level handling of player spawn & set up
+        
         public bool IsHost
             => _runner.CanSpawn;
-
+        public CameraService CameraService
+            => _cameraService;
+        
         public NetworkSpawnService(NetworkMonoServiceLocator serviceLocator, SceneDependenciesProvider sceneDependenciesProvider,
             GameFactory gameFactory, PlayerColorProvider colorProvider, PlayerHandleService playerHandleService)
         {
@@ -42,23 +46,45 @@ namespace Game.Code.Game
         public async UniTask<UIRoot> SpawnUIRoot() =>
             await _gameFactory.CreateUIRoot(_sceneDependenciesProvider.UIRoot);
 
-        public async UniTask<EnemyNetworkModel> CreateEnemy(Vector2 pos) =>
-            await _gameFactory.CreateEnemy(pos);
+        public async UniTask<CameraService> SpawnCameraService()
+        {
+            var cameraService = IsHost
+                ? await _gameFactory.CreateCameraService(_sceneDependenciesProvider.MainCamera)
+                : await GetExistedCameraService();
+            
+            return _cameraService = cameraService;
+        }
+
+        private async UniTask<CameraService> GetExistedCameraService()
+        {
+            return null;
+            /*await UniTask.WaitUntil(() => _runner.TryGetPlayerObject(playerRef, out _))
+                .Timeout(NetworkIndents.ClientObjectSearchTimeout);
+
+            var obj = _runner.GetPlayerObject(playerRef);
+            return obj.GetBehaviour<PlayerNetworkModel>()*/
+        }
+
+        public void SetHostIsInitialized() =>
+            _isHostInitializing = false;
+
+        public UniTask WaitUntilHostInitialized() =>
+            UniTask.WaitWhile(() => IsHost && _isHostInitializing);
 
         public async UniTask<PlayerNetworkModel> SetUpPlayerData(PlayerRef playerRef, string nickName)
         {
             var model = IsHost
-                ? await CreatePlayer(playerRef, nickName)
+                ? await CreatePlayerAsHost(playerRef, nickName)
                 : await GetExistedPlayer(playerRef);
 
             var view = await _gameFactory.CreatePlayerUI();
             
-            RegisterPlayer(playerRef, nickName, model, view);
+            RegisterPlayer(playerRef, model, view);
             
             return model;
         }
 
-        private UniTask<PlayerNetworkModel> CreatePlayer(PlayerRef playerRef, string nickName)
+        private UniTask<PlayerNetworkModel> CreatePlayerAsHost(PlayerRef playerRef, string nickName)
         {
             var pos = _sceneDependenciesProvider.PlayerSpawnPoints.PickRandom().position;
             var color = _colorProvider.GetAvailableColor();
@@ -75,7 +101,7 @@ namespace Game.Code.Game
             return obj.GetBehaviour<PlayerNetworkModel>();
         }
 
-        private void RegisterPlayer(PlayerRef playerRef, string nickName, PlayerNetworkModel model, PlayerUIView view)
+        private void RegisterPlayer(PlayerRef playerRef, PlayerNetworkModel model, PlayerUIView view)
         {
             _playerHandleService.AddPlayer(playerRef, model, view);
 

@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Code.Infrastructure.AssetManaging;
 using Game.Code.Game.Projectiles;
 using Game.Code.Game.StaticData;
@@ -100,6 +101,19 @@ namespace Game.Code.Game.Services
             var model = obj.GetComponent<LevelModel>();
 
             return model;
+        }
+
+        public async UniTask<CameraService> CreateCameraService(Camera camera)
+        {
+            var prefab = await _assetProvider.LoadAndGetComponent<CameraService>(CameraServiceAssetPath);
+            var obj = await _runner.SpawnAsync(prefab);
+
+            Debug.Log($"<color=white>prefab - {prefab.name}</color>");
+            
+            var service = obj.GetComponent<CameraService>();
+            //service.Construct(camera);
+
+            return service;
         }
     }
 }

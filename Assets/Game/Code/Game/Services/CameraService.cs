@@ -1,50 +1,56 @@
+using Game.Code.Extensions;
 using Game.Code.Game.Level;
 using System.Collections;
-using Game.Code.Extensions;
 using UnityEngine;
+using Fusion;
 
 namespace Game.Code.Game.Services
 {
     [RequireComponent(typeof(Camera))]
-    public class CameraService : MonoBehaviour
+    [ScriptHelp(BackColor = ScriptHeaderBackColor.Olive)]
+    public class CameraService : NetworkBehaviour
     {
+        [SerializeField] private Camera _camera;
         [SerializeField] private float _smooth = 1;
         
-        private Vector3 _leftBottomBorder;
-        private Vector3 _rightTopBorder;
-        
         private Transform _target;
-        private Camera _camera;
 
-        public void Init(LevelModel levelModel)
+        [Networked] private Vector3 LeftBottomBorder { get; set; }
+        [Networked] private Vector3 RightTopBorder { get; set; }
+
+        public void SetTarget(Transform target)
         {
-            _camera = GetComponent<Camera>();
-
-            _leftBottomBorder = levelModel.LeftBottomCameraBorder.position;
-            _rightTopBorder = levelModel.RightTopCameraBorder.position;
+            SetCameraInPosition(target.position);
+            StartCoroutine(FollowTarget(target));
         }
 
-        public void SetFollowTarget(Transform target)
+        public override void Spawned()
         {
-            _target = target;
-
-            SetCameraInPosition(_target.position);
-            StartCoroutine(FollowTarget());
+            Debug.Log($"<color=white>Spawned</color>");
         }
 
-        private IEnumerator FollowTarget()
+        public void SetLevelBorders(LevelModel levelModel)
+        {
+            Spawned();
+            
+            Debug.Log($"<color=white>Set level borders</color>");
+            LeftBottomBorder = levelModel.LeftBottomCameraBorder.position;
+            RightTopBorder = levelModel.RightTopCameraBorder.position;
+        }
+
+        private IEnumerator FollowTarget(Transform target)
         {
             while (true)
             {
                 yield return null;
                 
-                Vector2 desiredPosition = _target.position;
+                Vector2 desiredPosition = target.position;
 
                 var halfHeight = _camera.orthographicSize;
                 var halfWidth = halfHeight * _camera.aspect;
 
-                desiredPosition.x = Mathf.Clamp(desiredPosition.x, _leftBottomBorder.x + halfWidth, _rightTopBorder.x - halfWidth);
-                desiredPosition.y = Mathf.Clamp(desiredPosition.y, _leftBottomBorder.y + halfHeight, _rightTopBorder.y - halfHeight);
+                desiredPosition.x = Mathf.Clamp(desiredPosition.x, LeftBottomBorder.x + halfWidth, RightTopBorder.x - halfWidth);
+                desiredPosition.y = Mathf.Clamp(desiredPosition.y, LeftBottomBorder.y + halfHeight, RightTopBorder.y - halfHeight);
 
                 var adjustedPosition = Vector2.Lerp(_camera.transform.position, desiredPosition, Time.deltaTime * _smooth);
                 SetCameraInPosition(adjustedPosition);

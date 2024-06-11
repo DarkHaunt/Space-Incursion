@@ -15,10 +15,8 @@ namespace Game.Code.Root.StateMachine.States
             _assetProvider = assetProvider;
         }
         
-        public async UniTask Enter()
-        {
+        public async UniTask Enter() =>
             await _assetProvider.WarmupAssetsByLabel(AddressableIndents.GameplayAssetsLabel);
-        }
 
         public async UniTask Exit() =>
             await _assetProvider.ReleaseAssetsByLabel(AddressableIndents.GameplayAssetsLabel);

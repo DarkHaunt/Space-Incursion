@@ -302,12 +302,12 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   _inputCamera: {fileID: 1754836812645162699}
-  _cameraService: {fileID: 7137414089160633347}
   _uIParent: {fileID: 1915634201}
+  _cameraService: {fileID: 7137414089160633347}
   _playerSpawnPoints:
-  - {fileID: 1630598210}
   - {fileID: 2008726832}
   - {fileID: 1396727988}
+  - {fileID: 1630598210}
   - {fileID: 612475663}
 --- !u!1 &1630598209
 GameObject:
@@ -603,10 +603,11 @@ GameObject:
   - component: {fileID: 4399303799759138364}
   - component: {fileID: 1754836812645162699}
   - component: {fileID: 1527290045974073026}
+  - component: {fileID: 7137414089160633348}
   - component: {fileID: 7137414089160633347}
   - component: {fileID: 7137414089160633346}
   m_Layer: 0
-  m_Name: Main Camera
+  m_Name: '[Main Camera]'
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -655,6 +656,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4836d2bd57344fca276253355eec945, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _camera: {fileID: 1754836812645162699}
+  _smooth: 1
+--- !u!114 &7137414089160633348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3486935328443406763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 4246376360
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 7137414089160633347}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
