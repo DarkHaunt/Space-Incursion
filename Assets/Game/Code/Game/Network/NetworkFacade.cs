@@ -2,65 +2,35 @@ using System.Collections.Generic;
 using Fusion.Sockets;
 using System;
 using Fusion;
-using Game.Code.Game.Scene;
-using Game.Code.Game.Services;
-using UnityEngine;
 
 namespace Game.Code.Game
 {
     public class NetworkFacade : INetworkRunnerCallbacks
     {
-        private readonly NetworkPlayerDataProvider _dataProvider;
-        private readonly GameFactory _gameFactory;
-        private readonly SceneDependenciesProvider _sceneDependenciesProvider;
-
-        private readonly PlayerHandleService _playerHandleService;
-        private readonly NetworkSpawnService _spawnService;
+        private readonly NetworkPlayerHandleService _networkPlayerHandleService;
         private readonly InputService _inputService;
 
 
-        public NetworkFacade(InputService inputService, PlayerHandleService playerHandleService, NetworkSpawnService spawnService,
-            NetworkPlayerDataProvider dataProvider, GameFactory gameFactory, SceneDependenciesProvider sceneDependenciesProvider)
+        public NetworkFacade(InputService inputService,NetworkPlayerHandleService networkPlayerHandleService)
         {
-            _playerHandleService = playerHandleService;
-
+            _networkPlayerHandleService = networkPlayerHandleService;
             _inputService = inputService;
-            _dataProvider = dataProvider;
-            _spawnService = spawnService;
-            _gameFactory = gameFactory;
-            
-            _sceneDependenciesProvider = sceneDependenciesProvider;
         }
 
 
         public void OnInput(NetworkRunner runner, NetworkInput input) =>
             input.Set(_inputService.GetPlayerInput());
 
-        public async void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
-        {
-            await _spawnService.WaitUntilHostInitialized();
-            
-            Debug.Log($"<color=white>Player Spawn</color>");
-            
-            if (_playerHandleService.IsPlayerAlreadyRegistered(player))
-                return;
-
-            var name = _dataProvider.PlayerData.Nickname;
-
-            var playerModel = await _spawnService.SetUpPlayerData(player, name);
-            playerModel.Construct(_playerHandleService, _gameFactory);
-
-            if (playerModel.Runner.LocalPlayer == player)
-                _sceneDependenciesProvider.CameraService.SetTarget(playerModel.transform);
-        }
+        public void OnPlayerJoined(NetworkRunner runner, PlayerRef player) =>
+            _networkPlayerHandleService.AddPlayerToSpawnQueue(player);
 
         public void OnPlayerLeft(NetworkRunner runner, PlayerRef player) =>
-            _spawnService.DespawnPlayer(player);
+            _networkPlayerHandleService.DespawnPlayer(player);
 
         public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
         {
             foreach (var player in runner.ActivePlayers)
-                _spawnService.DespawnPlayer(player);
+                _networkPlayerHandleService.DespawnPlayer(player);
         }
 
         #region [Unimplemented Callbacks]

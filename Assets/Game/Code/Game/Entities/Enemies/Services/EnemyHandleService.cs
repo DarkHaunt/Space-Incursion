@@ -4,7 +4,6 @@ using Game.Code.Common.CoroutineRunner;
 using Game.Code.Extensions;
 using Game.Code.Game.Level;
 using Game.Code.Game.StaticData.Scriptables;
-using Game.Code.Game.Level.BoxArea;
 using Game.Code.Game.StaticData;
 using UnityEngine;
 
@@ -39,7 +38,10 @@ namespace Game.Code.Game.Services
         {
             _enemyConfig = _staticDataProvider.EnemyConfig;
             _positionProvider.Init(levelArea);
+        }
 
+        public void StartSpawning()
+        {
             _spawning = SpawnProcess();
             _coroutineRunner.RunCoroutine(_spawning);
         }

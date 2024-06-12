@@ -1,6 +1,6 @@
+using Game.Code.Game.Boot.Installers;
 using System.Collections.Generic;
 using Game.Code.Game.Services;
-using Game.Code.Game.Scene;
 using Game.Code.Game.Core;
 using VContainer.Unity;
 using UnityEngine;
@@ -18,77 +18,24 @@ namespace Game.Code.Game.Boot
 
         protected override void Configure(IContainerBuilder builder)
         {
-            // TODO: Make Installers for readability
-            
             RegisterBootstrapper(builder);
             RegisterStateMachine(builder);
 
-            RegisterInputService(builder);
-            RegisterPhysicCollisionService(builder);
-            RegisterSceneDependenciesProvider(builder);
+            new SceneServicesInstaller(_inputCamera, _uIParent, _cameraService, _playerSpawnPoints)
+                .Install(builder);
+
+            new NetworkServicesInstaller()
+                .Install(builder);
+
+            new PlayerServicesInstaller()
+                .Install(builder);
             
-            RegisterNetworkFacade(builder);
-            RegisterNetworkSpawnService(builder);
-            
-            RegisterPlayerColorProvider(builder); 
-            RegisterPlayerHandleService(builder);
-
-            RegisterEnemiesHandleService(builder);
-            RegisterEnemiesPositionProvider(builder);
-            RegisterEnemiesSpawnPossibilityProvider(builder);
+            new EnemiesServicesInstaller()
+                .Install(builder);
         }
-
-        private void RegisterEnemiesSpawnPossibilityProvider(IContainerBuilder builder)
-        {
-            builder.Register<EnemySpawnPossibilityProvider>(Lifetime.Scoped)
-                .AsImplementedInterfaces()
-                .AsSelf();
-        }
-
-        private void RegisterEnemiesHandleService(IContainerBuilder builder) =>
-            builder.Register<EnemyHandleService>(Lifetime.Scoped)
-                .AsImplementedInterfaces()
-                .AsSelf();
-
-        private void RegisterEnemiesPositionProvider(IContainerBuilder builder) =>
-            builder.Register<EnemyPositionProvider>(Lifetime.Scoped);
-
-        private void RegisterPlayerHandleService(IContainerBuilder builder) =>
-            builder.Register<PlayerHandleService>(Lifetime.Scoped);
-
-        private void RegisterPhysicCollisionService(IContainerBuilder builder) =>
-            builder.Register<PhysicCollisionService>(Lifetime.Scoped)
-                .AsImplementedInterfaces()
-                .AsSelf();
-
-        private void RegisterPlayerColorProvider(IContainerBuilder builder) =>
-            builder.Register<PlayerColorProvider>(Lifetime.Scoped)
-                .AsImplementedInterfaces()
-                .AsSelf();
-
-        private void RegisterSceneDependenciesProvider(IContainerBuilder builder) =>
-            builder.Register<SceneDependenciesProvider>(Lifetime.Scoped)
-                .WithParameter(_playerSpawnPoints)
-                .WithParameter(_cameraService)
-                .WithParameter(_inputCamera)
-                .WithParameter(_uIParent);
-
-        private void RegisterNetworkFacade(IContainerBuilder builder) =>
-            builder.Register<NetworkFacade>(Lifetime.Scoped);
-
-        private void RegisterNetworkSpawnService(IContainerBuilder builder) =>
-            builder.Register<NetworkSpawnService>(Lifetime.Scoped);
 
         private void RegisterStateMachine(IContainerBuilder builder) =>
             builder.Register<GameStateMachine>(Lifetime.Scoped);
-
-        private void RegisterInputService(IContainerBuilder builder)
-        {
-            builder
-                .Register<InputService>(Lifetime.Scoped)
-                .AsImplementedInterfaces()
-                .AsSelf();
-        }
 
         private void RegisterBootstrapper(IContainerBuilder builder) =>
             builder.RegisterEntryPoint<GameBootstrapper>(Lifetime.Scoped);

@@ -30,7 +30,7 @@ namespace Game.Code.Menu.StateMachine.States
                 nickName: _model.PlayerName
             );
             
-            await _rootStateMachine.Enter<NetworkSetUpState>();
+            await _rootStateMachine.Enter<FusionNetworkBootstrapState>();
         }
 
         public UniTask Exit() =>

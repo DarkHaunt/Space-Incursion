@@ -4,14 +4,14 @@ using Cysharp.Threading.Tasks;
 
 namespace Game.Code.Root.StateMachine.States
 {
-    public class NetworkSetUpState : IState
+    public class FusionNetworkBootstrapState : IState
     {
         private readonly RootStateMachine _stateMachine;
 
         private readonly TransitionHandler _transitionHandler;
         private readonly SceneLoader _sceneLoader;
 
-        public NetworkSetUpState(RootStateMachine stateMachine, TransitionHandler transitionHandler, SceneLoader sceneLoader)
+        public FusionNetworkBootstrapState(RootStateMachine stateMachine, TransitionHandler transitionHandler, SceneLoader sceneLoader)
         {
             _transitionHandler = transitionHandler;
 
