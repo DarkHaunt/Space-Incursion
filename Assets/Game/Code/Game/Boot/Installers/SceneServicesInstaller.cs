@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using Game.Code.Game.Scene;
 using Game.Code.Game.Services;
+using VContainer.Unity;
 using UnityEngine;
 using VContainer;
-using VContainer.Unity;
 
 namespace Game.Code.Game.Boot.Installers
 {
@@ -11,13 +11,11 @@ namespace Game.Code.Game.Boot.Installers
     {
         private readonly Camera _inputCamera;
         private readonly Transform _uIParent;
-        private readonly CameraService _cameraService;
         private readonly List<Transform> _playerSpawnPoints;
 
-        public SceneServicesInstaller(Camera inputCamera, Transform uIParent, CameraService cameraService, List<Transform> playerSpawnPoints)
+        public SceneServicesInstaller(Camera inputCamera, Transform uIParent, List<Transform> playerSpawnPoints)
         {
             _playerSpawnPoints = playerSpawnPoints;
-            _cameraService = cameraService;
             _inputCamera = inputCamera;
             _uIParent = uIParent;
         }
@@ -37,7 +35,6 @@ namespace Game.Code.Game.Boot.Installers
         private void RegisterSceneDependenciesProvider(IContainerBuilder builder) =>
             builder.Register<SceneDependenciesProvider>(Lifetime.Scoped)
                 .WithParameter(_playerSpawnPoints)
-                .WithParameter(_cameraService)
                 .WithParameter(_inputCamera)
                 .WithParameter(_uIParent);
     }

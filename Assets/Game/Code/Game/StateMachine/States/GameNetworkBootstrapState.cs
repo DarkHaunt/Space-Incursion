@@ -40,6 +40,6 @@ namespace Game.Code.Game.Core.States
         }
 
         private UniTask GoToGameBootstrapState() =>
-            _stateMachine.Enter<BootstrapState>();
+            _stateMachine.Enter<GameBootstrapState>();
     }
 }

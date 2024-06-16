@@ -9,10 +9,18 @@ namespace Game.Code.Game.Boot.Installers
         public void Install(IContainerBuilder builder)
         {
             RegisterInputService(builder);
-            RegisterPlayerColorProvider(builder); 
-            RegisterPlayerHandleService(builder);            
+            RegisterCameraService(builder);
+            RegisterPlayerColorProvider(builder);
+            RegisterPlayerHandleService(builder);
         }
-        
+
+        private void RegisterCameraService(IContainerBuilder builder)
+        {
+            builder.Register<CameraService>(Lifetime.Scoped)
+                .AsImplementedInterfaces()
+                .AsSelf();
+        }
+
         private void RegisterPlayerHandleService(IContainerBuilder builder) =>
             builder.Register<PlayerHandleService>(Lifetime.Scoped);
 

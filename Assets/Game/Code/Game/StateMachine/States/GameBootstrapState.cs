@@ -1,37 +1,39 @@
 using Game.Code.Common.StateMachineBase.Interfaces;
 using Cysharp.Threading.Tasks;
-using Game.Code.Game.Scene;
 using Game.Code.Game.Services;
+using Game.Code.Game.StaticData;
 
 namespace Game.Code.Game.Core.States
 {
-    public class BootstrapState : IState
+    public class GameBootstrapState : IState
     {
         private readonly GameStateMachine _stateMachine;
 
-        private readonly SceneDependenciesProvider _sceneDependenciesProvider;
         private readonly NetworkHostStateHandleService _hostStateHandleService;
+        private readonly GameStaticDataProvider _gameStaticDataProvider;
         private readonly PhysicCollisionService _collisionService;
         private readonly EnemyHandleService _enemyHandleService;
+        private readonly CameraService _cameraService;
         private readonly GameFactory _gameFactory;
 
 
-        public BootstrapState(GameStateMachine stateMachine, PhysicCollisionService collisionService, NetworkHostStateHandleService hostStateHandleService, 
-            GameFactory gameFactory, SceneDependenciesProvider sceneDependenciesProvider, EnemyHandleService enemyHandleService)
+        public GameBootstrapState(GameStateMachine stateMachine, PhysicCollisionService collisionService, GameStaticDataProvider gameStaticDataProvider,
+            NetworkHostStateHandleService hostStateHandleService, GameFactory gameFactory, EnemyHandleService enemyHandleService, CameraService cameraService)
         {
             _stateMachine = stateMachine;
 
-            _sceneDependenciesProvider = sceneDependenciesProvider;
             _hostStateHandleService = hostStateHandleService;
+            _gameStaticDataProvider = gameStaticDataProvider;
             _enemyHandleService = enemyHandleService;
             _collisionService = collisionService;
+            _cameraService = cameraService;
             _gameFactory = gameFactory;
         }
 
         public async UniTask Enter()
         {
-            await SetUpHostSideServices();
             await SetUpClientSideServices();
+            await SetUpHostSideServices();
 
             await GoToLobbyState();
         }
@@ -46,9 +48,8 @@ namespace Game.Code.Game.Core.States
             if (_hostStateHandleService.IsHost)
             {
                 var level = await _gameFactory.CreateLevel();
-                _enemyHandleService.Init(level);
                 
-                //_sceneDependenciesProvider.CameraService.SetLevelBorders(level);
+                _enemyHandleService.Init(level);
             }
 
             _hostStateHandleService.SetHostIsInitialized();
@@ -57,8 +58,13 @@ namespace Game.Code.Game.Core.States
         private async UniTask SetUpClientSideServices()
         {
             _collisionService.Enable();
-            
-            await _gameFactory.CreateUIRoot(_sceneDependenciesProvider.UIRoot);
+            _cameraService.SetLevelBorders
+            (
+                _gameStaticDataProvider.GameConfig.CameraLeftBottomBound,
+                _gameStaticDataProvider.GameConfig.CameraRightTopBound
+            );
+
+            await _gameFactory.CreateUIRoot();
         }
 
         private async UniTask GoToLobbyState() =>

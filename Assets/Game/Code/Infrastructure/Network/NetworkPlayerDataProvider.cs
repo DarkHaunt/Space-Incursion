@@ -13,7 +13,7 @@ namespace Game.Code.Game
             {
                 GameArgs = new StartGameArgs
                 {
-                    PlayerCount = NetworkIndents.PlayerCount,
+                    PlayerCount = NetworkIndents.MaxPlayersCount,
                     GameMode = GameMode.AutoHostOrClient,
                     SessionName = roomName,
                 },

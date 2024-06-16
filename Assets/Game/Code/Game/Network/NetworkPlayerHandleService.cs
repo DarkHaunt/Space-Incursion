@@ -6,45 +6,52 @@ using Game.Code.Game.Entities;
 using Game.Code.Extensions;
 using Game.Code.Game.Scene;
 using Game.Code.Game.UI;
-using UnityEngine;
+using System;
 using Fusion;
+using UniRx;
+using Object = UnityEngine.Object;
 
 namespace Game.Code.Game
 {
     public class NetworkPlayerHandleService
     {
-        private readonly Queue<PlayerRef> _playersToSpawn = new();
+        private readonly ReactiveCollection<PlayerRef> _playersToSpawn = new();
         
         private readonly NetworkHostStateHandleService _hostStateHandleService;
         private readonly SceneDependenciesProvider _sceneDependenciesProvider;
         private readonly PlayerHandleService _playerHandleService;
         private readonly NetworkPlayerDataProvider _dataProvider;
         private readonly PlayerColorProvider _colorProvider;
+        private readonly CameraService _cameraService;
         private readonly GameFactory _gameFactory;
         private readonly NetworkRunner _runner;
-        
-        public IEnumerable<PlayerRef> PlayersToSpawn =>
-            _playersToSpawn;
+
+        public IObservable<CollectionAddEvent<PlayerRef>> OnPlayerAdded =>
+            _playersToSpawn.ObserveAdd();
 
 
         public NetworkPlayerHandleService(NetworkHostStateHandleService hostStateHandleService, PlayerHandleService playerHandleService, 
             NetworkMonoServiceLocator serviceLocator, NetworkPlayerDataProvider dataProvider, SceneDependenciesProvider sceneDependenciesProvider, 
-            PlayerColorProvider colorProvider, GameFactory gameFactory)
+            PlayerColorProvider colorProvider, CameraService cameraService, GameFactory gameFactory)
         {
             _hostStateHandleService = hostStateHandleService;
 
             _sceneDependenciesProvider = sceneDependenciesProvider;
             _playerHandleService = playerHandleService;
             _colorProvider = colorProvider;
+            _cameraService = cameraService;
             _dataProvider = dataProvider;
             _gameFactory = gameFactory;
             
             _runner = serviceLocator.Runner;
         }
-        
+
         public void AddPlayerToSpawnQueue(PlayerRef playerRef) =>
-            _playersToSpawn.Enqueue(playerRef);
-        
+            _playersToSpawn.Add(playerRef);
+
+        public IEnumerable<PlayerRef> GetAllPlayersToSpawn() =>
+            _playersToSpawn;
+
         public async UniTask SetUpPlayerData(PlayerRef playerRef)
         {
             var model = _hostStateHandleService.IsHost
@@ -58,9 +65,9 @@ namespace Game.Code.Game
             model.Construct(_playerHandleService, _gameFactory);
             
             if (model.Runner.LocalPlayer == playerRef)
-                _sceneDependenciesProvider.CameraService.SetTarget(model.transform);
+                _cameraService.SetTarget(model.transform);
             
-            _playersToSpawn.Dequeue();
+            _playersToSpawn.Remove(playerRef);
         }
 
         private UniTask<PlayerNetworkModel> CreatePlayer(PlayerRef playerRef, string nickName)
@@ -87,7 +94,7 @@ namespace Game.Code.Game
             _runner.SetPlayerObject(playerRef, model.Object);
             _runner.SetIsSimulated(model.Object, true);
         }
-        
+
         public void DespawnPlayer(PlayerRef player)
         {
             if (_hostStateHandleService.IsHost)

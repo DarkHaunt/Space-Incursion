@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Fusion.Sockets;
 using System;
 using Fusion;
+using UnityEngine;
 
 namespace Game.Code.Game
 {

@@ -36,7 +36,7 @@ namespace Game.Code.Game.Boot
             _networkRunner.AddCallbacks(_networkFacade);
 
             _stateMachine.RegisterState(_stateFactory.Create<GameNetworkBootstrapState>(Lifetime.Scoped));
-            _stateMachine.RegisterState(_stateFactory.Create<BootstrapState>(Lifetime.Scoped));
+            _stateMachine.RegisterState(_stateFactory.Create<GameBootstrapState>(Lifetime.Scoped));
             _stateMachine.RegisterState(_stateFactory.Create<LobbyState>(Lifetime.Scoped));
             _stateMachine.RegisterState(_stateFactory.Create<GameState>(Lifetime.Scoped));
 

@@ -29,8 +29,8 @@ MonoBehaviour:
     m_SerializedLabels:
     - gameplay
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: ee71bd49d4cc0154eb98ba3cb47f996c
-    m_Address: CameraService
+  - m_GUID: 571a7c8585eed2b458552d104ce7280a
+    m_Address: GameStartUI
     m_ReadOnly: 0
     m_SerializedLabels:
     - gameplay

@@ -1,6 +1,5 @@
 using Game.Code.Game.Boot.Installers;
 using System.Collections.Generic;
-using Game.Code.Game.Services;
 using Game.Code.Game.Core;
 using VContainer.Unity;
 using UnityEngine;
@@ -13,7 +12,6 @@ namespace Game.Code.Game.Boot
         [Header("--- Scene Dependencies ---")]
         [SerializeField] private Camera _inputCamera;
         [SerializeField] private Transform _uIParent;
-        [SerializeField] private CameraService _cameraService;
         [SerializeField] private List<Transform> _playerSpawnPoints;
 
         protected override void Configure(IContainerBuilder builder)
@@ -21,8 +19,8 @@ namespace Game.Code.Game.Boot
             RegisterBootstrapper(builder);
             RegisterStateMachine(builder);
 
-            new SceneServicesInstaller(_inputCamera, _uIParent, _cameraService, _playerSpawnPoints)
-                .Install(builder);
+            new SceneServicesInstaller(_inputCamera, _uIParent, _playerSpawnPoints)
+                .Install(builder); 
 
             new NetworkServicesInstaller()
                 .Install(builder);

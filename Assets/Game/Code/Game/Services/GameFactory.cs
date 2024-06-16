@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using Code.Infrastructure.AssetManaging;
 using Game.Code.Game.Projectiles;
 using Game.Code.Game.StaticData;
@@ -8,12 +7,14 @@ using Game.Code.Game.Level;
 using Game.Code.Game.UI;
 using UnityEngine;
 using Fusion;
+using Game.Code.Game.Scene;
 using static Game.Code.Game.StaticData.Indents.AddressableIndents;
 
 namespace Game.Code.Game.Services
 {
     public class GameFactory
     {
+        private readonly SceneDependenciesProvider _sceneDependenciesProvider;
         private readonly GameStaticDataProvider _dataProvider;
         private readonly AssetProvider _assetProvider;
 
@@ -22,10 +23,12 @@ namespace Game.Code.Game.Services
         private UIRoot _uiRoot;
 
 
-        public GameFactory(AssetProvider assetProvider, GameStaticDataProvider dataProvider, NetworkMonoServiceLocator networkServiceLocator)
+        public GameFactory(AssetProvider assetProvider, GameStaticDataProvider dataProvider, 
+            SceneDependenciesProvider sceneDependenciesProvider, NetworkMonoServiceLocator networkServiceLocator)
         {
             _assetProvider = assetProvider;
             _dataProvider = dataProvider;
+            _sceneDependenciesProvider = sceneDependenciesProvider;
 
             _runner = networkServiceLocator.Runner;
         }
@@ -62,6 +65,25 @@ namespace Game.Code.Game.Services
             return model;
         }
 
+        public async UniTask<UIRoot> CreateUIRoot()
+        {
+            var prefab = await _assetProvider.LoadAndGetComponent<UIRoot>(RootUIAssetPath);
+            var root = Object.Instantiate(prefab, _sceneDependenciesProvider.UIRoot, true);
+
+            return _uiRoot = root;
+        }    
+        
+        public async UniTask<GameStartView> CreateGameStartView()
+        {
+            var prefab = await _assetProvider.LoadAndGetComponent<GameStartView>(GameStartUIPath);
+            var view = Object.Instantiate(prefab);
+            
+            var rect = view.GetComponent<RectTransform>();
+            rect.SetParent(_uiRoot.PlayerViewsContainer);
+
+            return view;
+        }
+        
         public async UniTask<PlayerUIView> CreatePlayerUI()
         {
             var prefab = await _assetProvider.LoadAndGetComponent<PlayerUIView>(PlayerUIAssetPath);
@@ -72,14 +94,6 @@ namespace Game.Code.Game.Services
             rect.SetParent(_uiRoot.PlayerViewsContainer);
 
             return view;
-        }
-
-        public async UniTask<UIRoot> CreateUIRoot(Transform parent)
-        {
-            var prefab = await _assetProvider.LoadAndGetComponent<UIRoot>(RootUIAssetPath);
-            var root = Object.Instantiate(prefab, parent, true);
-
-            return _uiRoot = root;
         }
 
         public async UniTask<ProjectileNetworkedModel> CreateProjectile(Vector2 pos, PlayerRef owner)
@@ -101,19 +115,6 @@ namespace Game.Code.Game.Services
             var model = obj.GetComponent<LevelModel>();
 
             return model;
-        }
-
-        public async UniTask<CameraService> CreateCameraService(Camera camera)
-        {
-            var prefab = await _assetProvider.LoadAndGetComponent<CameraService>(CameraServiceAssetPath);
-            var obj = await _runner.SpawnAsync(prefab);
-
-            Debug.Log($"<color=white>prefab - {prefab.name}</color>");
-            
-            var service = obj.GetComponent<CameraService>();
-            //service.Construct(camera);
-
-            return service;
         }
     }
 }

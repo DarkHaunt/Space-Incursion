@@ -8,11 +8,12 @@ namespace Game.Code.Game.StaticData.Scriptables
     {
         [field: Header("--- Enemies ---")]
         [field: SerializeField] public AnimationCurve EnemiesSpawnIncome { get; private set; }
-
-        [field: SerializeField] public int EnemiesSpawnPickCount { get; private set; }
         [field: SerializeField] public float EnemiesSpawnIncomeTime { get; private set; }
         [field: SerializeField] public float EnemiesSpawnFullForceTime { get; private set; }
-
+        
+        [field: Header("--- Scene ---")]
+        [field: SerializeField] public Vector2 CameraLeftBottomBound { get; private set; }
+        [field: SerializeField] public Vector2 CameraRightTopBound { get; private set; }
 
         [field: Header("--- Players ---")]
         [field: SerializeField] public List<Color> AvailableColor { get; private set; }

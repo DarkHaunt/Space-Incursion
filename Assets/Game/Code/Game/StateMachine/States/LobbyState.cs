@@ -12,41 +12,64 @@ namespace Game.Code.Game.Core.States
         private readonly CompositeDisposable _disposables = new ();
 
         private readonly NetworkPlayerHandleService _networkPlayerHandleService;
+        private readonly NetworkHostStateHandleService _hostStateHandleService;
         private readonly PlayerHandleService _playerHandleService;
         private readonly TransitionHandler _transitionHandler;
+        private readonly GameStartService _gameStartService;
         private readonly GameStateMachine _stateMachine;
 
-        public LobbyState(GameStateMachine stateMachine, PlayerHandleService playerHandleService, NetworkPlayerHandleService networkPlayerHandleService, TransitionHandler transitionHandler)
+        public LobbyState(GameStateMachine stateMachine, PlayerHandleService playerHandleService, TransitionHandler transitionHandler, 
+            NetworkPlayerHandleService networkPlayerHandleService, NetworkHostStateHandleService hostStateHandleService, GameStartService gameStartService)
         {
             _stateMachine = stateMachine;
             
             _networkPlayerHandleService = networkPlayerHandleService;
+            _hostStateHandleService = hostStateHandleService;
             _playerHandleService = playerHandleService;
             _transitionHandler = transitionHandler;
+            _gameStartService = gameStartService;
         }
-        
+
         public async UniTask Enter()
         {
             ObservePlayersIncome();
+            ObserveStartGameView();
             
-            //await ProcessPlayerSpawn();
+            await ProcessPlayersSpawn();
             
             await _transitionHandler.PlayFadeOutAnimation();
-
-            //await _stateMachine.Enter<GameState>();
         }
 
-        private UniTask ProcessPlayerSpawn()
+        public UniTask Exit()
         {
-            var spawnTasks = _networkPlayerHandleService.PlayersToSpawn.Select(SpawnPlayer);
+            _disposables.Dispose();
+            
+            return UniTask.CompletedTask;
+        }
+
+        private UniTask ProcessPlayersSpawn()
+        {
+            var spawnTasks = _networkPlayerHandleService
+                .GetAllPlayersToSpawn()
+                .Select(SpawnPlayer);
+            
             return UniTask.WhenAll(spawnTasks);
+        }
+
+        private void ObserveStartGameView()
+        {
+            if (!_hostStateHandleService.IsHost)
+                return;
+
+            _gameStartService.OnGameStartButtonClick
+                .Subscribe(_ => GoToGameStart())
+                .AddTo(_disposables);
         }
 
         private void ObservePlayersIncome()
         {
-            _networkPlayerHandleService.PlayersToSpawn
-                .ToObservable()
-                .Subscribe(HandlePlayerIncome)
+            _networkPlayerHandleService.OnPlayerAdded
+                .Subscribe(x => HandlePlayerIncome(x.Value))
                 .AddTo(_disposables);
         }
 
@@ -61,11 +84,7 @@ namespace Game.Code.Game.Core.States
         private  async UniTask SpawnPlayer(PlayerRef player) =>
             await _networkPlayerHandleService.SetUpPlayerData(player);
 
-        public UniTask Exit()
-        {
-            _disposables.Dispose();
-            
-            return UniTask.CompletedTask;
-        }
+        private async void GoToGameStart() =>
+            await _stateMachine.Enter<GameState>();
     }
 }
