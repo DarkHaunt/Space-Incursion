@@ -5,14 +5,14 @@ using Fusion;
 
 namespace Game.Code.Game.Core.States
 {
-    public class GameNetworkBootstrapState : IState
+    public class NetworkBootstrapState : IState
     {
         private readonly NetworkPlayerDataProvider _playerDataProvider;
         private readonly GameStateMachine _stateMachine;
         private readonly NetworkRunner _networkRunner;
         private readonly NetworkFacade _networkFacade;
 
-        public GameNetworkBootstrapState(GameStateMachine stateMachine, NetworkFacade networkFacade, NetworkMonoServiceLocator serviceLocator, 
+        public NetworkBootstrapState(GameStateMachine stateMachine, NetworkFacade networkFacade, NetworkMonoServiceLocator serviceLocator, 
             NetworkPlayerDataProvider playerDataProvider)
         {
             _playerDataProvider = playerDataProvider;
@@ -25,7 +25,7 @@ namespace Game.Code.Game.Core.States
         public async UniTask Enter()
         {
             await StartGame();
-            await GoToGameBootstrapState();
+            await GoToClientState();
         }
 
         public UniTask Exit() =>
@@ -39,7 +39,7 @@ namespace Game.Code.Game.Core.States
             await _networkRunner.StartGame(_playerDataProvider.PlayerData.GameArgs);
         }
 
-        private UniTask GoToGameBootstrapState() =>
-            _stateMachine.Enter<GameBootstrapState>();
+        private UniTask GoToClientState() =>
+            _stateMachine.Enter<ClientBootstrapState>();
     }
 }

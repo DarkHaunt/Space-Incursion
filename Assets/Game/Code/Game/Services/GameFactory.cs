@@ -26,9 +26,9 @@ namespace Game.Code.Game.Services
         public GameFactory(AssetProvider assetProvider, GameStaticDataProvider dataProvider, 
             SceneDependenciesProvider sceneDependenciesProvider, NetworkMonoServiceLocator networkServiceLocator)
         {
+            _sceneDependenciesProvider = sceneDependenciesProvider;
             _assetProvider = assetProvider;
             _dataProvider = dataProvider;
-            _sceneDependenciesProvider = sceneDependenciesProvider;
 
             _runner = networkServiceLocator.Runner;
         }
@@ -79,8 +79,8 @@ namespace Game.Code.Game.Services
             var view = Object.Instantiate(prefab);
             
             var rect = view.GetComponent<RectTransform>();
-            rect.SetParent(_uiRoot.PlayerViewsContainer);
-
+            rect.SetParent(_uiRoot.Self, false);
+            
             return view;
         }
         

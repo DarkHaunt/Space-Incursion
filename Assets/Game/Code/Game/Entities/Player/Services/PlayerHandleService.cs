@@ -11,6 +11,9 @@ namespace Game.Code.Game.Services
         private readonly Dictionary<PlayerRef, PlayerNetworkModel> _models = new();
         private readonly Dictionary<PlayerRef, PlayerUIView> _views = new();
 
+        public int PlayersCount =>
+            _models.Count;
+
         public void AddPlayer(PlayerRef playerRef, PlayerNetworkModel model, PlayerUIView playerView)
         {
             _views.Add(playerRef, playerView);

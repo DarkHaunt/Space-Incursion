@@ -2,6 +2,7 @@ using Game.Code.Game.StaticData.Indents;
 using Game.Code.Game.UI;
 using System;
 using UniRx;
+using UnityEngine;
 
 namespace Game.Code.Game.Services
 {
@@ -26,6 +27,9 @@ namespace Game.Code.Game.Services
             
             CheckForGameStartAbility(playerCount);
         }
+
+        public void HideView() =>
+            _view.Hide();
 
         private void CheckForGameStartAbility(int playerCount) =>
             _view.EnableStartButton(playerCount >= NetworkIndents.MinPlayersCount);

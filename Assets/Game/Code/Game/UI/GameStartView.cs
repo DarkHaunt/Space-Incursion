@@ -8,7 +8,10 @@ namespace Game.Code.Game.UI
     {
         [SerializeField] private TextMeshProUGUI _playerCount;
         [field: SerializeField] public Button StartButton { get; private set; }
-        
+
+        public void Hide() =>
+            gameObject.SetActive(false);
+
         public void SetPlayersCount(int count, int maxCount) =>
             _playerCount.text = $"{count}/{maxCount}";
 

@@ -35,7 +35,6 @@ namespace Game.Code.Root
             RegisterNetworkArgsProvider(builder);
             RegisterNetworkServiceLocator(builder);
 
-            RegisterGameFactory(builder);
             RegisterUpdateRunner(builder);
             RegisterAssetProvider(builder);
             RegisterSceneLoaderSystem(builder);
@@ -49,9 +48,6 @@ namespace Game.Code.Root
 
         private void RegisterStaticDataProvider(IContainerBuilder builder) =>
             builder.Register<GameStaticDataProvider>(Lifetime.Singleton);
-
-        private void RegisterGameFactory(IContainerBuilder builder) =>
-            builder.Register<GameFactory>(Lifetime.Singleton);
 
         private void RegisterUpdateRunner(IContainerBuilder builder)
         {

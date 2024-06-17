@@ -22,16 +22,19 @@ namespace Game.Code.Game.Boot.Installers
 
         public void Install(IContainerBuilder builder)
         {
+            RegisterGameFactory(builder);
             RegisterPhysicCollisionService(builder);
             RegisterSceneDependenciesProvider(builder);
         }
+        
+        private void RegisterGameFactory(IContainerBuilder builder) =>
+            builder.Register<GameFactory>(Lifetime.Scoped);
 
         private void RegisterPhysicCollisionService(IContainerBuilder builder) =>
             builder.Register<PhysicCollisionService>(Lifetime.Scoped)
                 .AsImplementedInterfaces()
                 .AsSelf();
-
-
+        
         private void RegisterSceneDependenciesProvider(IContainerBuilder builder) =>
             builder.Register<SceneDependenciesProvider>(Lifetime.Scoped)
                 .WithParameter(_playerSpawnPoints)
