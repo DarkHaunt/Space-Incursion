@@ -1,20 +1,24 @@
-using System;
+using Game.Code.Game.Services.Models;
 using Game.Code.Game.Services;
 using Game.Code.Game.Shooting;
 using UnityEngine;
 using Fusion;
+using System;
 
 namespace Game.Code.Game.Entities
 {
     [ScriptHelp(BackColor = ScriptHeaderBackColor.Olive)]
     public class PlayerNetworkModel : NetworkBehaviour
     {
-        [SerializeField] private PlayerGraphic _graphic;
+        [SerializeField] private PlayerPhysicModel _physicModel;
+        [SerializeField] private EntityGraphic _graphic;
         [SerializeField] private ShootModule _shoot;
         [SerializeField] private PhysicMove _move;
 
         private PlayerHandleService _handleService;
         private ChangeDetector _changeDetector;
+
+        private bool _isDead;
 
         [Networked] public NetworkPlayerStaticData Data { get; set; }
         [Networked] public int Score { get; set; }
@@ -41,11 +45,38 @@ namespace Game.Code.Game.Entities
             _move.SetMoveSpeed(Data.Speed);
         }
 
+        public async void Kill()
+        {
+            _isDead = true;
+
+            _physicModel.EnableCollider(false);
+            _move.Stop();
+
+            RPC_DeathGraphicEffect();
+
+            await _graphic.WaitUntilDeathEffectEnds();
+
+            Despawn();
+        }
+
+        [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
+        private void RPC_DeathGraphicEffect()
+        {
+            _graphic.PlayDestroyGraphics();
+            _graphic.PlayFireParticle(false);
+        }
+
+        private void Despawn() =>
+            Runner.Despawn(Object);
+
         public override void Spawned() =>
             _changeDetector = GetChangeDetector(ChangeDetector.Source.SimulationState);
 
         public override void FixedUpdateNetwork()
         {
+            if (_isDead)
+                return;
+
             if (Runner.TryGetInputForPlayer(Object.InputAuthority, out PlayerInputData input))
             {
                 _move.RotateToFace(input.ShootDirection);

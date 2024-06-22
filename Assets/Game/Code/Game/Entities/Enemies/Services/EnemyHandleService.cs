@@ -67,7 +67,6 @@ namespace Game.Code.Game.Services
             _positionProvider.CalculateEnemyPositions(out var spawnPos, out var movePos);
             
             var enemy = await _gameFactory.CreateEnemy(spawnPos);
-            enemy.Construct(_enemyConfig);
             enemy.StartMoveTo(movePos);
             
             enemy.OnKilledBy += _playerHandleService.IncreasePlayerScore;

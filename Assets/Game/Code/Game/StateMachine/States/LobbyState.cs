@@ -39,6 +39,8 @@ namespace Game.Code.Game.Core.States
             await ProcessPlayersSpawn();
 
             await _transitionHandler.PlayFadeOutAnimation();
+            
+            GoToGameStart();
         }
 
         public UniTask Exit()

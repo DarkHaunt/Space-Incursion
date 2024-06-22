@@ -95,6 +95,15 @@ namespace Game.Code.Game
             _runner.SetIsSimulated(model.Object, true);
         }
 
+        public void KillPlayer(PlayerRef player)
+        {
+            if (_hostStateHandleService.IsHost)
+            {
+                var obj = _playerHandleService.GetPlayerObject(player);
+                _runner.Despawn(obj);
+            }
+        }
+
         public void DespawnPlayer(PlayerRef player)
         {
             if (_hostStateHandleService.IsHost)

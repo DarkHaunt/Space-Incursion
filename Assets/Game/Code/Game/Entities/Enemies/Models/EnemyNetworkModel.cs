@@ -13,9 +13,8 @@ namespace Game.Code.Game.Services
     {
         public event Action<PlayerRef> OnKilledBy;
         
-        [SerializeField] private Collider2D _collider2D;
-
         [Header("--- Models ---")]
+        [SerializeField] private EnemyPhysicModel _physicModel;
         [SerializeField] private EntityGraphic _graphic;
         [SerializeField] private PhysicMove _move;
 
@@ -23,8 +22,11 @@ namespace Game.Code.Game.Services
         public override void Spawned() =>
             _graphic.PlayFireParticle(true);
 
-        public void Construct(EnemyConfig config) =>
+        public void Construct(EnemyConfig config)
+        {
             _move.SetMoveSpeed(config.MoveSpeed);
+            _physicModel.Construct();
+        }
 
         public void StartMoveTo(Vector2 point)
         {
@@ -40,7 +42,7 @@ namespace Game.Code.Game.Services
         {
             OnKilledBy?.Invoke(killer);
             
-            _collider2D.enabled = false;
+            _physicModel.EnableCollider(false);
             _move.Stop();
             
             RPC_DeathGraphicEffect();

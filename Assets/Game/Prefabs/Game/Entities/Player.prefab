@@ -265,7 +265,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94c32f8767c689541becbddd231ffb6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _graphic: {fileID: 2394395632029298425}
+  _physicModel: {fileID: 2394395632029298425}
+  _graphic: {fileID: 5837925525145455745}
   _shoot: {fileID: 8781395072676585218}
   _move: {fileID: -5728526138182322784}
   _Score: 0
@@ -329,7 +330,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7735a04dd8f46f28e8d27583a99e586, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _entityGraphic: {fileID: 5837925525145455745}
+  _collider: {fileID: 3157287507564780716}
 --- !u!114 &5837925525145455745
 MonoBehaviour:
   m_ObjectHideFlags: 0
