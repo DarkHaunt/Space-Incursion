@@ -14,10 +14,10 @@ namespace Game.Code.Game.Core.States
             _hostStateHandleService = hostStateHandleService;
             _enemyHandleService = enemyHandleService;
         }
-        
+
         public UniTask Enter()
         {
-            if(_hostStateHandleService.IsHost)
+            if (_hostStateHandleService.IsHost)
                 _enemyHandleService.StartSpawning();
 
             return UniTask.CompletedTask;
@@ -25,6 +25,12 @@ namespace Game.Code.Game.Core.States
 
         public UniTask Exit()
         {
+            if (_hostStateHandleService.IsHost)
+            {
+                _enemyHandleService.StopSpawning();
+                _enemyHandleService.KillAllExistingEnemies();
+            }
+
             return UniTask.CompletedTask;
         }
     }

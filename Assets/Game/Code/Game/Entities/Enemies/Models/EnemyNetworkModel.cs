@@ -5,13 +5,14 @@ using UnityEngine;
 using DG.Tweening;
 using System;
 using Fusion;
+using Game.Code.Game.Entities.Enemies.Data;
 
 namespace Game.Code.Game.Services
 {
     [ScriptHelp(BackColor = ScriptHeaderBackColor.Olive)]
     public class EnemyNetworkModel : NetworkBehaviour
     {
-        public event Action<PlayerRef> OnKilledBy;
+        public event Action<EnemyDeathData> OnDeath;
         
         [Header("--- Models ---")]
         [SerializeField] private EnemyPhysicModel _physicModel;
@@ -40,8 +41,8 @@ namespace Game.Code.Game.Services
 
         public async void Kill(PlayerRef killer)
         {
-            OnKilledBy?.Invoke(killer);
-            
+            NotifyDeath(killer);
+
             _physicModel.EnableCollider(false);
             _move.Stop();
             
@@ -50,6 +51,17 @@ namespace Game.Code.Game.Services
             await _graphic.WaitUntilDeathEffectEnds();
 
             Despawn();
+        }
+
+        private void NotifyDeath(PlayerRef killer)
+        {
+            var data = new EnemyDeathData
+            (
+                self: this,
+                killer: killer
+            );
+
+            OnDeath?.Invoke(data);
         }
 
         [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]

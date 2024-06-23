@@ -44,10 +44,8 @@ namespace Game.Code.Game.Services
             _rightTopBorder = rightTopBorder;
         }
 
-        public void CancelFollow()
-        {
+        public void CancelFollow() => 
             _cts?.Cancel();
-        }
 
         private void SetCameraInPosition(Vector3 pos)
         {
