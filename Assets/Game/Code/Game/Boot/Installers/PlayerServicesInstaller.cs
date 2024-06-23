@@ -1,3 +1,5 @@
+using Game.Code.Game.Entities.Player.Services;
+using Game.Code.Game.Input;
 using Game.Code.Game.Services;
 using VContainer;
 using VContainer.Unity;
@@ -6,16 +8,27 @@ namespace Game.Code.Game.Boot.Installers
 {
     public class PlayerServicesInstaller : IInstaller
     {
+        private readonly UIService _uiService;
+
+        public PlayerServicesInstaller(UIService uiService)
+        {
+            _uiService = uiService;
+        }
+
         public void Install(IContainerBuilder builder)
         {
             RegisterInputService(builder);
             RegisterCameraService(builder);
-            
+
+            RegisterUIService(builder);
             RegisterGameStartService(builder);
             
             RegisterPlayerColorProvider(builder);
             RegisterPlayerHandleService(builder);
         }
+
+        private void RegisterUIService(IContainerBuilder builder) =>
+            builder.RegisterInstance(_uiService);
 
         private void RegisterGameStartService(IContainerBuilder builder) =>
             builder.Register<GameStartService>(Lifetime.Scoped);

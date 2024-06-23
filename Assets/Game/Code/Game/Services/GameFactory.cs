@@ -1,13 +1,17 @@
-using Code.Infrastructure.AssetManaging;
-using Game.Code.Game.Projectiles;
 using Game.Code.Game.StaticData;
 using Game.Code.Game.Entities;
 using Cysharp.Threading.Tasks;
-using Game.Code.Game.Level;
 using Game.Code.Game.UI;
 using UnityEngine;
 using Fusion;
+using Game.Code.Game.Entities.Enemies.Models;
+using Game.Code.Game.Entities.Player.Data;
+using Game.Code.Game.Entities.Player.Models;
+using Game.Code.Game.Entities.Projectiles;
 using Game.Code.Game.Scene;
+using Game.Code.Game.Scene.Level;
+using Game.Code.Infrastructure.AssetManaging;
+using Game.Code.Infrastructure.Network;
 using static Game.Code.Game.StaticData.Indents.AddressableIndents;
 
 namespace Game.Code.Game.Services
@@ -75,7 +79,18 @@ namespace Game.Code.Game.Services
         
         public async UniTask<GameStartView> CreateGameStartView()
         {
-            var prefab = await _assetProvider.LoadAndGetComponent<GameStartView>(GameStartUIPath);
+            var prefab = await _assetProvider.LoadAndGetComponent<GameStartView>(GameStartUIAssetPath);
+            var view = Object.Instantiate(prefab);
+            
+            var rect = view.GetComponent<RectTransform>();
+            rect.SetParent(_uiRoot.Self, false);
+            
+            return view;
+        }
+
+        public async UniTask<PlayerDeathView> CreatePlayerDeathView()
+        {
+            var prefab = await _assetProvider.LoadAndGetComponent<PlayerDeathView>(DeathUIAssetPath);
             var view = Object.Instantiate(prefab);
             
             var rect = view.GetComponent<RectTransform>();
@@ -84,7 +99,18 @@ namespace Game.Code.Game.Services
             return view;
         }
         
-        public async UniTask<PlayerUIView> CreatePlayerUI()
+        public async UniTask<GameResultsView> CreateGameResultsView()
+        {
+            var prefab = await _assetProvider.LoadAndGetComponent<GameResultsView>(GameResultsUIAssetPath);
+            var view = Object.Instantiate(prefab);
+            
+            var rect = view.GetComponent<RectTransform>();
+            rect.SetParent(_uiRoot.Self, false);
+            
+            return view;
+        }
+        
+        public async UniTask<PlayerUIView> CreatePlayerUIView()
         {
             var prefab = await _assetProvider.LoadAndGetComponent<PlayerUIView>(PlayerUIAssetPath);
             var obj = Object.Instantiate(prefab);

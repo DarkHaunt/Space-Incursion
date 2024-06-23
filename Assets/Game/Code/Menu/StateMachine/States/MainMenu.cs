@@ -1,6 +1,6 @@
-using Game.Code.Common.StateMachineBase.Interfaces;
 using Cysharp.Threading.Tasks;
-using Game.Code.Menu.View;
+using Game.Code.Infrastructure.StateMachineBase.Interfaces;
+using Game.Code.Menu.MVP;
 
 namespace Game.Code.Menu.StateMachine.States
 {

@@ -1,3 +1,4 @@
+using Game.Code.Game.Entities.Enemies.Services;
 using Game.Code.Game.Services;
 using VContainer;
 using VContainer.Unity;

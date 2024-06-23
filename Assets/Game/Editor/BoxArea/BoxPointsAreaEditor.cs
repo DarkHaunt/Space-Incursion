@@ -1,4 +1,4 @@
-using Game.Code.Game.Level.BoxArea;
+using Game.Code.Game.Scene.Level;
 using UnityEditor;
 using UnityEngine;
 

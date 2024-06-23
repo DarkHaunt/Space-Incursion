@@ -1,7 +1,7 @@
 using Fusion;
 using UnityEngine;
 
-namespace Game.Code.Game.Services
+namespace Game.Code.Infrastructure.Network
 {
     public class NetworkMonoServiceLocator : MonoBehaviour
     {

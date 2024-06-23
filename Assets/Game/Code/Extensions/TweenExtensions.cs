@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Threading;
+﻿using System.Collections;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Game.Scripts.Extensions
+namespace Game.Code.Extensions
 {
     public static class TweenExtensions
     {

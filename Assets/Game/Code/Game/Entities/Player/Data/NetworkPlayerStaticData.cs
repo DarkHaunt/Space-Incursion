@@ -1,7 +1,7 @@
 using Fusion;
 using UnityEngine;
 
-namespace Game.Code.Game.Entities
+namespace Game.Code.Game.Entities.Player.Data
 {
     public struct NetworkPlayerStaticData : INetworkStruct
     {

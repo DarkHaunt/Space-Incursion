@@ -1,8 +1,8 @@
-using Game.Code.Game.Level;
-using Game.Scripts.Extensions;
+using Game.Code.Extensions;
+using Game.Code.Game.Scene.Level;
 using UnityEngine;
 
-namespace Game.Code.Game.Services
+namespace Game.Code.Game.Entities.Enemies.Services
 {
     public class EnemyPositionProvider
     {

@@ -1,4 +1,4 @@
-using Game.Code.Common.StateMachineBase;
+using Game.Code.Infrastructure.StateMachineBase;
 
 namespace Game.Code.Root.StateMachine
 {

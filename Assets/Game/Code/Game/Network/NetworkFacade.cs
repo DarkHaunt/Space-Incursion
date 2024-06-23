@@ -1,10 +1,10 @@
-using System.Collections.Generic;
-using Fusion.Sockets;
 using System;
+using System.Collections.Generic;
 using Fusion;
-using UnityEngine;
+using Fusion.Sockets;
+using Game.Code.Game.Input;
 
-namespace Game.Code.Game
+namespace Game.Code.Game.Network
 {
     public class NetworkFacade : INetworkRunnerCallbacks
     {

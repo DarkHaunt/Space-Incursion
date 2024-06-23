@@ -1,6 +1,4 @@
-﻿using Game.Scripts.Infrastructure.TickManaging;
-
-namespace Code.Infrastructure.UpdateRunner
+﻿namespace Game.Code.Infrastructure.TickManaging
 {
     public interface ITickSource
     {

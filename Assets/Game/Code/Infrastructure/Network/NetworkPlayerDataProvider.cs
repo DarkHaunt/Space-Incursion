@@ -1,7 +1,7 @@
-using Game.Code.Game.StaticData.Indents;
 using Fusion;
+using Game.Code.Game.StaticData.Indents;
 
-namespace Game.Code.Game
+namespace Game.Code.Infrastructure.Network
 {
     public class NetworkPlayerDataProvider
     {

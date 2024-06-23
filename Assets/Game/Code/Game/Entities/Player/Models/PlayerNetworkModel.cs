@@ -1,11 +1,12 @@
-using Game.Code.Game.Services.Models;
-using Game.Code.Game.Services;
-using Game.Code.Game.Shooting;
-using UnityEngine;
 using Fusion;
-using System;
+using Game.Code.Game.Entities.Player.Data;
+using Game.Code.Game.Entities.Player.Services;
+using Game.Code.Game.Entities.Shared.Models;
+using Game.Code.Game.Input;
+using Game.Code.Game.Services;
+using UnityEngine;
 
-namespace Game.Code.Game.Entities
+namespace Game.Code.Game.Entities.Player.Models
 {
     [ScriptHelp(BackColor = ScriptHeaderBackColor.Olive)]
     public class PlayerNetworkModel : NetworkBehaviour

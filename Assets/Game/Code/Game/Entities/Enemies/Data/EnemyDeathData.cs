@@ -1,4 +1,5 @@
 using Fusion;
+using Game.Code.Game.Entities.Enemies.Models;
 using Game.Code.Game.Services;
 
 namespace Game.Code.Game.Entities.Enemies.Data

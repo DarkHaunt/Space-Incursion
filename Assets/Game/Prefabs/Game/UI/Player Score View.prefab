@@ -280,7 +280,7 @@ GameObject:
   - component: {fileID: 6880626859937139039}
   - component: {fileID: -6840923052694380879}
   m_Layer: 5
-  m_Name: Player UI
+  m_Name: Player Score View
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

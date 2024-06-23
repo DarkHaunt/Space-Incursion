@@ -1,12 +1,11 @@
 using System;
-using Code.Infrastructure.UpdateRunner;
 using Game.Code.Extensions;
 using Game.Code.Game.Scene;
-using Game.Scripts.Infrastructure.TickManaging;
+using Game.Code.Infrastructure.TickManaging;
 using UnityEngine;
 using VContainer.Unity;
 
-namespace Game.Code.Game
+namespace Game.Code.Game.Input
 {
     public class InputService : ITickListener, IStartable, IDisposable
     {
@@ -55,8 +54,8 @@ namespace Game.Code.Game
 
         private Vector2 GetMoveDirection()
         {
-            var horizontalMovement = Input.GetAxis("Horizontal");
-            var verticalMovement = Input.GetAxis("Vertical");
+            var horizontalMovement = UnityEngine.Input.GetAxis("Horizontal");
+            var verticalMovement = UnityEngine.Input.GetAxis("Vertical");
 
             return new Vector2(horizontalMovement, verticalMovement).normalized;
         }
@@ -64,13 +63,13 @@ namespace Game.Code.Game
         private Vector2 GetShootDirection()
         {
             var screenPos = _camera.ViewportToScreenPoint(position: CameraCenterViewport);
-            var mousePos = Input.mousePosition;
+            var mousePos = UnityEngine.Input.mousePosition;
 
             return Vector2Extensions.Direction(from: screenPos, to: mousePos);
         }
 
         private bool IsShootButtonPressed() =>
-            _pressedShootButton || Input.GetButtonDown("Fire1");
+            _pressedShootButton || UnityEngine.Input.GetButtonDown("Fire1");
 
         
         public void Start()

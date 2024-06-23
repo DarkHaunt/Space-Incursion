@@ -1,7 +1,7 @@
-﻿using Game.Scripts.Extensions;
+﻿using Game.Code.Extensions;
 using UnityEngine;
 
-namespace Game.Code.Game.Level.BoxArea
+namespace Game.Code.Game.Scene.Level
 {
     public class BoxPointsArea : MonoBehaviour
     {

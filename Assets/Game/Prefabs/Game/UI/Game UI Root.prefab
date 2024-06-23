@@ -91,7 +91,7 @@ GameObject:
   - component: {fileID: 2735186350354826053}
   - component: {fileID: 722434675590320948}
   m_Layer: 5
-  m_Name: Gameplay UI Root
+  m_Name: Game UI Root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -135,7 +135,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 1
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 1
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0

@@ -690,8 +690,9 @@ PlayerSettings:
   webGLMemoryGeometricGrowthCap: 96
   webGLPowerPreference: 2
   scriptingDefineSymbols:
-    Server: FUSION_WEAVER;FUSION2
-    Standalone: FUSION_WEAVER;FUSION2;VCONTAINER_UNITASK_INTEGRATION
+    Android: UNITASK_DOTWEEN_SUPPORT
+    Server: FUSION_WEAVER;FUSION2;UNITASK_DOTWEEN_SUPPORT
+    Standalone: FUSION_WEAVER;FUSION2;VCONTAINER_UNITASK_INTEGRATION;UNITASK_DOTWEEN_SUPPORT
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:

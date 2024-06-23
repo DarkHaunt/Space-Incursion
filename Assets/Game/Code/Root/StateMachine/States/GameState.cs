@@ -1,7 +1,7 @@
-using Code.Infrastructure.AssetManaging;
 using Cysharp.Threading.Tasks;
-using Game.Code.Common.StateMachineBase.Interfaces;
 using Game.Code.Game.StaticData.Indents;
+using Game.Code.Infrastructure.AssetManaging;
+using Game.Code.Infrastructure.StateMachineBase.Interfaces;
 using TMPro;
 
 namespace Game.Code.Root.StateMachine.States

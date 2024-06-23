@@ -1,8 +1,8 @@
 using DG.Tweening;
-using Game.Scripts.Extensions;
+using Game.Code.Extensions;
 using UnityEngine;
 
-namespace Game.Code.Game
+namespace Game.Code.Game.Entities.Shared.Models
 {
     public class PhysicMove : MonoBehaviour
     {

@@ -3,7 +3,7 @@ using UnityEngine;
 using VContainer.Unity;
 using WebSocketSharp;
 
-namespace Game.Code.Menu.View
+namespace Game.Code.Menu.MVP
 {
     public class MenuPresenter : IInitializable, IDisposable
     {

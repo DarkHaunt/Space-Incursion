@@ -1,8 +1,8 @@
-using Game.Code.Game.Services;
 using Cysharp.Threading.Tasks;
 using Fusion;
+using Game.Code.Infrastructure.Network;
 
-namespace Game.Code.Game
+namespace Game.Code.Game.Network
 {
     public class NetworkHostStateHandleService
     {

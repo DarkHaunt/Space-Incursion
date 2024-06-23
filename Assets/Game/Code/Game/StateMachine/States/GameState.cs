@@ -1,8 +1,9 @@
 using Cysharp.Threading.Tasks;
-using Game.Code.Common.StateMachineBase.Interfaces;
-using Game.Code.Game.Services;
+using Game.Code.Game.Entities.Enemies.Services;
+using Game.Code.Game.Network;
+using Game.Code.Infrastructure.StateMachineBase.Interfaces;
 
-namespace Game.Code.Game.Core.States
+namespace Game.Code.Game.StateMachine.States
 {
     public class GameState : IState
     {

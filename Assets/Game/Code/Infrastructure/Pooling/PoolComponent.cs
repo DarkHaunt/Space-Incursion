@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Game.Scripts.Infrastructure.PoolComponent
+namespace Game.Code.Infrastructure.Pooling
 {
     public class PoolComponent<T> where T : Component
     {

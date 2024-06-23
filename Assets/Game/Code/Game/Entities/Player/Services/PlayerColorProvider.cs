@@ -1,11 +1,11 @@
-using System.Collections.Generic;
-using Game.Code.Game.StaticData;
-using Game.Code.Extensions;
-using VContainer.Unity;
-using UnityEngine;
 using System;
+using System.Collections.Generic;
+using Game.Code.Extensions;
+using Game.Code.Infrastructure.AssetManaging;
+using UnityEngine;
+using VContainer.Unity;
 
-namespace Game.Code.Game.Services
+namespace Game.Code.Game.Entities.Player.Services
 {
     public class PlayerColorProvider : IInitializable, IDisposable
     {

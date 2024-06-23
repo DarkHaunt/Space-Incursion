@@ -2,7 +2,6 @@ using Game.Code.Game.StaticData.Indents;
 using Game.Code.Game.UI;
 using System;
 using UniRx;
-using UnityEngine;
 
 namespace Game.Code.Game.Services
 {

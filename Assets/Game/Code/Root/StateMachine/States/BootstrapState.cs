@@ -1,9 +1,9 @@
-using Game.Code.Common.StateMachineBase.Interfaces;
 using Game.Code.Infrastructure.SceneManaging;
 using Game.Code.Game.StaticData.Indents;
-using Code.Infrastructure.AssetManaging;
 using Cysharp.Threading.Tasks;
 using Game.Code.Game.StaticData;
+using Game.Code.Infrastructure.AssetManaging;
+using Game.Code.Infrastructure.StateMachineBase.Interfaces;
 
 namespace Game.Code.Root.StateMachine.States
 {

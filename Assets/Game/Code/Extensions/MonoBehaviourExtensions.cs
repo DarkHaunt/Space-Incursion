@@ -1,8 +1,8 @@
-﻿using Game.Code.Common.CoroutineRunner;
-using System.Collections;
+﻿using System.Collections;
+using Game.Code.Infrastructure.CoroutineRunner;
 using UnityEngine;
 
-namespace Game.Scripts.Extensions
+namespace Game.Code.Extensions
 {
     public static class MonoBehaviourExtensions
     {

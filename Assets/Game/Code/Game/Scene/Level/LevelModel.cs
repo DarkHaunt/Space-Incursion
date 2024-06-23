@@ -1,7 +1,7 @@
 using Fusion;
 using UnityEngine;
 
-namespace Game.Code.Game.Level
+namespace Game.Code.Game.Scene.Level
 {
     public class LevelModel : NetworkBehaviour
     {

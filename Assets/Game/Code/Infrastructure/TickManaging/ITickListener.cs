@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Game.Scripts.Infrastructure.TickManaging
+﻿namespace Game.Code.Infrastructure.TickManaging
 {
     public interface ITickListener
     {

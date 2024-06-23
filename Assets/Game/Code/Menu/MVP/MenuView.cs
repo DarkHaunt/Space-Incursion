@@ -1,9 +1,8 @@
 using TMPro;
-using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Game.Code.Menu.View
+namespace Game.Code.Menu.MVP
 {
     public class MenuView : MonoBehaviour
     {

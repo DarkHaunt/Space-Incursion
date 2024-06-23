@@ -10,8 +10,10 @@ namespace Game.Code.Game.StaticData.Indents
         public const string EnemyAssetPath = "Enemy";
         public const string LevelAssetPath = "Level";
         
-        public const string GameStartUIPath = "GameStartUI";
+        public const string GameResultsUIAssetPath = "ResultsUI";
+        public const string GameStartUIAssetPath = "GameStartUI";
         public const string PlayerUIAssetPath = "PlayerUI";
+        public const string DeathUIAssetPath = "DeathUI";
         public const string RootUIAssetPath = "RootUI";
         
         public const string ProjectileConfigAssetPath = "ProjectileConfig";

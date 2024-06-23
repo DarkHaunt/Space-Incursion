@@ -1,10 +1,8 @@
-using Game.Code.Game.StaticData.Scriptables;
-using Code.Infrastructure.AssetManaging;
-using Game.Code.Game.StaticData.Player;
 using Cysharp.Threading.Tasks;
+using Game.Code.Game.StaticData.Scriptables;
 using static Game.Code.Game.StaticData.Indents.AddressableIndents;
 
-namespace Game.Code.Game.StaticData
+namespace Game.Code.Infrastructure.AssetManaging
 {
     public class GameStaticDataProvider
     {

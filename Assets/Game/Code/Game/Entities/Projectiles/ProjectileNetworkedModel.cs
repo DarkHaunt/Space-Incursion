@@ -1,8 +1,9 @@
-using Game.Code.Game.StaticData;
-using UnityEngine;
 using Fusion;
+using Game.Code.Game.Entities.Shared.Models;
+using Game.Code.Game.StaticData.Scriptables;
+using UnityEngine;
 
-namespace Game.Code.Game.Projectiles
+namespace Game.Code.Game.Entities.Projectiles
 {
     [ScriptHelp(BackColor = ScriptHeaderBackColor.Olive)]
     public class ProjectileNetworkedModel : NetworkBehaviour

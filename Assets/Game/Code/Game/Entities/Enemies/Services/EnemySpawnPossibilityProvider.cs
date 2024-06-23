@@ -1,10 +1,10 @@
 using System;
 using DG.Tweening;
-using Game.Code.Game.StaticData;
-using Game.Scripts.Extensions;
+using Game.Code.Extensions;
+using Game.Code.Infrastructure.AssetManaging;
 using VContainer.Unity;
 
-namespace Game.Code.Game.Services
+namespace Game.Code.Game.Entities.Enemies.Services
 {
     public class EnemySpawnPossibilityProvider : IInitializable, IDisposable
     {

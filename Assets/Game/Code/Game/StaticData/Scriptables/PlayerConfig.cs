@@ -1,7 +1,6 @@
-using Fusion;
 using UnityEngine;
 
-namespace Game.Code.Game.StaticData.Player
+namespace Game.Code.Game.StaticData.Scriptables
 {
     [CreateAssetMenu(fileName = "PlayerConfig", menuName = "Scriptables/Player", order = 0)]
     public class PlayerConfig : ScriptableObject

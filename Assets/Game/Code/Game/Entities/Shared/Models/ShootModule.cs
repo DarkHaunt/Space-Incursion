@@ -1,9 +1,9 @@
-using Game.Code.Game.Services;
-using Game.Code.Extensions;
-using UnityEngine;
 using Fusion;
+using Game.Code.Extensions;
+using Game.Code.Game.Services;
+using UnityEngine;
 
-namespace Game.Code.Game.Shooting
+namespace Game.Code.Game.Entities.Shared.Models
 {
     public class ShootModule : MonoBehaviour
     {

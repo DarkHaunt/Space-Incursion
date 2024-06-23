@@ -1,8 +1,8 @@
-using Game.Code.Common.Physic;
-using Game.Code.Game.Entities;
+using Game.Code.Game.Entities.Player.Models;
+using Game.Code.Infrastructure.Physic;
 using UnityEngine;
 
-namespace Game.Code.Game.Services
+namespace Game.Code.Game.Entities.Enemies.Models
 {
     [RequireComponent(typeof(TriggerObserver))]
     public class EnemyPhysicModel : MonoBehaviour

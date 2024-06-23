@@ -1,7 +1,7 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Game.Code.Game.Services.Models
+namespace Game.Code.Game.Entities.Shared.Models
 {
     public class EntityGraphic : MonoBehaviour
     {

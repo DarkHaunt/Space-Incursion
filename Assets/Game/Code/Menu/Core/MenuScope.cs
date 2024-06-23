@@ -1,5 +1,5 @@
+using Game.Code.Menu.MVP;
 using Game.Code.Menu.StateMachine;
-using Game.Code.Menu.View;
 using VContainer.Unity;
 using UnityEngine;
 using VContainer;

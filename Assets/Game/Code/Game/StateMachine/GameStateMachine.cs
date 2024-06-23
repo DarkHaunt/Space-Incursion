@@ -1,6 +1,6 @@
-using Game.Code.Common.StateMachineBase;
+using Game.Code.Infrastructure.StateMachineBase;
 
-namespace Game.Code.Game.Core
+namespace Game.Code.Game.StateMachine
 {
     public class GameStateMachine : BaseStateMachine
     {

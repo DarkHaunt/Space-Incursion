@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Game_Behaviors
+  m_Name: Game_UI
   m_EditorClassIdentifier: 
-  m_GroupName: Game_Behaviors
+  m_GroupName: Game_UI
   m_Data:
     m_SerializedData: []
   m_GUID: 4cb6dcc15f450de4191df6ad8f4cf1ac
@@ -31,6 +31,18 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 571a7c8585eed2b458552d104ce7280a
     m_Address: GameStartUI
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - gameplay
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0e2b3ff6c22ae9740a25f0c6ffe5b50b
+    m_Address: DeathUI
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - gameplay
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8c6e5b67e0945864687059780696677b
+    m_Address: ResultsUI
     m_ReadOnly: 0
     m_SerializedLabels:
     - gameplay

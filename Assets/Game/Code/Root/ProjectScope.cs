@@ -1,13 +1,14 @@
 using Game.Code.Infrastructure.SceneManaging;
-using Code.Infrastructure.AssetManaging;
-using Code.Infrastructure.UpdateRunner;
-using Game.Code.Common.StateMachineBase;
-using Game.Code.Common.CoroutineRunner;
 using Game.Code.Root.StateMachine;
 using Game.Code.Game.StaticData;
 using Game.Code.Game.Services;
 using VContainer.Unity;
 using Game.Code.Game;
+using Game.Code.Infrastructure.AssetManaging;
+using Game.Code.Infrastructure.CoroutineRunner;
+using Game.Code.Infrastructure.Network;
+using Game.Code.Infrastructure.StateMachineBase;
+using Game.Code.Infrastructure.TickManaging;
 using UnityEngine;
 using VContainer;
 

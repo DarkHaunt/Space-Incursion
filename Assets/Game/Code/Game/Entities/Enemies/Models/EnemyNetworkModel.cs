@@ -1,13 +1,13 @@
-using Game.Code.Game.StaticData.Scriptables;
-using Game.Code.Game.Services.Models;
-using Game.Code.Extensions;
-using UnityEngine;
-using DG.Tweening;
 using System;
+using DG.Tweening;
 using Fusion;
+using Game.Code.Extensions;
 using Game.Code.Game.Entities.Enemies.Data;
+using Game.Code.Game.Entities.Shared.Models;
+using Game.Code.Game.StaticData.Scriptables;
+using UnityEngine;
 
-namespace Game.Code.Game.Services
+namespace Game.Code.Game.Entities.Enemies.Models
 {
     [ScriptHelp(BackColor = ScriptHeaderBackColor.Olive)]
     public class EnemyNetworkModel : NetworkBehaviour

@@ -1,9 +1,8 @@
-﻿using Game.Scripts.Infrastructure.TickManaging;
-using System.Collections.Generic;
-using VContainer.Unity;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using VContainer.Unity;
 
-namespace Code.Infrastructure.UpdateRunner
+namespace Game.Code.Infrastructure.TickManaging
 {
     public class UpdateRunner : ITickable, ITickSource
     {

@@ -1,11 +1,13 @@
-using Game.Code.Common.StateMachineBase.Interfaces;
-using Game.Code.Infrastructure.SceneManaging;
-using Game.Code.Game.Services;
 using Cysharp.Threading.Tasks;
 using Fusion;
+using Game.Code.Game.Entities.Player.Services;
+using Game.Code.Game.Network;
+using Game.Code.Game.Services;
+using Game.Code.Infrastructure.SceneManaging;
+using Game.Code.Infrastructure.StateMachineBase.Interfaces;
 using UniRx;
 
-namespace Game.Code.Game.Core.States
+namespace Game.Code.Game.StateMachine.States
 {
     public class LobbyState : IState
     {
@@ -40,6 +42,7 @@ namespace Game.Code.Game.Core.States
 
             await _transitionHandler.PlayFadeOutAnimation();
             
+            // TEST
             GoToGameStart();
         }
 

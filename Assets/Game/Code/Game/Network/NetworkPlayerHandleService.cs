@@ -1,17 +1,19 @@
-using Game.Code.Game.StaticData.Indents;
+using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using Game.Code.Game.Services;
-using Game.Code.Game.Entities;
-using Game.Code.Extensions;
-using Game.Code.Game.Scene;
-using Game.Code.Game.UI;
-using System;
 using Fusion;
+using Game.Code.Extensions;
+using Game.Code.Game.Entities.Player.Models;
+using Game.Code.Game.Entities.Player.Services;
+using Game.Code.Game.Scene;
+using Game.Code.Game.Services;
+using Game.Code.Game.StaticData.Indents;
+using Game.Code.Game.UI;
+using Game.Code.Infrastructure.Network;
 using UniRx;
 using Object = UnityEngine.Object;
 
-namespace Game.Code.Game
+namespace Game.Code.Game.Network
 {
     public class NetworkPlayerHandleService
     {
@@ -58,7 +60,7 @@ namespace Game.Code.Game
                 ? await CreatePlayer(playerRef, _dataProvider.PlayerData.Nickname)
                 : await GetExistedPlayer(playerRef);
 
-            var view = await _gameFactory.CreatePlayerUI();
+            var view = await _gameFactory.CreatePlayerUIView();
             
             RegisterPlayer(playerRef, model, view);
             

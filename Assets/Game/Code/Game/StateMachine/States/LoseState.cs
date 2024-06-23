@@ -1,8 +1,8 @@
 using Cysharp.Threading.Tasks;
-using Game.Code.Common.StateMachineBase.Interfaces;
 using Game.Code.Game.Services;
+using Game.Code.Infrastructure.StateMachineBase.Interfaces;
 
-namespace Game.Code.Game.Core.States
+namespace Game.Code.Game.StateMachine.States
 {
     public class LoseState : IState
     {
@@ -17,7 +17,7 @@ namespace Game.Code.Game.Core.States
         
         public UniTask Enter()
         {
-            _uiService.ShowLoseScreen();
+            _uiService.ShowDeathScreen();
             _cameraService.CancelFollow();
 
             return UniTask.CompletedTask;

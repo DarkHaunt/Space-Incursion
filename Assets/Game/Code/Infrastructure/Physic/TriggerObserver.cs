@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Game.Code.Common.Physic
+namespace Game.Code.Infrastructure.Physic
 {
     public class TriggerObserver : MonoBehaviour
     {

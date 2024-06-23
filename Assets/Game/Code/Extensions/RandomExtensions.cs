@@ -1,8 +1,8 @@
-using UnityEngine;
 using System;
 using System.Linq;
+using UnityEngine;
 
-namespace Game.Scripts.Extensions
+namespace Game.Code.Extensions
 {
     using Random = UnityEngine.Random;
 

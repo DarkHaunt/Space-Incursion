@@ -1,10 +1,10 @@
-using Game.Code.Common.Physic;
-using Game.Code.Game.Services;
-using UnityEngine;
 using System;
 using Fusion;
+using Game.Code.Game.Entities.Enemies.Models;
+using Game.Code.Infrastructure.Physic;
+using UnityEngine;
 
-namespace Game.Code.Game.Projectiles
+namespace Game.Code.Game.Entities.Projectiles
 {
     [RequireComponent(typeof(TriggerObserver))]
     public class PlayerProjectileBehavior : MonoBehaviour

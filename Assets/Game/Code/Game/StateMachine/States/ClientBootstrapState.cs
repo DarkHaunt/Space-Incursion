@@ -1,9 +1,9 @@
-using Game.Code.Common.StateMachineBase.Interfaces;
-using Game.Code.Game.StaticData;
 using Cysharp.Threading.Tasks;
 using Game.Code.Game.Services;
+using Game.Code.Infrastructure.AssetManaging;
+using Game.Code.Infrastructure.StateMachineBase.Interfaces;
 
-namespace Game.Code.Game.Core.States
+namespace Game.Code.Game.StateMachine.States
 {
     public class ClientBootstrapState : IState
     {
@@ -12,20 +12,23 @@ namespace Game.Code.Game.Core.States
         private readonly GameStateMachine _stateMachine;
         private readonly CameraService _cameraService;
         private readonly GameFactory _gameFactory;
+        private readonly UIService _uiService;
 
         public ClientBootstrapState(GameStaticDataProvider gameStaticDataProvider, PhysicCollisionService collisionService, 
-            GameStateMachine stateMachine, CameraService cameraService, GameFactory gameFactory)
+            GameStateMachine stateMachine, CameraService cameraService, UIService uiService, GameFactory gameFactory)
         {
             _gameStaticDataProvider = gameStaticDataProvider;
             _collisionService = collisionService;
             _cameraService = cameraService;
             _stateMachine = stateMachine;
             _gameFactory = gameFactory;
+            _uiService = uiService;
         }
 
         public async UniTask Enter()
         {
             await SetUpClientSideServices();
+            
             await GoToHostState();
         }
 
@@ -42,6 +45,11 @@ namespace Game.Code.Game.Core.States
             );
 
             await _gameFactory.CreateUIRoot();
+            
+            var deathView = await _gameFactory.CreatePlayerDeathView();
+            var resultsView = await _gameFactory.CreateGameResultsView();
+
+            _uiService.Init(deathView, resultsView);
         }
 
         private UniTask GoToHostState() =>

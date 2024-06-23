@@ -1,9 +1,10 @@
-using Game.Code.Common.StateMachineBase.Interfaces;
-using Game.Code.Game.Services;
 using Cysharp.Threading.Tasks;
 using Fusion;
+using Game.Code.Game.Network;
+using Game.Code.Infrastructure.Network;
+using Game.Code.Infrastructure.StateMachineBase.Interfaces;
 
-namespace Game.Code.Game.Core.States
+namespace Game.Code.Game.StateMachine.States
 {
     public class NetworkBootstrapState : IState
     {

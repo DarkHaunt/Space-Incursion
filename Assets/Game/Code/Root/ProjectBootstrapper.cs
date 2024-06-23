@@ -1,6 +1,6 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using Game.Code.Common.StateMachineBase;
+using Game.Code.Infrastructure.StateMachineBase;
 using Game.Code.Root.StateMachine;
 using Game.Code.Root.StateMachine.States;
 using VContainer;

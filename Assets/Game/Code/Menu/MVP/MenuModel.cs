@@ -1,7 +1,7 @@
 using Game.Code.Game.StaticData.Indents;
 using VContainer.Unity;
 
-namespace Game.Code.Menu.View
+namespace Game.Code.Menu.MVP
 {
     public class MenuModel : IInitializable
     {

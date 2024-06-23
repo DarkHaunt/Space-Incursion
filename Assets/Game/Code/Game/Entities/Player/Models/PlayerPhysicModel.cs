@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Game.Code.Game.Entities
+namespace Game.Code.Game.Entities.Player.Models
 {
     public class PlayerPhysicModel : MonoBehaviour
     {

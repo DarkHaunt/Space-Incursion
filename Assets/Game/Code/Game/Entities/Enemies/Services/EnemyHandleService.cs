@@ -2,13 +2,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Fusion;
-using Game.Code.Common.CoroutineRunner;
 using Game.Code.Extensions;
 using Game.Code.Game.Entities.Enemies.Data;
-using Game.Code.Game.Level;
+using Game.Code.Game.Entities.Enemies.Models;
+using Game.Code.Game.Entities.Player.Services;
+using Game.Code.Game.Scene.Level;
+using Game.Code.Game.Services;
+using Game.Code.Infrastructure.CoroutineRunner;
+using Game.Code.Infrastructure.Network;
 using UnityEngine;
 
-namespace Game.Code.Game.Services
+namespace Game.Code.Game.Entities.Enemies.Services
 {
     public class EnemyHandleService : IDisposable
     {

@@ -3,10 +3,12 @@ using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Fusion;
-using Game.Code.Common.StateMachineBase;
-using Game.Code.Game.Core;
-using Game.Code.Game.Core.States;
+using Game.Code.Game.Network;
 using Game.Code.Game.Services;
+using Game.Code.Game.StateMachine;
+using Game.Code.Game.StateMachine.States;
+using Game.Code.Infrastructure.Network;
+using Game.Code.Infrastructure.StateMachineBase;
 using VContainer;
 
 namespace Game.Code.Game.Boot
@@ -38,8 +40,11 @@ namespace Game.Code.Game.Boot
             _stateMachine.RegisterState(_stateFactory.Create<NetworkBootstrapState>(Lifetime.Scoped));
             _stateMachine.RegisterState(_stateFactory.Create<ClientBootstrapState>(Lifetime.Scoped));
             _stateMachine.RegisterState(_stateFactory.Create<HostBootstrapState>(Lifetime.Scoped));
+            
             _stateMachine.RegisterState(_stateFactory.Create<LobbyState>(Lifetime.Scoped));
             _stateMachine.RegisterState(_stateFactory.Create<GameState>(Lifetime.Scoped));
+            _stateMachine.RegisterState(_stateFactory.Create<LoseState>(Lifetime.Scoped));
+            _stateMachine.RegisterState(_stateFactory.Create<GameOverState>(Lifetime.Scoped));
 
             await _stateMachine.Enter<NetworkBootstrapState>();
         }

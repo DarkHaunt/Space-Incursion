@@ -1,9 +1,10 @@
-using Game.Code.Common.StateMachineBase.Interfaces;
 using Game.Code.Root.StateMachine.States;
 using Game.Code.Root.StateMachine;
 using Cysharp.Threading.Tasks;
-using Game.Code.Menu.View;
 using Game.Code.Game;
+using Game.Code.Infrastructure.Network;
+using Game.Code.Infrastructure.StateMachineBase.Interfaces;
+using Game.Code.Menu.MVP;
 
 namespace Game.Code.Menu.StateMachine.States
 {
