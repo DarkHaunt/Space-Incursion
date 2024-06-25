@@ -1,8 +1,8 @@
 using Game.Code.Game.Entities.Player.Services;
-using Game.Code.Game.Input;
 using Game.Code.Game.Services;
-using VContainer;
+using Game.Code.Game.Input;
 using VContainer.Unity;
+using VContainer;
 
 namespace Game.Code.Game.Boot.Installers
 {
@@ -21,11 +21,17 @@ namespace Game.Code.Game.Boot.Installers
             RegisterCameraService(builder);
 
             RegisterUIService(builder);
-            RegisterGameStartService(builder);
+            RegisterGameOverService(builder);
+            RegisterGameStartService(builder); 
             
             RegisterPlayerColorProvider(builder);
             RegisterPlayerHandleService(builder);
         }
+
+        private void RegisterGameOverService(IContainerBuilder builder) =>
+            builder.Register<GameOverService>(Lifetime.Scoped)
+                .AsImplementedInterfaces()
+                .AsSelf();
 
         private void RegisterUIService(IContainerBuilder builder) =>
             builder.RegisterInstance(_uiService);

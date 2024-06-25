@@ -1,8 +1,9 @@
 using Game.Code.Game.Entities.Player.Models;
+using Game.Code.Game.Entities.Player.Data;
+using System.Collections.Generic;
 using Game.Code.Game.UI;
 using System.Linq;
 using System;
-using System.Collections.Generic;
 using Fusion;
 using UniRx;
 
@@ -63,11 +64,11 @@ namespace Game.Code.Game.Entities.Player.Services
         public PlayerUIView GetPlayerView(PlayerRef player) =>
             _views[player];
 
-        public Dictionary<PlayerRef, int> GetAllPlayersScores()
+        public Dictionary<NetworkPlayerStaticData, int> GetAllPlayersScores()
         {
             return _models.ToDictionary
             (
-                keySelector: x => x.Key,
+                keySelector: x => x.Value.Data,
                 elementSelector: x => x.Value.Score
             );
         }

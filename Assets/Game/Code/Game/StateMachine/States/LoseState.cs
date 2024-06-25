@@ -23,7 +23,11 @@ namespace Game.Code.Game.StateMachine.States
             return UniTask.CompletedTask;
         }
 
-        public UniTask Exit() => 
-            UniTask.CompletedTask;
+        public UniTask Exit()
+        {
+            _uiService.HideDeathScreen();
+            
+            return UniTask.CompletedTask;
+        }
     }
 }

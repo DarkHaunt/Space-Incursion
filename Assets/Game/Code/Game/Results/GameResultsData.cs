@@ -1,18 +1,10 @@
 using System.Collections.Generic;
-using Fusion;
+using Game.Code.Game.Entities.Player.Data;
 
 namespace Game.Code.Game.Services
 {
-    public record GameResultsData
+    public record GameResultsData(Dictionary<NetworkPlayerStaticData, int> PlayersWithScore)
     {
-        private readonly Dictionary<PlayerRef, int> _playersWithScore;
-
-        public IReadOnlyDictionary<PlayerRef, int> PlayersWithScore =>
-            _playersWithScore;
-
-        public GameResultsData(Dictionary<PlayerRef, int> playersWithScore)
-        {
-            _playersWithScore = playersWithScore;
-        }
+        public Dictionary<NetworkPlayerStaticData, int> PlayersWithScore { get; } = PlayersWithScore;
     }
 }

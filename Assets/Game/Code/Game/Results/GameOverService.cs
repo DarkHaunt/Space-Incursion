@@ -5,15 +5,14 @@ using UniRx;
 
 namespace Game.Code.Game.Services
 {
-    // TODO: Сделать какое-то общее место для хендлинга живых игроков / игроков в очереди на спавн и тп
     public class GameOverService : IInitializable, IDisposable
     {
         public event Action<GameResultsData> OnGameOver;
         
         private readonly CompositeDisposable _disposables = new();
-        
         private readonly PlayerHandleService _playerHandleService;
 
+        
         public GameOverService(PlayerHandleService playerHandleService)
         {
             _playerHandleService = playerHandleService;

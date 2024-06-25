@@ -4,20 +4,20 @@ using Game.Code.Infrastructure.StateMachineBase.Interfaces;
 
 namespace Game.Code.Game.StateMachine.States
 {
-    public class GameOverState : IState
+    public class GameOverState : IPaylodedState<GameResultsData>
     {
-        private readonly UIService _uiService;
         private readonly CameraService _cameraService;
+        private readonly UIService _uiService;
 
         public GameOverState(UIService uiService, CameraService cameraService)
         {
             _uiService = uiService;
             _cameraService = cameraService;
         }
-        
-        public UniTask Enter()
+
+        public UniTask Enter(GameResultsData payload)
         {
-            _uiService.ShowGameOverPanel();
+            _uiService.ShowGameOverPanel(payload);
             _cameraService.CancelFollow();
 
             return UniTask.CompletedTask;

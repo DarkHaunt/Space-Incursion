@@ -24,7 +24,13 @@ namespace Game.Code.Game.Services
         public void ShowDeathScreen() =>
             _playerDeathView.Show(_deathScreenAppearTime).Forget();
 
-        public void ShowGameOverPanel() =>
+        public void HideDeathScreen() =>
+            _playerDeathView.Hide().Forget();
+
+        public void ShowGameOverPanel(GameResultsData results)
+        {
+            _gameResultsView.FillWithResults(results);
             _gameResultsView.Show(_resultsScreenAppearTime).Forget();
+        }
     }
 }

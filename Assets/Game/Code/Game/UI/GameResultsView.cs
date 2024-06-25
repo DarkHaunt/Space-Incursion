@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using Game.Code.Game.Services;
 using DG.Tweening;
 using UnityEngine;
 
@@ -17,5 +18,11 @@ namespace Game.Code.Game.UI
 
         public UniTask Hide() =>
             _canvasGroup.DOFade(0f, 0f).ToUniTask();
+
+        public void FillWithResults(GameResultsData results)
+        {
+            foreach (var player in results.PlayersWithScore)
+                Debug.Log($"<color=white>{player.Key.Nickname.ToString()} - {player.Value}</color>");
+        }
     }
 }
