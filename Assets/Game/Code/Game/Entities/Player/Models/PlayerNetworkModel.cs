@@ -1,3 +1,4 @@
+using System;
 using Fusion;
 using Game.Code.Game.Entities.Player.Data;
 using Game.Code.Game.Entities.Player.Services;
@@ -11,6 +12,8 @@ namespace Game.Code.Game.Entities.Player.Models
     [ScriptHelp(BackColor = ScriptHeaderBackColor.Olive)]
     public class PlayerNetworkModel : NetworkBehaviour
     {
+        public event Action<PlayerNetworkModel> OnDeath;
+        
         [SerializeField] private PlayerPhysicModel _physicModel;
         [SerializeField] private EntityGraphic _graphic;
         [SerializeField] private ShootModule _shoot;
@@ -50,6 +53,8 @@ namespace Game.Code.Game.Entities.Player.Models
         {
             _isDead = true;
 
+            OnDeath?.Invoke(this);
+            
             _physicModel.EnableCollider(false);
             _move.Stop();
 

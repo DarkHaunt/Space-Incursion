@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Fusion;
-using Game.Code.Extensions;
-using Game.Code.Game.Entities.Player.Models;
 using Game.Code.Game.Entities.Player.Services;
-using Game.Code.Game.Scene;
-using Game.Code.Game.Services;
+using Game.Code.Game.Entities.Player.Models;
 using Game.Code.Game.StaticData.Indents;
-using Game.Code.Game.UI;
 using Game.Code.Infrastructure.Network;
+using Game.Code.Game.Services;
+using Game.Code.Game.Scene;
+using Game.Code.Extensions;
+using Game.Code.Game.UI;
 using UniRx;
 using Object = UnityEngine.Object;
 
@@ -28,7 +28,7 @@ namespace Game.Code.Game.Network
         private readonly GameFactory _gameFactory;
         private readonly NetworkRunner _runner;
 
-        public IObservable<CollectionAddEvent<PlayerRef>> OnPlayerAdded =>
+        public IObservable<CollectionAddEvent<PlayerRef>> OnPlayerAddedToSpawnQueue =>
             _playersToSpawn.ObserveAdd();
 
 
@@ -65,6 +65,7 @@ namespace Game.Code.Game.Network
             RegisterPlayer(playerRef, model, view);
             
             model.Construct(_playerHandleService, _gameFactory);
+            model.OnDeath += HandlePlayerDeath;
             
             if (model.Runner.LocalPlayer == playerRef)
                 _cameraService.SetTarget(model.transform);
@@ -97,13 +98,10 @@ namespace Game.Code.Game.Network
             _runner.SetIsSimulated(model.Object, true);
         }
 
-        public void KillPlayer(PlayerRef player)
+        private void HandlePlayerDeath(PlayerNetworkModel model)
         {
-            if (_hostStateHandleService.IsHost)
-            {
-                var obj = _playerHandleService.GetPlayerObject(player);
-                _runner.Despawn(obj);
-            }
+            model.OnDeath -= HandlePlayerDeath;
+            _playerHandleService.RemovePlayerFromAliveList(model.Object.InputAuthority);
         }
 
         public void DespawnPlayer(PlayerRef player)

@@ -1,29 +1,43 @@
-using System.Collections.Generic;
-using System.Linq;
-using Fusion;
 using Game.Code.Game.Entities.Player.Models;
 using Game.Code.Game.UI;
+using System.Linq;
+using System;
+using System.Collections.Generic;
+using Fusion;
+using UniRx;
 
 namespace Game.Code.Game.Entities.Player.Services
 {
     public class PlayerHandleService
     {
-        private readonly Dictionary<PlayerRef, PlayerNetworkModel> _models = new();
-        private readonly Dictionary<PlayerRef, PlayerUIView> _views = new();
+        private readonly ReactiveDictionary<PlayerRef, PlayerNetworkModel> _models = new();
+        private readonly ReactiveDictionary<PlayerRef, PlayerUIView> _views = new();
 
-        public int PlayersCount =>
-            _models.Count;
+        private readonly ReactiveCollection<PlayerRef> _alivePlayers = new();
+
+        public int AlivePlayersCount =>
+            _alivePlayers.Count;
+
+        public IObservable<CollectionRemoveEvent<PlayerRef>> OnPlayerKilled =>
+            _alivePlayers.ObserveRemove();
 
         public void AddPlayer(PlayerRef playerRef, PlayerNetworkModel model, PlayerUIView playerView)
         {
             _views.Add(playerRef, playerView);
             _models.Add(playerRef, model);
-            
+            _alivePlayers.Add(playerRef);
+
             UpdateFullView(playerRef);
         }
 
+        public void RemovePlayerFromAliveList(PlayerRef player) =>
+            _alivePlayers.Remove(player);
+
         public void RemovePlayer(PlayerRef playerRef)
         {
+            if (_alivePlayers.Contains(playerRef))
+                _alivePlayers.Remove(playerRef);
+
             _models.Remove(playerRef);
             _views.Remove(playerRef);
         }
@@ -49,11 +63,13 @@ namespace Game.Code.Game.Entities.Player.Services
         public PlayerUIView GetPlayerView(PlayerRef player) =>
             _views[player];
 
-        public PlayerRef GetPlayerWithHighestScore()
+        public Dictionary<PlayerRef, int> GetAllPlayersScores()
         {
-            return _models
-                .OrderByDescending(kv => kv.Value.Score)
-                .First().Key;
+            return _models.ToDictionary
+            (
+                keySelector: x => x.Key,
+                elementSelector: x => x.Value.Score
+            );
         }
 
         private void UpdateFullView(PlayerRef playerRef)
@@ -62,7 +78,7 @@ namespace Game.Code.Game.Entities.Player.Services
             var view = _views[playerRef];
 
             var data = model.Data;
-            
+
             view.UpdateScore(model.Score);
             view.UpdateTextColor(data.Color);
             view.UpdateNickname(data.Nickname);

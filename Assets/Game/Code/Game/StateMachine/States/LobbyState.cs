@@ -75,7 +75,7 @@ namespace Game.Code.Game.StateMachine.States
 
         private void ObservePlayersIncome()
         {
-            _networkPlayerHandleService.OnPlayerAdded
+            _networkPlayerHandleService.OnPlayerAddedToSpawnQueue
                 .Subscribe(x => HandlePlayerIncome(x.Value))
                 .AddTo(_disposables);
         }
@@ -93,7 +93,7 @@ namespace Game.Code.Game.StateMachine.States
             await _networkPlayerHandleService.SetUpPlayerData(player);
 
             if (_hostStateHandleService.IsHost)
-                _gameStartService.UpdateStartCondition(_playerHandleService.PlayersCount);
+                _gameStartService.UpdateStartCondition(_playerHandleService.AlivePlayersCount);
         }
 
         private async void GoToGameStart() =>
