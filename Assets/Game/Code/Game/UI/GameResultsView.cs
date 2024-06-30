@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using Game.Code.Game.Services;
 using DG.Tweening;
@@ -8,6 +10,8 @@ namespace Game.Code.Game.UI
     public class GameResultsView : MonoBehaviour
     {
         [SerializeField] private CanvasGroup _canvasGroup;
+        [SerializeField] private Transform _resultsParentObject;
+        
 
         public UniTask Show(float duration)
         {
@@ -17,12 +21,18 @@ namespace Game.Code.Game.UI
         }
 
         public UniTask Hide() =>
-            _canvasGroup.DOFade(0f, 0f).ToUniTask();
+            _canvasGroup
+                .DOFade(0f, 0f)
+                .ToUniTask();
 
-        public void FillWithResults(GameResultsData results)
+        public void FillWithResults(IEnumerable<PlayerResultsView> views)
         {
-            foreach (var player in results.PlayersWithScore)
-                Debug.Log($"<color=white>{player.Key.Nickname.ToString()} - {player.Value}</color>");
+            var orderedTransforms = views
+                .OrderBy(x => x.Score)
+                .Select(x => x.transform);
+            
+            foreach (var t in orderedTransforms)
+                t.SetParent(_resultsParentObject);
         }
     }
 }

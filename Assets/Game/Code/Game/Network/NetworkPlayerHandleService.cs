@@ -90,7 +90,7 @@ namespace Game.Code.Game.Network
             return obj.GetBehaviour<PlayerNetworkModel>();
         }
 
-        private void RegisterPlayer(PlayerRef playerRef, PlayerNetworkModel model, PlayerUIView view)
+        private void RegisterPlayer(PlayerRef playerRef, PlayerNetworkModel model, PlayerScoreView view)
         {
             _playerHandleService.AddPlayer(playerRef, model, view);
 

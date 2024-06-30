@@ -47,6 +47,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - gameplay
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aa29c7cd21552a441944a957d2d621a1
+    m_Address: PlayerResultsUI
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - gameplay
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: d8fea791925ca994b9de9154663b03c6, type: 2}
   m_SchemaSet:

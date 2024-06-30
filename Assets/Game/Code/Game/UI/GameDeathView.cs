@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Game.Code.Game.UI
 {
-    public class PlayerDeathView : MonoBehaviour
+    public class GameDeathView : MonoBehaviour
     {
         [SerializeField] private CanvasGroup _canvasGroup;
 

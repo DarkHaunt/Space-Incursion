@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Game.Code.Game.UI;
 using UnityEngine;
@@ -9,27 +10,27 @@ namespace Game.Code.Game.Services
         [SerializeField] private float _deathScreenAppearTime;
         [SerializeField] private float _resultsScreenAppearTime;
 
-        private PlayerDeathView _playerDeathView;
+        private GameDeathView _gameDeathView;
         private GameResultsView _gameResultsView;
         
-        public void Init(PlayerDeathView playerDeathView, GameResultsView gameResultsView)
+        public void Init(GameDeathView gameDeathView, GameResultsView gameResultsView)
         {
-            _playerDeathView = playerDeathView;
+            _gameDeathView = gameDeathView;
             _gameResultsView = gameResultsView;
 
-            _playerDeathView.Hide();
-            _gameResultsView.Hide();
+            _gameDeathView.Hide().Forget();
+            _gameResultsView.Hide().Forget();
         }
         
         public void ShowDeathScreen() =>
-            _playerDeathView.Show(_deathScreenAppearTime).Forget();
+            _gameDeathView.Show(_deathScreenAppearTime).Forget();
 
         public void HideDeathScreen() =>
-            _playerDeathView.Hide().Forget();
+            _gameDeathView.Hide().Forget();
 
-        public void ShowGameOverPanel(GameResultsData results)
+        public void ShowGameOverPanel(IEnumerable<PlayerResultsView> views)
         {
-            _gameResultsView.FillWithResults(results);
+            _gameResultsView.FillWithResults(views);
             _gameResultsView.Show(_resultsScreenAppearTime).Forget();
         }
     }

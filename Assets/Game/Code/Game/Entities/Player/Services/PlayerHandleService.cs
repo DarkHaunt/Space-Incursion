@@ -12,7 +12,7 @@ namespace Game.Code.Game.Entities.Player.Services
     public class PlayerHandleService
     {
         private readonly ReactiveDictionary<PlayerRef, PlayerNetworkModel> _models = new();
-        private readonly ReactiveDictionary<PlayerRef, PlayerUIView> _views = new();
+        private readonly ReactiveDictionary<PlayerRef, PlayerScoreView> _views = new();
 
         private readonly ReactiveCollection<PlayerRef> _alivePlayers = new();
 
@@ -22,7 +22,7 @@ namespace Game.Code.Game.Entities.Player.Services
         public IObservable<CollectionRemoveEvent<PlayerRef>> OnPlayerKilled =>
             _alivePlayers.ObserveRemove();
 
-        public void AddPlayer(PlayerRef playerRef, PlayerNetworkModel model, PlayerUIView playerView)
+        public void AddPlayer(PlayerRef playerRef, PlayerNetworkModel model, PlayerScoreView playerView)
         {
             _views.Add(playerRef, playerView);
             _models.Add(playerRef, model);
@@ -61,7 +61,7 @@ namespace Game.Code.Game.Entities.Player.Services
         public NetworkObject GetPlayerObject(PlayerRef player) =>
             _models[player].Object;
 
-        public PlayerUIView GetPlayerView(PlayerRef player) =>
+        public PlayerScoreView GetPlayerView(PlayerRef player) =>
             _views[player];
 
         public Dictionary<NetworkPlayerStaticData, int> GetAllPlayersScores()

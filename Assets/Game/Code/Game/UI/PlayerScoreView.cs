@@ -4,7 +4,7 @@ using TMPro;
 
 namespace Game.Code.Game.UI
 {
-    public class PlayerUIView : MonoBehaviour
+    public class PlayerScoreView : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI _scoreText;
         [SerializeField] private TextMeshProUGUI _nickText;

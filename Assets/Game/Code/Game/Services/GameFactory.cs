@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Game.Code.Game.StaticData;
 using Game.Code.Game.Entities;
 using Cysharp.Threading.Tasks;
@@ -10,6 +12,7 @@ using Game.Code.Game.Entities.Player.Models;
 using Game.Code.Game.Entities.Projectiles;
 using Game.Code.Game.Scene;
 using Game.Code.Game.Scene.Level;
+using Game.Code.Game.StaticData.Indents;
 using Game.Code.Infrastructure.AssetManaging;
 using Game.Code.Infrastructure.Network;
 using static Game.Code.Game.StaticData.Indents.AddressableIndents;
@@ -88,9 +91,9 @@ namespace Game.Code.Game.Services
             return view;
         }
 
-        public async UniTask<PlayerDeathView> CreatePlayerDeathView()
+        public async UniTask<GameDeathView> CreatePlayerDeathView()
         {
-            var prefab = await _assetProvider.LoadAndGetComponent<PlayerDeathView>(DeathUIAssetPath);
+            var prefab = await _assetProvider.LoadAndGetComponent<GameDeathView>(DeathUIAssetPath);
             var view = Object.Instantiate(prefab);
             
             var rect = view.GetComponent<RectTransform>();
@@ -110,16 +113,26 @@ namespace Game.Code.Game.Services
             return view;
         }
         
-        public async UniTask<PlayerUIView> CreatePlayerUIView()
+        public async UniTask<PlayerScoreView> CreatePlayerUIView()
         {
-            var prefab = await _assetProvider.LoadAndGetComponent<PlayerUIView>(PlayerUIAssetPath);
+            var prefab = await _assetProvider.LoadAndGetComponent<PlayerScoreView>(PlayerUIAssetPath);
             var obj = Object.Instantiate(prefab);
 
-            var view = obj.GetComponent<PlayerUIView>();
+            var view = obj.GetComponent<PlayerScoreView>();
             var rect = view.GetComponent<RectTransform>();
             rect.SetParent(_uiRoot.PlayerViewsContainer);
 
             return view;
+        }
+
+        public async Task<PlayerResultsView> CreatePlayerResultsView(KeyValuePair<NetworkPlayerStaticData,int> playerWithScore)
+        {
+            var prefab = await _assetProvider.LoadAndGetComponent<PlayerResultsView>(ResultsUIAssetPath);
+            var obj = Object.Instantiate(prefab);
+            
+            obj.Init(playerWithScore.Key.Nickname.ToString(), playerWithScore.Value);
+
+            return obj;
         }
 
         public async UniTask<ProjectileNetworkedModel> CreateProjectile(Vector2 pos, PlayerRef owner)

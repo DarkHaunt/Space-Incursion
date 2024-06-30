@@ -12,6 +12,8 @@ namespace Game.Code.Game.StaticData.Indents
         
         public const string GameResultsUIAssetPath = "ResultsUI";
         public const string GameStartUIAssetPath = "GameStartUI";
+        
+        public const string ResultsUIAssetPath = "PlayerResultsUI";
         public const string PlayerUIAssetPath = "PlayerUI";
         public const string DeathUIAssetPath = "DeathUI";
         public const string RootUIAssetPath = "RootUI";
