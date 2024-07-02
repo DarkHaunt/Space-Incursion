@@ -36,7 +36,7 @@ namespace Game.Code.Game.Entities.Enemies.Models
             _move.RotateToFace(direction);
             _move.MoveWithTween(point)
                 .SetEase(Ease.Linear)
-                .OnComplete(Despawn);
+                .OnComplete(KillImmediate);
         }
 
         public async void Kill(PlayerRef killer)
@@ -50,7 +50,7 @@ namespace Game.Code.Game.Entities.Enemies.Models
 
             await _graphic.WaitUntilDeathEffectEnds();
 
-            Despawn();
+            KillImmediate();
         }
 
         private void NotifyDeath(PlayerRef killer)
@@ -71,7 +71,10 @@ namespace Game.Code.Game.Entities.Enemies.Models
             _graphic.PlayFireParticle(false);
         }
 
-        private void Despawn() =>
+        public void KillImmediate()
+        {
+            _move.Stop();
             Runner.Despawn(Object);
+        }
     }
 }

@@ -25,8 +25,6 @@ namespace Game.Code.Menu.MVP
         {
             _model.SetPlayerName(GetPlayerViewName());
             _model.SetRoomName(GetPlayerViewRoom());
-
-            Debug.Log($"<color=white>Name - {_model.PlayerName} || Room - {_model.RoomName}</color>");
         }
 
         private string GetPlayerViewName()

@@ -31,6 +31,9 @@ namespace Game.Code.Game.Entities.Player.Services
             UpdateFullView(playerRef);
         }
 
+        public List<PlayerRef> GetAllRegisteredPlayers() =>
+            _models.Keys.ToList();
+
         public void RemovePlayerFromAliveList(PlayerRef player) =>
             _alivePlayers.Remove(player);
 

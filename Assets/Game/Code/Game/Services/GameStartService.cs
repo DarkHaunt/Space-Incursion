@@ -1,23 +1,24 @@
 using Game.Code.Game.StaticData.Indents;
+using Game.Code.Infrastructure.Network;
 using Game.Code.Game.UI;
-using System;
-using UniRx;
+using Fusion;
 
 namespace Game.Code.Game.Services
 {
     public class GameStartService
     {
+        private NetworkSignalBus _signal;
+        private NetworkRunner _runner;
         private GameStartView _view;
-        
-        public IObservable<Unit> OnGameStartButtonClick { get; private set; }
 
 
-        public void Init(GameStartView view)
+        public void Init(GameStartView view, NetworkRunner runner)
         {
+            _runner = runner;
             _view = view;
+            
             _view.EnableStartButton(false);
-
-            OnGameStartButtonClick = _view.StartButton.OnClickAsObservable();
+            _view.StartButton.onClick.AddListener(RPC_ClickedButton);
         }
 
         public void UpdateStartCondition(int playerCount)
@@ -27,8 +28,14 @@ namespace Game.Code.Game.Services
             CheckForGameStartAbility(playerCount);
         }
 
-        public void HideView() =>
-            _view.Hide();
+        public void HideView()
+        {
+            if (_view != null) 
+                _view.Hide();
+        }
+
+        private void RPC_ClickedButton() =>
+            NetworkSignalBus.RPC_GameStarted(_runner);
 
         private void CheckForGameStartAbility(int playerCount) =>
             _view.EnableStartButton(playerCount >= NetworkIndents.MinPlayersCount);

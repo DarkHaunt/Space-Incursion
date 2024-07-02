@@ -1,12 +1,14 @@
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Game.Code.Game.UI
 {
     public class GameDeathView : MonoBehaviour
     {
         [SerializeField] private CanvasGroup _canvasGroup;
+        [field: SerializeField] public Button ExitButton { get; private set; }
 
         public UniTask Show(float duration)
         {

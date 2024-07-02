@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6215403572756820688}
   - component: {fileID: -5249121461524704480}
   - component: {fileID: 4041813229898121350}
+  - component: {fileID: 7705835520204027664}
   m_Layer: 0
   m_Name: '[Network Runner]'
   m_TagString: Untagged
@@ -48,6 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Runner>k__BackingField: {fileID: 6215403572756820688}
+  <SignalBus>k__BackingField: {fileID: 7705835520204027664}
 --- !u!114 &6215403572756820688
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89,3 +91,15 @@ MonoBehaviour:
   ClientPhysicsSimulation: 3
   DeltaTimeMultiplier: 1
   SetUnityFixedTimestep: 0
+--- !u!114 &7705835520204027664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9058155975601730764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46f1df63d1794035ba3dd14c26396f57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using System.Linq;
 using Cysharp.Threading.Tasks;
-using Game.Code.Game.Services;
+using System.Linq;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Game.Code.Game.UI
 {
@@ -11,7 +11,7 @@ namespace Game.Code.Game.UI
     {
         [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private Transform _resultsParentObject;
-        
+        [field: SerializeField] public Button ExitButton { get; private set; }
 
         public UniTask Show(float duration)
         {
@@ -21,8 +21,7 @@ namespace Game.Code.Game.UI
         }
 
         public UniTask Hide() =>
-            _canvasGroup
-                .DOFade(0f, 0f)
+            _canvasGroup.DOFade(0f, 0f)
                 .ToUniTask();
 
         public void FillWithResults(IEnumerable<PlayerResultsView> views)

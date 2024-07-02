@@ -57,8 +57,6 @@ namespace Game.Code.Game.Services
         {
             while (!_cts.IsCancellationRequested)
             {
-                await UniTask.Yield();
-                
                 Vector2 desiredPosition = target.position;
 
                 var halfHeight = _camera.orthographicSize;
@@ -69,6 +67,8 @@ namespace Game.Code.Game.Services
 
                 var adjustedPosition = Vector2.Lerp(_camera.transform.position, desiredPosition, Time.deltaTime);
                 SetCameraInPosition(adjustedPosition);
+                
+                await UniTask.Yield();
             }
  
             _cts?.Dispose();

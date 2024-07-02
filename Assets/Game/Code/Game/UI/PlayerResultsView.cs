@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ namespace Game.Code.Game.UI
         [SerializeField] private TextMeshProUGUI _scoreText;
         
         public int Score { get; private set; }
-            
+        
 
         public void Init(string nick, int score)
         {

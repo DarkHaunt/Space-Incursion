@@ -7,6 +7,7 @@ using Cysharp.Threading.Tasks;
 using Game.Code.Game.Network;
 using Fusion;
 using UniRx;
+using UnityEngine;
 using CompositeDisposable = UniRx.CompositeDisposable;
 
 namespace Game.Code.Game.StateMachine.States
@@ -74,7 +75,7 @@ namespace Game.Code.Game.StateMachine.States
         }
 
         private async void HandlePlayerKilled(PlayerRef player)
-        {
+        { 
             if (_isGameOver || _runner.LocalPlayer != player)
                 return;
 

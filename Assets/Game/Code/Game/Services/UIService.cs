@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Game.Code.Game.UI;
 using UnityEngine;
+using System;
+using UniRx;
 
 namespace Game.Code.Game.Services
 {
@@ -12,7 +14,14 @@ namespace Game.Code.Game.Services
 
         private GameDeathView _gameDeathView;
         private GameResultsView _gameResultsView;
-        
+
+        public IObservable<Unit> OnExitButtonClick =>
+            Observable.Merge
+            (
+                _gameResultsView.ExitButton.OnClickAsObservable(),
+                _gameDeathView.ExitButton.OnClickAsObservable()
+            );
+
         public void Init(GameDeathView gameDeathView, GameResultsView gameResultsView)
         {
             _gameDeathView = gameDeathView;
@@ -21,7 +30,7 @@ namespace Game.Code.Game.Services
             _gameDeathView.Hide().Forget();
             _gameResultsView.Hide().Forget();
         }
-        
+
         public void ShowDeathScreen() =>
             _gameDeathView.Show(_deathScreenAppearTime).Forget();
 

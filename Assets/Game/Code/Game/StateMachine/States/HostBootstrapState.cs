@@ -1,7 +1,9 @@
 using Cysharp.Threading.Tasks;
+using Fusion;
 using Game.Code.Game.Entities.Enemies.Services;
 using Game.Code.Game.Network;
 using Game.Code.Game.Services;
+using Game.Code.Infrastructure.Network;
 using Game.Code.Infrastructure.StateMachineBase.Interfaces;
 
 namespace Game.Code.Game.StateMachine.States
@@ -14,10 +16,11 @@ namespace Game.Code.Game.StateMachine.States
         private readonly EnemyHandleService _enemyHandleService;
         private readonly GameStartService _gameStartService;
         private readonly GameFactory _gameFactory;
+        private readonly NetworkRunner _runner;
 
 
         public HostBootstrapState(GameStateMachine stateMachine, NetworkHostStateHandleService hostStateHandleService, GameFactory gameFactory, 
-            EnemyHandleService enemyHandleService, GameStartService gameStartService)
+            EnemyHandleService enemyHandleService, GameStartService gameStartService, NetworkMonoServiceLocator serviceLocator)
         {
             _stateMachine = stateMachine;
 
@@ -25,6 +28,8 @@ namespace Game.Code.Game.StateMachine.States
             _enemyHandleService = enemyHandleService;
             _gameStartService = gameStartService;
             _gameFactory = gameFactory;
+
+            _runner = serviceLocator.Runner;
         }
 
         public async UniTask Enter()
@@ -47,7 +52,7 @@ namespace Game.Code.Game.StateMachine.States
                 var view = await _gameFactory.CreateGameStartView();
 
                 _enemyHandleService.Init(level);
-                _gameStartService.Init(view);
+                _gameStartService.Init(view, _runner);
             }
 
             _hostStateHandleService.SetHostIsInitialized();

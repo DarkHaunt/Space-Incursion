@@ -1,22 +1,34 @@
+using Game.Code.Infrastructure.StateMachineBase.Interfaces;
 using Cysharp.Threading.Tasks;
 using Game.Code.Game.Services;
-using Game.Code.Infrastructure.StateMachineBase.Interfaces;
+using UnityEngine;
+using UniRx;
 
 namespace Game.Code.Game.StateMachine.States
 {
     public class LoseState : IState
     {
-        private readonly UIService _uiService;
-        private readonly CameraService _cameraService;
+        private readonly CompositeDisposable _disposables = new();
 
-        public LoseState(UIService uiService, CameraService cameraService)
+        private readonly GameStateMachine _gameStateMachine;
+        private readonly CameraService _cameraService;
+        private readonly UIService _uiService;
+
+        
+        public LoseState(GameStateMachine gameStateMachine, UIService uiService, CameraService cameraService)
         {
-            _uiService = uiService;
+            _gameStateMachine = gameStateMachine;
             _cameraService = cameraService;
+            _uiService = uiService;
         }
+        
         
         public UniTask Enter()
         {
+            _uiService.OnExitButtonClick
+                .Subscribe(_ => GoToMenuScene())
+                .AddTo(_disposables);
+
             _uiService.ShowDeathScreen();
             _cameraService.CancelFollow();
 
@@ -26,8 +38,12 @@ namespace Game.Code.Game.StateMachine.States
         public UniTask Exit()
         {
             _uiService.HideDeathScreen();
+            _disposables.Dispose();
             
             return UniTask.CompletedTask;
         }
+        
+        private void GoToMenuScene() =>
+            _gameStateMachine.Enter<ShutdownState>().Forget();
     }
 }

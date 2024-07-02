@@ -1,20 +1,17 @@
+using Game.Code.Game.Entities.Enemies.Models;
+using Game.Code.Infrastructure.AssetManaging;
+using Game.Code.Game.Entities.Player.Models;
+using Game.Code.Game.Entities.Player.Data;
+using Game.Code.Game.Entities.Projectiles;
+using Game.Code.Infrastructure.Network;
+using Game.Code.Game.Scene.Level;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Game.Code.Game.StaticData;
-using Game.Code.Game.Entities;
 using Cysharp.Threading.Tasks;
+using System.Threading.Tasks;
+using Game.Code.Game.Scene;
 using Game.Code.Game.UI;
 using UnityEngine;
 using Fusion;
-using Game.Code.Game.Entities.Enemies.Models;
-using Game.Code.Game.Entities.Player.Data;
-using Game.Code.Game.Entities.Player.Models;
-using Game.Code.Game.Entities.Projectiles;
-using Game.Code.Game.Scene;
-using Game.Code.Game.Scene.Level;
-using Game.Code.Game.StaticData.Indents;
-using Game.Code.Infrastructure.AssetManaging;
-using Game.Code.Infrastructure.Network;
 using static Game.Code.Game.StaticData.Indents.AddressableIndents;
 
 namespace Game.Code.Game.Services

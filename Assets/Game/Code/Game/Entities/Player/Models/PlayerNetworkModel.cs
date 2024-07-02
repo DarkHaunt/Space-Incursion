@@ -51,13 +51,6 @@ namespace Game.Code.Game.Entities.Player.Models
 
         public async void Kill()
         {
-            _isDead = true;
-
-            OnDeath?.Invoke(this);
-            
-            _physicModel.EnableCollider(false);
-            _move.Stop();
-
             RPC_DeathGraphicEffect();
 
             await _graphic.WaitUntilDeathEffectEnds();
@@ -65,9 +58,16 @@ namespace Game.Code.Game.Entities.Player.Models
             Despawn();
         }
 
-        [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
+        [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.InputAuthority)]
         private void RPC_DeathGraphicEffect()
         {
+            _isDead = true;
+            
+            OnDeath?.Invoke(this);
+            
+            _physicModel.EnableCollider(false);
+            _move.Stop();
+            
             _graphic.PlayDestroyGraphics();
             _graphic.PlayFireParticle(false);
         }

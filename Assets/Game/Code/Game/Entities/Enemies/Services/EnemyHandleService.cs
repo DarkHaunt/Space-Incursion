@@ -102,6 +102,6 @@ namespace Game.Code.Game.Entities.Enemies.Services
             _coroutineRunner?.StopRunningCoroutine(_spawning);
 
         public void KillAllExistingEnemies() =>
-            _existingEnemies.ForEach(x => _runner.Despawn(x.Object));
+            _existingEnemies.ForEach(x => x.KillImmediate());
     }
 }

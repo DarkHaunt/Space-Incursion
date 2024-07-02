@@ -11,6 +11,7 @@ using Game.Code.Game.Scene;
 using Game.Code.Extensions;
 using Game.Code.Game.UI;
 using UniRx;
+using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace Game.Code.Game.Network
@@ -73,6 +74,28 @@ namespace Game.Code.Game.Network
             _playersToSpawn.Remove(playerRef);
         }
 
+        public void DespawnPlayer(PlayerRef player)
+        {
+            if (_hostStateHandleService.IsHost)
+            {
+                var obj = _playerHandleService.GetPlayerObject(player);
+                _runner.Despawn(obj);
+            }
+
+            var view = _playerHandleService.GetPlayerView(player);
+            _playerHandleService.RemovePlayer(player);
+
+            Object.Destroy(view.gameObject);
+        }
+
+        public void DespawnAllPlayers()
+        {
+            var players = _playerHandleService.GetAllRegisteredPlayers();
+            
+            foreach (var player in players)
+                DespawnPlayer(player);
+        }
+
         private UniTask<PlayerNetworkModel> CreatePlayer(PlayerRef playerRef, string nickName)
         {
             var pos = _sceneDependenciesProvider.PlayerSpawnPoints.PickRandom().position;
@@ -102,20 +125,6 @@ namespace Game.Code.Game.Network
         {
             model.OnDeath -= HandlePlayerDeath;
             _playerHandleService.RemovePlayerFromAliveList(model.Object.InputAuthority);
-        }
-
-        public void DespawnPlayer(PlayerRef player)
-        {
-            if (_hostStateHandleService.IsHost)
-            {
-                var obj = _playerHandleService.GetPlayerObject(player);
-                _runner.Despawn(obj);
-            }
-
-            var view = _playerHandleService.GetPlayerView(player);
-            _playerHandleService.RemovePlayer(player);
-
-            Object.Destroy(view.gameObject);
         }
     }
 }

@@ -1,8 +1,10 @@
-using System;
+using Game.Code.Infrastructure.SceneManaging;
 using System.Collections.Generic;
-using Fusion;
-using Fusion.Sockets;
+using Cysharp.Threading.Tasks;
 using Game.Code.Game.Input;
+using Fusion.Sockets;
+using Fusion;
+using System;
 
 namespace Game.Code.Game.Network
 {
@@ -10,12 +12,14 @@ namespace Game.Code.Game.Network
     {
         private readonly NetworkPlayerHandleService _networkPlayerHandleService;
         private readonly InputService _inputService;
+        private readonly SceneLoader _sceneLoader;
 
 
-        public NetworkFacade(InputService inputService,NetworkPlayerHandleService networkPlayerHandleService)
+        public NetworkFacade(InputService inputService, SceneLoader sceneLoader, NetworkPlayerHandleService networkPlayerHandleService)
         {
             _networkPlayerHandleService = networkPlayerHandleService;
             _inputService = inputService;
+            _sceneLoader = sceneLoader;
         }
 
 
@@ -30,8 +34,8 @@ namespace Game.Code.Game.Network
 
         public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
         {
-            foreach (var player in runner.ActivePlayers)
-                _networkPlayerHandleService.DespawnPlayer(player);
+            _networkPlayerHandleService.DespawnAllPlayers();
+            _sceneLoader.Load(Scenes.Menu).Forget();
         }
 
         #region [Unimplemented Callbacks]
