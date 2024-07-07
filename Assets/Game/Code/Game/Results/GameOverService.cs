@@ -2,6 +2,7 @@ using Game.Code.Game.Entities.Player.Services;
 using VContainer.Unity;
 using System;
 using UniRx;
+using UnityEngine;
 
 namespace Game.Code.Game.Services
 {
@@ -36,7 +37,7 @@ namespace Game.Code.Game.Services
         {
             var scores = _playerHandleService.GetAllPlayersScores();
             var data = new GameResultsData(scores);
-            
+
             OnGameOver?.Invoke(data);
         }
 

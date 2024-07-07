@@ -6,6 +6,7 @@ using System.Linq;
 using System;
 using Fusion;
 using UniRx;
+using UnityEngine;
 
 namespace Game.Code.Game.Entities.Player.Services
 {

@@ -49,31 +49,23 @@ namespace Game.Code.Game.Entities.Player.Models
             _move.SetMoveSpeed(Data.Speed);
         }
 
-        public async void Kill()
-        {
-            RPC_DeathGraphicEffect();
-
-            await _graphic.WaitUntilDeathEffectEnds();
-
-            Despawn();
-        }
-
-        [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.InputAuthority)]
-        private void RPC_DeathGraphicEffect()
+        [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
+        public async void RPC_Death()
         {
             _isDead = true;
-            
-            OnDeath?.Invoke(this);
             
             _physicModel.EnableCollider(false);
             _move.Stop();
             
             _graphic.PlayDestroyGraphics();
             _graphic.PlayFireParticle(false);
+            
+            OnDeath?.Invoke(this);
+            
+            await _graphic.WaitUntilDeathEffectEnds();
+            
+            gameObject.SetActive(false);
         }
-
-        private void Despawn() =>
-            Runner.Despawn(Object);
 
         public override void Spawned() =>
             _changeDetector = GetChangeDetector(ChangeDetector.Source.SimulationState);

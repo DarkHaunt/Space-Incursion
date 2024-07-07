@@ -16,17 +16,20 @@ namespace Game.Code.Game.StateMachine.States
     {
         private readonly CompositeDisposable _disposables = new();
         private readonly GameStateMachine _stateMachine;
+        private readonly NetworkRunner _runner;
 
         private readonly NetworkHostStateHandleService _hostStateHandleService;
         private readonly PlayerHandleService _playerHandleService;
         private readonly EnemyHandleService _enemyHandleService;
         private readonly GameOverService _gameOverService;
-        private readonly NetworkRunner _runner;
+        private readonly CameraService _cameraService;
+        private readonly UIService _uiService;
 
         private bool _isGameOver;
 
         public GameState(GameStateMachine stateMachine, NetworkHostStateHandleService hostStateHandleService, PlayerHandleService playerHandleService,
-            GameOverService gameOverService, EnemyHandleService enemyHandleService, NetworkMonoServiceLocator serviceLocator)
+            GameOverService gameOverService, EnemyHandleService enemyHandleService, NetworkMonoServiceLocator serviceLocator, UIService uiService,
+            CameraService cameraService)
         {
             _stateMachine = stateMachine;
 
@@ -34,6 +37,8 @@ namespace Game.Code.Game.StateMachine.States
             _playerHandleService = playerHandleService;
             _enemyHandleService = enemyHandleService;
             _gameOverService = gameOverService;
+            _cameraService = cameraService;
+            _uiService = uiService;
 
             _runner = serviceLocator.Runner;
         }
@@ -42,10 +47,10 @@ namespace Game.Code.Game.StateMachine.States
         {
             if (_hostStateHandleService.IsHost)
             {
-                _gameOverService.OnGameOver += HandleGameOver;
                 _enemyHandleService.StartSpawning();
             }
 
+            _gameOverService.OnGameOver += HandleGameOver;
             _playerHandleService.OnPlayerKilled
                 .Subscribe(x => HandlePlayerKilled(x.Value))
                 .AddTo(_disposables);
@@ -56,14 +61,8 @@ namespace Game.Code.Game.StateMachine.States
         public UniTask Exit()
         {
             _disposables.Dispose();
-
-            if (_hostStateHandleService.IsHost)
-            {
-                _gameOverService.OnGameOver -= HandleGameOver;
-
-                _enemyHandleService.StopSpawning();
-                _enemyHandleService.KillAllExistingEnemies();
-            }
+            _uiService.HideDeathScreen();
+            _gameOverService.OnGameOver -= HandleGameOver;
 
             return UniTask.CompletedTask;
         }
@@ -74,12 +73,20 @@ namespace Game.Code.Game.StateMachine.States
             await _stateMachine.Enter<GameOverState, GameResultsData>(results);
         }
 
-        private async void HandlePlayerKilled(PlayerRef player)
-        { 
+        private void HandlePlayerKilled(PlayerRef player)
+        {
             if (_isGameOver || _runner.LocalPlayer != player)
                 return;
 
-            await _stateMachine.Enter<LoseState>();
+            _uiService.OnExitButtonClick
+                .Subscribe(_ => GoToMenuScene())
+                .AddTo(_disposables);
+
+            _uiService.ShowDeathScreen();
+            _cameraService.CancelFollow();
         }
+
+        private async void GoToMenuScene() =>
+            await _stateMachine.Enter<ShutdownState>();
     }
 }

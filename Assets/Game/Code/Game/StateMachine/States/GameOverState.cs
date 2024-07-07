@@ -1,8 +1,9 @@
 using Game.Code.Infrastructure.StateMachineBase.Interfaces;
+using Game.Code.Game.Entities.Enemies.Services;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using Game.Code.Game.Network;
 using Game.Code.Game.Services;
+using Game.Code.Game.Network;
 using Game.Code.Game.UI;
 using UniRx;
 
@@ -12,16 +13,18 @@ namespace Game.Code.Game.StateMachine.States
     {
         private readonly CompositeDisposable _disposables = new();
 
-        private readonly NetworkPlayerHandleService _playerHandleService;
+        private readonly NetworkHostStateHandleService _hostStateHandleService;
+        private readonly EnemyHandleService _enemyHandleService;
         private readonly GameStateMachine _gameStateMachine;
         private readonly CameraService _cameraService;
         private readonly GameFactory _gameFactory;
         private readonly UIService _uiService;
 
-        public GameOverState(GameStateMachine gameStateMachine, UIService uiService, NetworkPlayerHandleService playerHandleService, 
-            CameraService cameraService, GameFactory gameFactory)
+        public GameOverState(GameStateMachine gameStateMachine, UIService uiService, CameraService cameraService, GameFactory gameFactory, 
+            EnemyHandleService enemyHandleService, NetworkHostStateHandleService hostStateHandleService)
         {
-            _playerHandleService = playerHandleService;
+            _hostStateHandleService = hostStateHandleService;
+            _enemyHandleService = enemyHandleService;
             _gameStateMachine = gameStateMachine;
             _cameraService = cameraService;
             _gameFactory = gameFactory;
@@ -30,7 +33,13 @@ namespace Game.Code.Game.StateMachine.States
 
         public async UniTask Enter(GameResultsData payload)
         {
-            _playerHandleService.DespawnAllPlayers();
+            _cameraService.CancelFollow();
+            
+            if (_hostStateHandleService.IsHost)
+            {
+                _enemyHandleService.StopSpawning();
+                _enemyHandleService.KillAllExistingEnemies();
+            }
             
             var resultViews = await CreateResultViews(payload);
 
@@ -38,8 +47,6 @@ namespace Game.Code.Game.StateMachine.States
             _uiService.OnExitButtonClick
                 .Subscribe(_ => GoToMenuScene())
                 .AddTo(_disposables);
-            
-            _cameraService.CancelFollow();
         }
 
         public UniTask Exit()

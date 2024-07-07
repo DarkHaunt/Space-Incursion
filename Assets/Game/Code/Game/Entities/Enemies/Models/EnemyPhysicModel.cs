@@ -23,7 +23,7 @@ namespace Game.Code.Game.Entities.Enemies.Models
         private void HandleTriggerEnter(Collider2D obj)
         {
             if (obj.TryGetComponent(out PlayerNetworkModel player))
-                player.Kill();
+                player.RPC_Death();
         }
     }
 }

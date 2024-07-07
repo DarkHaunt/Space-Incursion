@@ -42,7 +42,6 @@ namespace Game.Code.Game.Boot
             
             _stateMachine.RegisterState(_stateFactory.Create<LobbyState>(Lifetime.Scoped));
             _stateMachine.RegisterState(_stateFactory.Create<GameState>(Lifetime.Scoped));
-            _stateMachine.RegisterState(_stateFactory.Create<LoseState>(Lifetime.Scoped));
             _stateMachine.RegisterState(_stateFactory.Create<GameOverState>(Lifetime.Scoped));
             
             _stateMachine.RegisterState(_stateFactory.Create<ShutdownState>(Lifetime.Scoped));

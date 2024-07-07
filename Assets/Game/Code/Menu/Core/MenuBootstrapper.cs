@@ -22,10 +22,8 @@ namespace Game.Code.Menu.Core
         public async UniTask StartAsync(CancellationToken cancellation)
         {
             SetUpStateMachine();
-
-            //TODO : For testing
-            await _stateMachine.Enter<StartGame>();
-//            await _stateMachine.Enter<MainMenu>();
+            
+            await _stateMachine.Enter<MainMenu>();
         }
 
         private void SetUpStateMachine()

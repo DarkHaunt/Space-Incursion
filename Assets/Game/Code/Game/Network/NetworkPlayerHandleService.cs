@@ -67,7 +67,7 @@ namespace Game.Code.Game.Network
             
             model.Construct(_playerHandleService, _gameFactory);
             model.OnDeath += HandlePlayerDeath;
-            
+
             if (model.Runner.LocalPlayer == playerRef)
                 _cameraService.SetTarget(model.transform);
             
