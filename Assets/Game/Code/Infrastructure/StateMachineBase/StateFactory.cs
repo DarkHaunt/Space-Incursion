@@ -1,13 +1,13 @@
-﻿using Game.Code.Common.StateMachineBase.Interfaces;
+﻿using Game.Code.Infrastructure.StateMachineBase.Interfaces;
 using VContainer;
 
-namespace Game.Code.Common.StateMachineBase
+namespace Game.Code.Infrastructure.StateMachineBase
 {
     public class StateFactory
     {
         private readonly IObjectResolver _objectResolver;
 
-        public StateFactory(IObjectResolver objectResolver) => 
+        public StateFactory(IObjectResolver objectResolver) =>
             _objectResolver = objectResolver;
 
         public TState Create<TState>(Lifetime lifetime) where TState : IExitableState

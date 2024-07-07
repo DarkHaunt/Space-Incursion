@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Game.Code.Common.CoroutineRunner
+namespace Game.Code.Infrastructure.CoroutineRunner
 {
     public class CoroutineRunner : MonoBehaviour, ICoroutineRunner, IDisposable
     {

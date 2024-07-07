@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using Game.Code.Common.StateMachineBase.Interfaces;
+using Game.Code.Infrastructure.StateMachineBase.Interfaces;
 
-namespace Game.Code.Common.StateMachineBase
+namespace Game.Code.Infrastructure.StateMachineBase
 {
     public abstract class BaseStateMachine
     {

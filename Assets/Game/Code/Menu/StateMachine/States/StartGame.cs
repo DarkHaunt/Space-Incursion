@@ -1,53 +1,40 @@
+using Game.Code.Root.StateMachine.States;
+using Game.Code.Root.StateMachine;
 using Cysharp.Threading.Tasks;
-using Game.Code.Common.StateMachineBase.Interfaces;
-using Game.Code.Menu.UI;
+using Game.Code.Game;
+using Game.Code.Infrastructure.Network;
+using Game.Code.Infrastructure.StateMachineBase.Interfaces;
+using Game.Code.Menu.MVP;
 
 namespace Game.Code.Menu.StateMachine.States
 {
     public class StartGame : IState
     {
-        private readonly MenuStateMachine _stateMachine;
-        private readonly StartGameView _view;
+        private readonly RootStateMachine _rootStateMachine;
 
-        public StartGame(MenuStateMachine stateMachine, StartGameView view)
+        private readonly NetworkPlayerDataProvider _networkPlayerDataProvider;
+        private readonly MenuModel _model;
+
+        public StartGame(RootStateMachine rootStateMachine, NetworkPlayerDataProvider networkPlayerDataProvider, MenuModel model)
         {
-            _stateMachine = stateMachine;
-            _view = view;
+            _rootStateMachine = rootStateMachine;
+
+            _networkPlayerDataProvider = networkPlayerDataProvider;
+            _model = model;
         }
 
-        public UniTask Enter()
+        public async UniTask Enter()
         {
-            _view.Enable(true);
-            _view.StartButton.onClick.AddListener(SetLoadGame);
-            _view.CancelButton.onClick.AddListener(SetMainMenuState);
-
-            return UniTask.CompletedTask;
-        }
-
-        public UniTask Exit()
-        {
-            _view.Enable(false);
-            _view.StartButton.onClick.RemoveListener(SetLoadGame);
-            _view.CancelButton.onClick.RemoveListener(SetMainMenuState);
+            _networkPlayerDataProvider.SetPlayerData
+            (
+                roomName: _model.RoomName,
+                nickName: _model.PlayerName
+            );
             
-            return UniTask.CompletedTask;
+            await _rootStateMachine.Enter<FusionNetworkBootstrapState>();
         }
 
-        private void SetLoadGame()
-            => _stateMachine.Enter<LoadGame>().Forget();
-
-        private void SetMainMenuState()
-            => _stateMachine.Enter<MainMenu>().Forget();
-
-        public class Factory
-        {
-            private readonly StartGameView _view;
-
-            public Factory(StartGameView view) =>
-                _view = view;
-
-            public StartGame CreateState(MenuStateMachine stateMachine) =>
-                new (stateMachine, _view);
-        }
+        public UniTask Exit() =>
+            UniTask.CompletedTask;
     }
 }

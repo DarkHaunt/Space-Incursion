@@ -1,4 +1,4 @@
-namespace Game.Code.Game
+namespace Game.Code.Game.Input
 {
     public enum PlayerButtons
     {

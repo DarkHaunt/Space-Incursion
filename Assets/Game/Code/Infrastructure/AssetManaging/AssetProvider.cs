@@ -1,14 +1,14 @@
 ﻿using System;
-using UnityEngine;
+using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
-using System.Collections.Generic;
-using Object = UnityEngine.Object;
+using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceLocations;
+using Object = UnityEngine.Object;
 
-namespace Code.Infrastructure.AssetManaging
+namespace Game.Code.Infrastructure.AssetManaging
 {
     public class AssetProvider
     {

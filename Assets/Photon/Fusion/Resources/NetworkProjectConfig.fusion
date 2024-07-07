@@ -14,9 +14,9 @@
     "HideNetworkObjectInactivityGuard": false,
     "Simulation": {
         "InputDataWordCount": 0,
-        "ReplicationFeatures": 1,
+        "ReplicationFeatures": 0,
         "InputTransferMode": 0,
-        "PlayerCount": 10,
+        "PlayerCount": 5,
         "TickRateSelection": {
             "Client": 64,
             "ServerIndex": 0,
@@ -52,14 +52,15 @@
         "AdditionalLoss": 0.0
     },
     "Heap": {
-        "PageShift": 15,
-        "PageCount": 256,
+        "PageShift": 14,
+        "PageCount": 128,
         "GlobalsSize": 0
     },
     "AssembliesToWeave": [
         "Fusion.Unity",
         "Assembly-CSharp",
-        "Assembly-CSharp-firstpass"
+        "Assembly-CSharp-firstpass",
+        "Game.Code"
     ],
     "UseSerializableDictionary": true,
     "NullChecksForNetworkedProperties": true,

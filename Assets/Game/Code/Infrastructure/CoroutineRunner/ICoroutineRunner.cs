@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace Game.Code.Common.CoroutineRunner
+namespace Game.Code.Infrastructure.CoroutineRunner
 {
     public interface ICoroutineRunner
     {

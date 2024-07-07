@@ -1,47 +1,84 @@
+using System;
 using Game.Code.Extensions;
+using Game.Code.Game.Scene;
+using Game.Code.Infrastructure.TickManaging;
 using UnityEngine;
+using VContainer.Unity;
 
-namespace Game.Code.Game
+namespace Game.Code.Game.Input
 {
-    public class InputService
+    public class InputService : ITickListener, IStartable, IDisposable
     {
-        private static readonly Vector2 CameraCenterViewport = Vector2.one * 0.5f; 
-        
-        private readonly Camera _camera;
+        private static readonly Vector2 CameraCenterViewport = Vector2.one * 0.5f;
 
-        public InputService(Camera camera)
+        private readonly SceneDependenciesProvider _dependenciesProvider;
+        private readonly ITickSource _tickSource;
+        private Camera _camera;
+
+        private bool _pressedShootButton;
+        private Vector2 _shootDirection;
+        private Vector2 _moveDirection;
+
+        public InputService(SceneDependenciesProvider dependenciesProvider, ITickSource tickSource)
         {
-            _camera = camera;
+            _dependenciesProvider = dependenciesProvider;
+            _tickSource = tickSource;
         }
+
+        public void Tick(float deltaTime) =>
+            CollectInput();
+
+        private void CollectInput()
+        {
+            _pressedShootButton = IsShootButtonPressed();
+            
+            _shootDirection = GetShootDirection();
+            _moveDirection = GetMoveDirection();
+        }
+
+        private void ClearInput() =>
+            _pressedShootButton = false;
 
         public PlayerInputData GetPlayerInput()
         {
             var data = new PlayerInputData();
-            
-            data.Buttons.Set(PlayerButtons.Shoot, IsShootButtonPressed());
-            data.ShootDirection = GetShootDirection();
-            data.MoveDirection = GetMoveDirection();
-            
+
+            data.Buttons.Set(PlayerButtons.Shoot, _pressedShootButton);
+            data.ShootDirection = _shootDirection;
+            data.MoveDirection = _moveDirection;
+
+            ClearInput();
+
             return data;
         }
 
         private Vector2 GetMoveDirection()
         {
-            var horizontalMovement = Input.GetAxis("Horizontal");
-            var verticalMovement = Input.GetAxis("Vertical");
+            var horizontalMovement = UnityEngine.Input.GetAxis("Horizontal");
+            var verticalMovement = UnityEngine.Input.GetAxis("Vertical");
 
             return new Vector2(horizontalMovement, verticalMovement).normalized;
         }
 
         private Vector2 GetShootDirection()
         {
-            var screenPos = _camera.ViewportToWorldPoint(position: CameraCenterViewport);
-            var mousePos = Input.mousePosition;
+            var screenPos = _camera.ViewportToScreenPoint(position: CameraCenterViewport);
+            var mousePos = UnityEngine.Input.mousePosition;
 
             return Vector2Extensions.Direction(from: screenPos, to: mousePos);
         }
 
         private bool IsShootButtonPressed() =>
-            Input.GetKeyDown(key: KeyCode.Mouse0);
+            _pressedShootButton || UnityEngine.Input.GetButtonDown("Fire1");
+
+        
+        public void Start()
+        {
+            _camera = _dependenciesProvider.MainCamera; 
+            _tickSource.AddListener(this);
+        }
+
+        public void Dispose() =>
+            _tickSource.RemoveListener(this);
     }
 }

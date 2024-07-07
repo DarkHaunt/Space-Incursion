@@ -1,5 +1,5 @@
 using Cysharp.Threading.Tasks;
-using Game.Code.Common.StateMachineBase.Interfaces;
+using Game.Code.Infrastructure.StateMachineBase.Interfaces;
 
 namespace Game.Code.Menu.StateMachine.States
 {
@@ -10,7 +10,7 @@ namespace Game.Code.Menu.StateMachine.States
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 #else
-            Application.Quit();
+            UnityEngine.Application.Quit();
 #endif
 
             return UniTask.CompletedTask;
@@ -18,11 +18,5 @@ namespace Game.Code.Menu.StateMachine.States
 
         public UniTask Exit() =>
             UniTask.CompletedTask;
-
-        public class Factory
-        {
-            public ExitGame CreateState() =>
-                new();
-        }
     }
 }
